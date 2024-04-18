@@ -3,9 +3,10 @@
 import { dancing_script } from "@/app/fonts/fonts";
 import SectionComponent from "../SectionComponent/SectionComponent";
 import QuestionForm from "../QuestionForm/QuestionForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { getApi } from "@/app/api/apiRoutes";
 
 export default function AdminHomePage() {
   const [noOfQuestions, setNoOfQuestions] = useState<number>(1);
@@ -22,6 +23,10 @@ export default function AdminHomePage() {
   };
 
   const MotionButton = motion(Button);
+
+  useEffect(() => {
+    getApi();
+  }, []);
 
   return (
     <div className="flex flex-col h-full w-full gap-16 m-8">
