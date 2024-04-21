@@ -89,7 +89,7 @@ export default function AdminHomePage() {
               duration: 1,
               delay: 1.3,
             }}
-            className="flex flex-col gap-4 bg-orange-300 p-4 rounded-lg"
+            className="flex flex-col gap-4 border-2 p-4 rounded-lg"
           >
             <QuestionForm index={1} />
           </motion.div>
@@ -101,7 +101,7 @@ export default function AdminHomePage() {
                 duration: 1,
                 delay: 0.1,
               }}
-              className="flex flex-col gap-4 bg-orange-300 p-4 rounded-lg"
+              className="flex flex-col gap-4 border-2 p-4 rounded-lg"
               key={i}
             >
               <QuestionForm index={i + 2} />

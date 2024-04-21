@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function CorrectOptionComponent() {
+export default function TrueFalseComponent() {
   return (
     <div>
       <Select>
@@ -18,10 +18,8 @@ export default function CorrectOptionComponent() {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Options</SelectLabel>
-            <SelectItem value="one">One</SelectItem>
-            <SelectItem value="two">Two</SelectItem>
-            <SelectItem value="three">Three</SelectItem>
-            <SelectItem value="four">Four</SelectItem>
+            <SelectItem value="true">True</SelectItem>
+            <SelectItem value="false">False</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
