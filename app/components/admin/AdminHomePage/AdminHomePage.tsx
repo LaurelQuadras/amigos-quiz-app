@@ -62,7 +62,9 @@ export default function AdminHomePage() {
             className="flex gap-16 items-center text-sm w-full"
           >
             <ViewAllSectionsPopUp />
-            <AddSectionComponent onAddNewSection={onAddNewSection} />
+            <div className="w-full">
+              <AddSectionComponent onAddNewSection={onAddNewSection} />
+            </div>
             <EditSectionsPopUp />
             <DeleteSectionsPopUp />
           </motion.span>

@@ -87,7 +87,7 @@ export default function AdminNewPage() {
         </motion.span>
       </span>
       <div className="flex flex-col gap-4 m-4">
-        <div className="flex gap-8 items-center">
+        <div className="flex gap-8 items-center w-full">
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -115,9 +115,9 @@ export default function AdminNewPage() {
               onSectionOptionSelected={onSectionOptionSelected}
             />
             <AddSectionComponent onAddNewSection={onAddNewSection} />
-            <div>
+            <span>
               {sectionSelected ? sectionSelected.subject_description : ""}
-            </div>
+            </span>
           </motion.span>
         </div>
         {sectionSelected && (

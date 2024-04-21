@@ -32,7 +32,7 @@ export default function AddSectionComponent({
   };
 
   return (
-    <div className="w-full max-w-full">
+    <div className="max-w-full">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="w-full">
           <div className="w-full p-3 bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
