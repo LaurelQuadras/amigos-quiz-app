@@ -19,8 +19,6 @@ export default function AnswerTypeComponent({
   const onAnswerTypeValueChange = (value: string): void => {
     let answerType: AnswerTypeEnums =
       AnswerTypeEnums[value as keyof typeof AnswerTypeEnums];
-    console.log("V ", value);
-    console.log(answerType);
     onAnswerTypeOptionSelected(answerType);
   };
 

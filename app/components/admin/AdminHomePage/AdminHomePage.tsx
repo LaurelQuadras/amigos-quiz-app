@@ -37,8 +37,11 @@ export default function AdminHomePage() {
     setSectionSelected(value);
   };
 
-  const onAddNewSection = (value: string): void => {
-    setSectionsList([...sectionsList, value]);
+  const onAddNewSection = (
+    newSection: string,
+    newDescription: string
+  ): void => {
+    setSectionsList([...sectionsList, newSection]);
   };
 
   useEffect(() => {

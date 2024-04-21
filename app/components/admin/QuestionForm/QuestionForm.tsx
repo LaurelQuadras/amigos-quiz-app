@@ -2,9 +2,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import CorrectOptionComponent from "../MultipleCorrectOptionComponent/MultipleCorrectOptionComponent";
 import AnswerTypeComponent from "../AnswerTypeComponent/AnswerTypeComponent";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SingleCorrectAnswerComponent from "../SingleCorrectOptionComponent/SingleCorrectOptionComponent";
 import TrueFalseComponent from "../TrueFalseComponent/TrueFalseComponent";
+import Image from "next/image";
 
 export interface QuestionFormInterface {
   index: number;
@@ -21,14 +22,19 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
   const [answerTypeSelected, setAnswerTypeSelected] = useState<AnswerTypeEnums>(
     AnswerTypeEnums.None
   );
+  const [selectedFiles, setSelectedFiles] = useState<any>([]);
 
   const onAnswerTypeOptionSelected = (value: AnswerTypeEnums): void => {
     setAnswerTypeSelected(value);
   };
 
-  useEffect(() => {
-    console.log("AA ", answerTypeSelected);
-  }, [answerTypeSelected]);
+  const handleFileChange = (e: any): void => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setSelectedFiles([...selectedFiles, ...fileArray]);
+    }
+  };
 
   return (
     <>
@@ -36,6 +42,32 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
         <span className="w-40">Question {index}</span>
         <div className="w-[1010px]">
           <Textarea placeholder="Please enter your question here." />
+        </div>
+      </div>
+      <div className="flex gap-8 items-center flex-wrap h-auto">
+        <span className="w-40">Attachments</span>
+        <div>
+          <Input
+            id="picture"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          {selectedFiles.length > 0 && (
+            <div className="mt-2 h-64 object-contain flex gap-3 flex-wrap">
+              {selectedFiles.map((file: any, index: number) => (
+                <Image
+                  key={index}
+                  src={URL.createObjectURL(file)}
+                  alt={`Preview ${index + 1}`}
+                  className="rounded-md h-64"
+                  width={250}
+                  height={250}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className="flex gap-8 items-center">

@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export interface AddSectionComponentProps {
-  onAddNewSection: (value: string) => void;
+  onAddNewSection: (newSection: string, newDescription: string) => void;
 }
 
 export default function AddSectionComponent({
@@ -23,10 +23,11 @@ export default function AddSectionComponent({
 
   const onFormSubmitButtonClick = (
     event: any,
-    newSectionValue: string
+    newSectionValue: string,
+    newDescriptionValue: string
   ): void => {
     event.preventDefault();
-    onAddNewSection(newSectionValue);
+    onAddNewSection(newSectionValue, newDescriptionValue);
     setOpen(false);
   };
 
@@ -51,15 +52,23 @@ export default function AddSectionComponent({
 }
 
 interface ProfileFormProps {
-  onFormSubmitButtonClick: (event: any, newSectionValue: string) => void;
+  onFormSubmitButtonClick: (
+    event: any,
+    newSectionValue: string,
+    newDescriptionValue: string
+  ) => void;
 }
 
 function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
   const [newSection, setNewSection] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
+
   return (
     <form
       className={cn("grid items-start gap-4")}
-      onSubmit={(e: any) => onFormSubmitButtonClick(e, newSection)}
+      onSubmit={(e: any) =>
+        onFormSubmitButtonClick(e, newSection, newDescription)
+      }
     >
       <div className="grid gap-2">
         <Label htmlFor="section">Section</Label>
@@ -68,6 +77,14 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
           id="section"
           value={newSection}
           onChange={(e: any) => setNewSection(e.target.value)}
+        />
+        <br />
+        <Label htmlFor="description">Description</Label>
+        <Input
+          type="text"
+          id="description"
+          value={newDescription}
+          onChange={(e: any) => setNewDescription(e.target.value)}
         />
       </div>
       <Button type="submit">Save changes</Button>
