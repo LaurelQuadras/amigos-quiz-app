@@ -6,19 +6,13 @@ import QuestionForm from "../QuestionForm/QuestionForm";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { getApi } from "@/app/api/apiRoutes";
+import { getApi, getSectionApi, postSectionsApi } from "@/app/api/apiRoutes";
 import AddSectionComponent from "../AddSectionComponent/AddSectionComponent";
 
 export default function AdminHomePage() {
   const [noOfQuestions, setNoOfQuestions] = useState<number>(1);
   const [sectionSelected, setSectionSelected] = useState<string>("");
-  const [sectionsList, setSectionsList] = useState<string[]>([
-    "Mathematics",
-    "Biology",
-    "Chemistry",
-    "Physics",
-    "General Knowledge",
-  ]);
+  const [sectionsList, setSectionsList] = useState<string[]>([]);
 
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
   const fillInformationText: string = "Please fill the following information.";
@@ -37,15 +31,22 @@ export default function AdminHomePage() {
     setSectionSelected(value);
   };
 
-  const onAddNewSection = (
+  const onAddNewSection = async (
     newSection: string,
     newDescription: string
-  ): void => {
-    setSectionsList([...sectionsList, newSection]);
+  ): Promise<void> => {
+    // setSectionsList([...sectionsList, newSection]);
+    await postSectionsApi(newSection, newDescription);
+    await getSectionList();
+  };
+
+  const getSectionList = async (): Promise<void> => {
+    const response: string[] = await getSectionApi();
+    setSectionsList(response);
   };
 
   useEffect(() => {
-    getApi();
+    getSectionList();
   }, []);
 
   return (
