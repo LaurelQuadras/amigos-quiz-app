@@ -11,10 +11,10 @@ export interface QuestionFormInterface {
 }
 
 export enum AnswerTypeEnums {
-  None,
-  MultipleChoiceAnswers,
-  SingleAnswer,
-  BooleanAnswer,
+  None = "None",
+  MultipleChoiceAnswers = "MultipleChoiceAnswers",
+  SingleAnswer = "SingleAnswer",
+  BooleanAnswer = "BooleanAnswer",
 }
 
 export default function QuestionForm({ index }: QuestionFormInterface) {
@@ -25,6 +25,10 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
   const onAnswerTypeOptionSelected = (value: AnswerTypeEnums): void => {
     setAnswerTypeSelected(value);
   };
+
+  useEffect(() => {
+    console.log("AA ", answerTypeSelected);
+  }, [answerTypeSelected]);
 
   return (
     <>
