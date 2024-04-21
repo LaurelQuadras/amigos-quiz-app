@@ -6,6 +6,10 @@ export const getApi = async () => {
       "https://gamewithcolors.online/getTime",
       {
         method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       }
     );
     return await response.json();
