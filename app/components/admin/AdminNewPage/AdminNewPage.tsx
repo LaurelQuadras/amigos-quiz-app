@@ -115,10 +115,12 @@ export default function AdminNewPage() {
               onSectionOptionSelected={onSectionOptionSelected}
             />
             <AddSectionComponent onAddNewSection={onAddNewSection} />
-            <div>Text</div>
+            <div>
+              {sectionSelected ? sectionSelected.subject_description : ""}
+            </div>
           </motion.span>
         </div>
-        {!sectionSelected && (
+        {sectionSelected && (
           <div className="flex flex-col gap-16">
             <motion.div
               initial={{ opacity: 0 }}
@@ -147,7 +149,7 @@ export default function AdminNewPage() {
             ))}
           </div>
         )}
-        {!sectionSelected && (
+        {sectionSelected && (
           <div className="flex justify-end gap-8">
             <MotionButton
               onClick={onPreviousButtonClick}
