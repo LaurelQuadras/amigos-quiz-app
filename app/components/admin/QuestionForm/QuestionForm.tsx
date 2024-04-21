@@ -12,7 +12,6 @@ export interface QuestionFormInterface {
 }
 
 export enum AnswerTypeEnums {
-  None = "None",
   MultipleChoiceAnswers = "MultipleChoiceAnswers",
   SingleAnswer = "SingleAnswer",
   BooleanAnswer = "BooleanAnswer",
@@ -20,7 +19,7 @@ export enum AnswerTypeEnums {
 
 export default function QuestionForm({ index }: QuestionFormInterface) {
   const [answerTypeSelected, setAnswerTypeSelected] = useState<AnswerTypeEnums>(
-    AnswerTypeEnums.None
+    AnswerTypeEnums.MultipleChoiceAnswers
   );
   const [selectedFiles, setSelectedFiles] = useState<any>([]);
 
@@ -78,29 +77,25 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
           />
         </div>
       </div>
-      {answerTypeSelected !== AnswerTypeEnums.None && (
-        <div className="flex gap-8 items-center">
-          <span className="w-40">Options</span>
-          {answerTypeSelected !== AnswerTypeEnums.BooleanAnswer && (
-            <div className="flex gap-4">
-              <Input placeholder="Option 1" />
-              <Input placeholder="Option 2" />
-              <Input placeholder="Option 3" />
-              <Input placeholder="Option 4" />
-            </div>
-          )}
-          {answerTypeSelected === AnswerTypeEnums.BooleanAnswer && (
-            <div className="flex gap-4">
-              <span className="w-44 border p-2  rounded-lg text-sm">True</span>
-              <span className="w-44 border p-2  rounded-lg text-sm">False</span>
-            </div>
-          )}
-        </div>
-      )}
       <div className="flex gap-8 items-center">
-        {answerTypeSelected !== AnswerTypeEnums.None && (
-          <span className="w-40">Correct Option</span>
+        <span className="w-40">Options</span>
+        {answerTypeSelected !== AnswerTypeEnums.BooleanAnswer && (
+          <div className="flex gap-4">
+            <Input placeholder="Option 1" />
+            <Input placeholder="Option 2" />
+            <Input placeholder="Option 3" />
+            <Input placeholder="Option 4" />
+          </div>
         )}
+        {answerTypeSelected === AnswerTypeEnums.BooleanAnswer && (
+          <div className="flex gap-4">
+            <span className="w-44 border p-2  rounded-lg text-sm">True</span>
+            <span className="w-44 border p-2  rounded-lg text-sm">False</span>
+          </div>
+        )}
+      </div>
+      <div className="flex gap-8 items-center">
+        <span className="w-40">Correct Option</span>
         {answerTypeSelected === AnswerTypeEnums.MultipleChoiceAnswers && (
           <CorrectOptionComponent />
         )}

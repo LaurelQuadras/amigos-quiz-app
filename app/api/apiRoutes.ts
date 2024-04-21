@@ -15,7 +15,6 @@ export const getApi = async () => {
 };
 
 export const postSectionsApi = async (name: string, description: string) => {
-  console.log("Here ", name, description);
   try {
     const response: Response = await fetch(
       "https://gamewithcolors.online/exams/subjects",
@@ -33,14 +32,13 @@ export const postSectionsApi = async (name: string, description: string) => {
   }
 };
 
-type GetSectionApiType = {
+export type GetSectionApiType = {
   subject_id: string;
   subject_name: string;
   subject_description: string;
 };
 
-export const getSectionApi = async (): Promise<string[]> => {
-  console.log("Here ");
+export const getSectionApi = async (): Promise<GetSectionApiType[]> => {
   try {
     const response: Response = await fetch(
       "https://gamewithcolors.online/exams/subjects",
@@ -48,8 +46,7 @@ export const getSectionApi = async (): Promise<string[]> => {
         method: "GET",
       }
     );
-    const result: GetSectionApiType[] = await response.json();
-    return result.map((value: GetSectionApiType) => value.subject_name);
+    return await response.json();
   } catch {
     console.log("Failed api get section");
     return [];

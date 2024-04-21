@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export interface QuizQuestionProps {
   visibleQuestion: number;
-  onNextButtonClick: any;
-  onPreviousButtonClick: any;
+  onNextButtonClick: () => void;
+  onPreviousButtonClick: () => void;
   lastQuestionIndex: number;
 }
 

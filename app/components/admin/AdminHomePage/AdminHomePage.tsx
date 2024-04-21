@@ -1,54 +1,25 @@
 "use client";
 
 import { dancing_script } from "@/app/fonts/fonts";
-import SectionComponent from "../SectionComponent/SectionComponent";
-import QuestionForm from "../QuestionForm/QuestionForm";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { getApi, getSectionApi, postSectionsApi } from "@/app/api/apiRoutes";
+import { useEffect, useState } from "react";
+import { getSectionApi, postSectionsApi } from "@/app/api/apiRoutes";
+import ViewAllSectionsPopUp from "../ViewAllSectionsPopUp/ViewAllSectionsPopUp";
+import EditSectionsPopUp from "../../EditSectionsPopUp/EditSectionsPopUp";
+import DeleteSectionsPopUp from "../DeleteSectionsPopUp/DeleteSectionsPopUp";
 import AddSectionComponent from "../AddSectionComponent/AddSectionComponent";
+import Link from "next/link";
 
 export default function AdminHomePage() {
-  const [noOfQuestions, setNoOfQuestions] = useState<number>(1);
-  const [sectionSelected, setSectionSelected] = useState<string>("");
-  const [sectionsList, setSectionsList] = useState<string[]>([]);
-
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
-  const fillInformationText: string = "Please fill the following information.";
-
-  const onNextButtonClick = (): void => {
-    setNoOfQuestions((noOfQuestions) => noOfQuestions + 1);
-  };
-
-  const onPreviousButtonClick = (): void => {
-    setNoOfQuestions((noOfQuestions) => noOfQuestions - 1);
-  };
-
-  const MotionButton = motion(Button);
-
-  const onSectionOptionSelected = (value: string): void => {
-    setSectionSelected(value);
-  };
+  const fillInformationText: string = "What would you like to do?";
 
   const onAddNewSection = async (
     newSection: string,
     newDescription: string
   ): Promise<void> => {
-    // setSectionsList([...sectionsList, newSection]);
     await postSectionsApi(newSection, newDescription);
-    await getSectionList();
   };
-
-  const getSectionList = async (): Promise<void> => {
-    const response: string[] = await getSectionApi();
-    setSectionsList(response);
-  };
-
-  useEffect(() => {
-    getSectionList();
-    getApi();
-  }, []);
 
   return (
     <div className="flex flex-col h-full w-full gap-16 m-8">
@@ -79,8 +50,8 @@ export default function AdminHomePage() {
           {fillInformationText}
         </motion.span>
       </span>
-      <div className="flex flex-col gap-4 m-4">
-        <div className="flex gap-8 items-cente">
+      <div className="flex flex-col gap-4 mx-28 my-4">
+        <div className="flex gap-8 items-center w-full">
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -88,75 +59,38 @@ export default function AdminHomePage() {
               duration: 1,
               delay: 1.4,
             }}
-            className="w-40"
+            className="flex gap-16 items-center text-sm w-full"
           >
-            Section
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 1,
-              delay: 1.4,
-            }}
-            className="flex gap-8 items-center text-sm"
-          >
-            <SectionComponent
-              sectionsList={sectionsList}
-              onSectionOptionSelected={onSectionOptionSelected}
-            />
+            <ViewAllSectionsPopUp />
             <AddSectionComponent onAddNewSection={onAddNewSection} />
+            <EditSectionsPopUp />
+            <DeleteSectionsPopUp />
           </motion.span>
         </div>
-        {sectionSelected !== "" && (
-          <div className="flex flex-col gap-16">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                duration: 1,
-                delay: 0,
-              }}
-              className="flex flex-col gap-4 border-2 p-4 rounded-lg"
+        <div className="flex gap-8 items-center w-full">
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+              delay: 1.4,
+            }}
+            className="flex gap-16 items-center text-sm w-full"
+          >
+            <div className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
+              View Questions and Answers
+            </div>
+            <Link
+              href="/admin/new"
+              className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
             >
-              <QuestionForm index={1} />
-            </motion.div>
-            {[...Array(noOfQuestions).splice(1)].map((e: number, i) => (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  duration: 1,
-                  delay: 0.1,
-                }}
-                className="flex flex-col gap-4 border-2 p-4 rounded-lg"
-                key={i}
-              >
-                <QuestionForm index={i + 2} />
-              </motion.div>
-            ))}
-          </div>
-        )}
-        {sectionSelected !== "" && (
-          <div className="flex justify-end gap-8">
-            <MotionButton
-              onClick={onPreviousButtonClick}
-              disabled={noOfQuestions === 1}
-              whileTap={{ scale: 0.8 }}
-              className="bg-black text-white px-4 py-2 rounded-lg"
-            >
-              Previous{" "}
-            </MotionButton>
-            <MotionButton
-              onClick={onNextButtonClick}
-              disabled={noOfQuestions === 10}
-              whileTap={{ scale: 0.8 }}
-              className="bg-black text-white px-4 py-2 rounded-lg"
-            >
-              Next
-            </MotionButton>
-          </div>
-        )}
+              <div>Add Questions and Answers</div>
+            </Link>
+            <div className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
+              Edit Questions and Answers
+            </div>
+          </motion.span>
+        </div>
       </div>
     </div>
   );

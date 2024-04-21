@@ -1,9 +1,9 @@
-import AdminHomePage from "../components/admin/AdminHomePage/AdminHomePage";
+import AdminNewPage from "@/app/components/admin/AdminNewPage/AdminNewPage";
 
 export default function Home() {
   return (
     <main className="h-full w-11/12">
-      <AdminHomePage />
+      <AdminNewPage />
     </main>
   );
 }

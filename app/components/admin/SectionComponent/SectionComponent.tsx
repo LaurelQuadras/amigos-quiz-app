@@ -20,7 +20,7 @@ export default function SectionComponent({
   return (
     <div>
       <Select onValueChange={onSectionOptionSelected}>
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[300px]">
           <SelectValue placeholder="Select a section" />
         </SelectTrigger>
         <SelectContent>

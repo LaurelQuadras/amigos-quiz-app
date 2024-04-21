@@ -24,8 +24,11 @@ export default function AnswerTypeComponent({
 
   return (
     <div>
-      <Select onValueChange={onAnswerTypeValueChange}>
-        <SelectTrigger className="w-[280px]">
+      <Select
+        defaultValue="MultipleChoiceAnswers"
+        onValueChange={onAnswerTypeValueChange}
+      >
+        <SelectTrigger className="w-[324px]">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
         <SelectContent>
