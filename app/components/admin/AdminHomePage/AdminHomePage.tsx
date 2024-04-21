@@ -47,6 +47,7 @@ export default function AdminHomePage() {
 
   useEffect(() => {
     getSectionList();
+    getApi();
   }, []);
 
   return (
