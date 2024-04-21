@@ -18,8 +18,12 @@ export default function TrueFalseComponent() {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Options</SelectLabel>
-            <SelectItem value="true">True</SelectItem>
-            <SelectItem value="false">False</SelectItem>
+            <SelectItem value="true" className="text-sm">
+              True
+            </SelectItem>
+            <SelectItem value="false" className="text-sm">
+              False
+            </SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

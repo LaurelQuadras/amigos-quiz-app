@@ -31,25 +31,25 @@ export default function CorrectOptionComponent() {
             checked={optionOne}
             onCheckedChange={setOptionOne}
           >
-            Option One
+            One
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={optionTwo}
             onCheckedChange={setOptionTwo}
           >
-            Option Two
+            Two
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={optionThree}
             onCheckedChange={setOptionThree}
           >
-            Option Three
+            Three
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={optionFour}
             onCheckedChange={setOptionFour}
           >
-            Option Four
+            Four
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>

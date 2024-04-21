@@ -59,8 +59,8 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
           )}
           {answerTypeSelected === AnswerTypeEnums.BooleanAnswer && (
             <div className="flex gap-4">
-              <span className="w-44 border p-2  rounded-lg">True</span>
-              <span className="w-44 border p-2  rounded-lg">False</span>
+              <span className="w-44 border p-2  rounded-lg text-sm">True</span>
+              <span className="w-44 border p-2  rounded-lg text-sm">False</span>
             </div>
           )}
         </div>

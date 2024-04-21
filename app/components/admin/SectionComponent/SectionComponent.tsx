@@ -8,21 +8,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function SectionComponent() {
+export interface SectionComponentProps {
+  sectionsList: string[];
+  onSectionOptionSelected: (value: string) => void;
+}
+
+export default function SectionComponent({
+  sectionsList,
+  onSectionOptionSelected,
+}: SectionComponentProps) {
   return (
     <div>
-      <Select>
+      <Select onValueChange={onSectionOptionSelected}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a section" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Sections</SelectLabel>
-            <SelectItem value="mathematics">Mathematics</SelectItem>
-            <SelectItem value="biology">Biology</SelectItem>
-            <SelectItem value="chemistry">Chemistry</SelectItem>
-            <SelectItem value="physics">Physics</SelectItem>
-            <SelectItem value="generalknowledge">General Knowledge</SelectItem>
+            {sectionsList.map((section: string) => (
+              <SelectItem key={section} value={section}>
+                {section}
+              </SelectItem>
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>

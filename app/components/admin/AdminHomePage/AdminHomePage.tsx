@@ -7,9 +7,18 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { getApi } from "@/app/api/apiRoutes";
+import AddSectionComponent from "../AddSectionComponent/AddSectionComponent";
 
 export default function AdminHomePage() {
   const [noOfQuestions, setNoOfQuestions] = useState<number>(1);
+  const [sectionSelected, setSectionSelected] = useState<string>("");
+  const [sectionsList, setSectionsList] = useState<string[]>([
+    "Mathematics",
+    "Biology",
+    "Chemistry",
+    "Physics",
+    "General Knowledge",
+  ]);
 
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
   const fillInformationText: string = "Please fill the following information.";
@@ -23,6 +32,14 @@ export default function AdminHomePage() {
   };
 
   const MotionButton = motion(Button);
+
+  const onSectionOptionSelected = (value: string): void => {
+    setSectionSelected(value);
+  };
+
+  const onAddNewSection = (value: string): void => {
+    setSectionsList([...sectionsList, value]);
+  };
 
   useEffect(() => {
     getApi();
@@ -77,67 +94,64 @@ export default function AdminHomePage() {
               duration: 1,
               delay: 1.4,
             }}
+            className="flex gap-8 items-center text-sm"
           >
-            <SectionComponent />
+            <SectionComponent
+              sectionsList={sectionsList}
+              onSectionOptionSelected={onSectionOptionSelected}
+            />
+            <AddSectionComponent onAddNewSection={onAddNewSection} />
           </motion.span>
         </div>
-        <div className="flex flex-col gap-16">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 1,
-              delay: 1.3,
-            }}
-            className="flex flex-col gap-4 border-2 p-4 rounded-lg"
-          >
-            <QuestionForm index={1} />
-          </motion.div>
-          {[...Array(noOfQuestions).splice(1)].map((e: number, i) => (
+        {sectionSelected !== "" && (
+          <div className="flex flex-col gap-16">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{
                 duration: 1,
-                delay: 0.1,
+                delay: 0,
               }}
               className="flex flex-col gap-4 border-2 p-4 rounded-lg"
-              key={i}
             >
-              <QuestionForm index={i + 2} />
+              <QuestionForm index={1} />
             </motion.div>
-          ))}
-        </div>
-        <div className="flex justify-end gap-8">
-          <MotionButton
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0,
-              delay: 1.4,
-            }}
-            onClick={onPreviousButtonClick}
-            disabled={noOfQuestions === 1}
-            whileTap={{ scale: 0.8 }}
-            className="bg-black text-white px-4 py-2 rounded-lg"
-          >
-            Previous{" "}
-          </MotionButton>
-          <MotionButton
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0,
-              delay: 1.4,
-            }}
-            onClick={onNextButtonClick}
-            disabled={noOfQuestions === 10}
-            whileTap={{ scale: 0.8 }}
-            className="bg-black text-white px-4 py-2 rounded-lg"
-          >
-            Next
-          </MotionButton>
-        </div>
+            {[...Array(noOfQuestions).splice(1)].map((e: number, i) => (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 1,
+                  delay: 0.1,
+                }}
+                className="flex flex-col gap-4 border-2 p-4 rounded-lg"
+                key={i}
+              >
+                <QuestionForm index={i + 2} />
+              </motion.div>
+            ))}
+          </div>
+        )}
+        {sectionSelected !== "" && (
+          <div className="flex justify-end gap-8">
+            <MotionButton
+              onClick={onPreviousButtonClick}
+              disabled={noOfQuestions === 1}
+              whileTap={{ scale: 0.8 }}
+              className="bg-black text-white px-4 py-2 rounded-lg"
+            >
+              Previous{" "}
+            </MotionButton>
+            <MotionButton
+              onClick={onNextButtonClick}
+              disabled={noOfQuestions === 10}
+              whileTap={{ scale: 0.8 }}
+              className="bg-black text-white px-4 py-2 rounded-lg"
+            >
+              Next
+            </MotionButton>
+          </div>
+        )}
       </div>
     </div>
   );
