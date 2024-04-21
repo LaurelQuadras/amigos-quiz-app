@@ -38,7 +38,7 @@ export default function ViewAllSectionsPopUp() {
             View All Sections
           </div>
         </DialogTrigger>
-        <DialogContent className="w-10/12 h-[400px] max-w-full">
+        <DialogContent className="w-10/12 min-h-[400px] max-w-full">
           <DialogHeader>
             <DialogTitle>
               <span className="text-2xl">All Sections</span>
