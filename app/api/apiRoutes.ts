@@ -6,9 +6,6 @@ export const getApi = async () => {
       "https://gamewithcolors.online/getTime",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
       }
     );
     return await response.json();
@@ -24,9 +21,6 @@ export const postSectionsApi = async (name: string, description: string) => {
       "https://gamewithcolors.online/exams/subjects",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({
           subject_name: name,
           subject_description: description,
@@ -52,9 +46,6 @@ export const getSectionApi = async (): Promise<string[]> => {
       "https://gamewithcolors.online/exams/subjects",
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       }
     );
     const result: GetSectionApiType[] = await response.json();
