@@ -14,7 +14,11 @@ export const getApi = async () => {
   }
 };
 
-export const postSectionsApi = async (name: string, description: string) => {
+export const postSectionsApi = async (
+  name: string,
+  subsection: string,
+  description: string
+) => {
   try {
     const response: Response = await fetch(
       "https://gamewithcolors.online/exams/subjects",
@@ -23,6 +27,8 @@ export const postSectionsApi = async (name: string, description: string) => {
         body: JSON.stringify({
           subject_name: name,
           subject_description: description,
+          sub_section: subsection,
+          user: "Test User",
         }),
       }
     );
@@ -36,6 +42,8 @@ export type GetSectionApiType = {
   subject_id: string;
   subject_name: string;
   subject_description: string;
+  sub_subject: string;
+  user: string;
 };
 
 export const getSectionApi = async (): Promise<GetSectionApiType[]> => {

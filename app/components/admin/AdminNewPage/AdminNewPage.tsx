@@ -41,9 +41,10 @@ export default function AdminNewPage() {
 
   const onAddNewSection = async (
     newSection: string,
+    newSubSection: string,
     newDescription: string
   ): Promise<void> => {
-    await postSectionsApi(newSection, newDescription);
+    await postSectionsApi(newSection, newSubSection, newDescription);
     await getSectionList();
   };
 

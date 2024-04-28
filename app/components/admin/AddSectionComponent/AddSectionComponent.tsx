@@ -13,7 +13,11 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 export interface AddSectionComponentProps {
-  onAddNewSection: (newSection: string, newDescription: string) => void;
+  onAddNewSection: (
+    newSection: string,
+    newSubSectionValue: string,
+    newDescription: string
+  ) => void;
 }
 
 export default function AddSectionComponent({
@@ -24,10 +28,11 @@ export default function AddSectionComponent({
   const onFormSubmitButtonClick = (
     event: any,
     newSectionValue: string,
+    newSubSectionValue: string,
     newDescriptionValue: string
   ): void => {
     event.preventDefault();
-    onAddNewSection(newSectionValue, newDescriptionValue);
+    onAddNewSection(newSectionValue, newSubSectionValue, newDescriptionValue);
     setOpen(false);
   };
 
@@ -57,19 +62,44 @@ interface ProfileFormProps {
   onFormSubmitButtonClick: (
     event: any,
     newSectionValue: string,
+    newSubSectionValue: string,
     newDescriptionValue: string
   ) => void;
 }
 
 function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
   const [newSection, setNewSection] = useState<string>("");
+  const [newSubSection, setNewSubSection] = useState<string>("");
   const [newDescription, setNewDescription] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  const onFormSubmitClick = (
+    event: any,
+    newSectionValue: string,
+    newSubSectionValue: string,
+    newDescriptionValue: string
+  ): void => {
+    event.preventDefault();
+
+    if (newSection === "") {
+      setError("Subject Name is mandatory field");
+      return;
+    } else {
+      setError("");
+      onFormSubmitButtonClick(
+        event,
+        newSectionValue,
+        newSubSectionValue,
+        newDescriptionValue
+      );
+    }
+  };
 
   return (
     <form
       className={cn("grid items-start gap-4")}
       onSubmit={(e: any) =>
-        onFormSubmitButtonClick(e, newSection, newDescription)
+        onFormSubmitClick(e, newSection, newSubSection, newDescription)
       }
     >
       <div className="grid gap-2">
@@ -79,6 +109,15 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
           id="section"
           value={newSection}
           onChange={(e: any) => setNewSection(e.target.value)}
+        />
+        <span className="text-sm text-red-600">{error}</span>
+        <br />
+        <Label htmlFor="section">Sub Section</Label>
+        <Input
+          type="text"
+          id="section"
+          value={newSubSection}
+          onChange={(e: any) => setNewSubSection(e.target.value)}
         />
         <br />
         <Label htmlFor="description">Description</Label>
