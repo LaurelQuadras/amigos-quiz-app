@@ -23,8 +23,8 @@ export default function AdminHomePage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-16 m-8">
-      <span className={`${dancing_script.className} text-6xl`}>
+    <div className="flex flex-col h-full w-full gap-16 m-2 md:m-8">
+      <span className={`${dancing_script.className} text-3xl md:text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}
@@ -39,7 +39,7 @@ export default function AdminHomePage() {
           </motion.span>
         ))}
       </span>
-      <span className="text-4xl">
+      <span className="text-xl md:text-4xl">
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -51,7 +51,7 @@ export default function AdminHomePage() {
           {fillInformationText}
         </motion.span>
       </span>
-      <div className="flex flex-col gap-4 mx-28 my-4">
+      <div className="flex flex-col gap-4 mx-4 md:mx-28 my-4">
         <div className="flex gap-8 items-center w-full">
           <motion.span
             initial={{ opacity: 0 }}
@@ -60,7 +60,7 @@ export default function AdminHomePage() {
               duration: 1,
               delay: 1.4,
             }}
-            className="flex gap-16 items-center text-sm w-full"
+            className="flex flex-col md:flex-row gap-16 items-center text-sm w-full"
           >
             <ViewAllSectionsPopUp />
             <div className="w-full">
@@ -78,7 +78,7 @@ export default function AdminHomePage() {
               duration: 1,
               delay: 1.4,
             }}
-            className="flex gap-16 items-center text-sm w-full"
+            className="flex flex-col md:flex-row gap-16 mt-16 md:mt-0 items-center text-sm w-full"
           >
             <div className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
               View Questions and Answers
