@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import sectionsListValues from "../../../json/sectionsList.json";
 import { useRouter } from "next/navigation";
 
 export interface ViewAllSectionsPopUpProps {
@@ -37,8 +36,7 @@ export default function ViewAllSectionsPopUp({
 
   const getSectionList = async (): Promise<void> => {
     const response: GetSectionApiType[] = await getSectionApi();
-    console.log(sectionsListValues);
-    setSectionsList(sectionsListValues);
+    setSectionsList(response);
   };
 
   useEffect(() => {
