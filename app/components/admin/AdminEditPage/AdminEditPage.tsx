@@ -6,8 +6,11 @@ import {
   getSectionApi,
   getApi,
   QuestionsAndAnswersType,
+  postQuestionsApi,
+  postAnswersApi,
+  postCorrectOptionApi,
 } from "@/app/api/apiRoutes";
-import { dancing_script } from "@/app/fonts/fonts";
+import { output_script } from "@/app/fonts/fonts";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -76,9 +79,41 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     console.log(newQuestionsAndAnswers);
   };
 
+  const postQuestionAndAnswers = async (): Promise<void> => {
+    console.log("came ", questionsAndAnswersListValues);
+    questionsAndAnswersListValues.forEach(
+      async (questionAndAnswers: QuestionsAndAnswersType) => {
+        const questionId: any = await postQuestionsApi(
+          "9",
+          questionAndAnswers.question,
+          questionAndAnswers.answerType
+        );
+
+        questionAndAnswers.options.forEach(
+          async (option: string, index: number) => {
+            const answerIdResponse: any = await postAnswersApi(
+              questionId.question_id,
+              option
+            );
+            if (
+              questionAndAnswers.correctOption.includes(
+                answerIdResponse.answerText
+              )
+            ) {
+              await postCorrectOptionApi(
+                questionId.question_id,
+                answerIdResponse.answer_id
+              );
+            }
+          }
+        );
+      }
+    );
+  };
+
   return (
-    <div className="flex flex-col h-full w-full gap-16 m-8">
-      <span className={`${dancing_script.className} text-6xl`}>
+    <div className="flex flex-col h-full w-full gap-16 m-8 text-white">
+      <span className={`${output_script.className} text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}
@@ -134,6 +169,12 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
               Sub Section:{" "}
               {sectionSelected ? sectionSelected.subject_description : ""}
             </span>
+            <div
+              className="p-3 px-8 cursor-pointer bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
+              onClick={postQuestionAndAnswers}
+            >
+              Save
+            </div>
           </motion.span>
         </div>
         {sectionSelected && (

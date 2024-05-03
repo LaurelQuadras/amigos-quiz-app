@@ -40,10 +40,18 @@ export default function QuestionForm({
     questionsAndAnswers ? questionsAndAnswers.question : ""
   );
 
-  const [optionOne, setOptionOne] = useState<string>("");
-  const [optionTwo, setOptionTwo] = useState<string>("");
-  const [optionThree, setOptionThree] = useState<string>("");
-  const [optionFour, setOptionFour] = useState<string>("");
+  const [optionOne, setOptionOne] = useState<string>(
+    questionsAndAnswers ? questionsAndAnswers.options[0] : ""
+  );
+  const [optionTwo, setOptionTwo] = useState<string>(
+    questionsAndAnswers ? questionsAndAnswers.options[1] : ""
+  );
+  const [optionThree, setOptionThree] = useState<string>(
+    questionsAndAnswers ? questionsAndAnswers.options[2] : ""
+  );
+  const [optionFour, setOptionFour] = useState<string>(
+    questionsAndAnswers ? questionsAndAnswers.options[3] : ""
+  );
 
   const [correctOption, setCorrectOption] = useState<string[]>(
     questionsAndAnswers ? questionsAndAnswers.correctOption : []
@@ -85,10 +93,6 @@ export default function QuestionForm({
     updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
   };
 
-  // useEffect(() => {
-  //   console.log(optionOne, " ", optionTwo, " ", optionThree, " ", optionFour);
-  // }, [optionOne, optionTwo, optionThree, optionFour]);
-
   useEffect(() => {
     handleContentChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -106,7 +110,7 @@ export default function QuestionForm({
     <>
       <div className="flex gap-8 items-center">
         <span className="w-40">Question {index + 1}</span>
-        <div className="w-[1010px]">
+        <div className="w-[1010px] text-black">
           <Textarea
             placeholder="Please enter your question here."
             defaultValue={questionsAndAnswers?.question}
@@ -153,7 +157,7 @@ export default function QuestionForm({
       <div className="flex gap-8 items-center">
         <span className="w-40">Options</span>
         {answerTypeSelected !== AnswerTypeEnums.BooleanAnswer && (
-          <div className="flex gap-4">
+          <div className="flex gap-4 text-black">
             <Input
               placeholder="Option 1"
               defaultValue={questionsAndAnswers?.options[0]}
@@ -203,12 +207,10 @@ export default function QuestionForm({
           optionThree !== "" &&
           optionFour !== "" && (
             <MultipleCorrectOptionComponent
-              correctOptionsList={[
-                optionOne,
-                optionTwo,
-                optionThree,
-                optionFour,
-              ]}
+              optionList={[optionOne, optionTwo, optionThree, optionFour]}
+              correctOptionList={
+                questionsAndAnswers ? questionsAndAnswers.correctOption : []
+              }
               setCorrectOption={setCorrectOption}
             />
           )}
@@ -218,12 +220,7 @@ export default function QuestionForm({
           optionThree !== "" &&
           optionFour !== "" && (
             <SingleCorrectAnswerComponent
-              correctOptionsList={[
-                optionOne,
-                optionTwo,
-                optionThree,
-                optionFour,
-              ]}
+              optionList={[optionOne, optionTwo, optionThree, optionFour]}
               correctOption={questionsAndAnswers?.correctOption
                 .toString()
                 .trim()}

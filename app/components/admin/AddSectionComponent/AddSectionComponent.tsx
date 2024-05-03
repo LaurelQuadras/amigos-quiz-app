@@ -37,16 +37,16 @@ export default function AddSectionComponent({
   };
 
   return (
-    <div className="max-w-full">
+    <div className="max-w-ful">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="w-full">
           <div className="w-full p-3 bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
             Add a new Section
           </div>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] bg-slate-900">
           <DialogHeader>
-            <DialogTitle>Add Section</DialogTitle>
+            <DialogTitle className="text-white">Add Section</DialogTitle>
             <DialogDescription>
               {`Please add a Section. Make sure that it doesn't exist before. Click on Save Button after adding a section.`}
             </DialogDescription>
@@ -103,7 +103,9 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
       }
     >
       <div className="grid gap-2">
-        <Label htmlFor="section">Section</Label>
+        <Label htmlFor="section" className="text-white">
+          Section
+        </Label>
         <Input
           type="text"
           id="section"
@@ -112,7 +114,9 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
         />
         <span className="text-sm text-red-600">{error}</span>
         <br />
-        <Label htmlFor="section">Sub Section</Label>
+        <Label htmlFor="section" className="text-white">
+          Sub Section
+        </Label>
         <Input
           type="text"
           id="section"
@@ -120,7 +124,9 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
           onChange={(e: any) => setNewSubSection(e.target.value)}
         />
         <br />
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description" className="text-white">
+          Description
+        </Label>
         <Input
           type="text"
           id="description"
@@ -128,7 +134,14 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
           onChange={(e: any) => setNewDescription(e.target.value)}
         />
       </div>
-      <Button type="submit">Save changes</Button>
+      <div className="w-full flex justify-center">
+        <Button
+          type="submit"
+          className="bg-white text-black hover:bg-slate-300 w-48"
+        >
+          Save changes
+        </Button>
+      </div>
     </form>
   );
 }

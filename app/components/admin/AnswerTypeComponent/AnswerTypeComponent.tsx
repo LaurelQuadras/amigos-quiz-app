@@ -25,7 +25,7 @@ export default function AnswerTypeComponent({
   };
 
   return (
-    <div>
+    <div className="text-black">
       <Select
         defaultValue={
           defaultOptionSelected

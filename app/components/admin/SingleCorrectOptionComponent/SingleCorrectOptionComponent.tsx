@@ -10,13 +10,13 @@ import {
 import { Dispatch, SetStateAction } from "react";
 
 export interface SingleCorrectAnswerComponentProps {
-  correctOptionsList: string[];
+  optionList: string[];
   correctOption?: string;
   setCorrectOption: Dispatch<SetStateAction<string[]>>;
 }
 
 export default function SingleCorrectAnswerComponent({
-  correctOptionsList,
+  optionList,
   correctOption,
   setCorrectOption,
 }: SingleCorrectAnswerComponentProps) {
@@ -25,7 +25,7 @@ export default function SingleCorrectAnswerComponent({
   };
 
   return (
-    <div>
+    <div className="text-black">
       <Select defaultValue={correctOption} onValueChange={handleValueChange}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select an option" />
@@ -33,18 +33,10 @@ export default function SingleCorrectAnswerComponent({
         <SelectContent>
           <SelectGroup onChange={() => console.log("s")}>
             <SelectLabel>Options</SelectLabel>
-            <SelectItem value={correctOptionsList[0]}>
-              {correctOptionsList[0]}
-            </SelectItem>
-            <SelectItem value={correctOptionsList[1]}>
-              {correctOptionsList[1]}
-            </SelectItem>
-            <SelectItem value={correctOptionsList[2]}>
-              {correctOptionsList[2]}
-            </SelectItem>
-            <SelectItem value={correctOptionsList[3]}>
-              {correctOptionsList[3]}
-            </SelectItem>
+            <SelectItem value={optionList[0]}>{optionList[0]}</SelectItem>
+            <SelectItem value={optionList[1]}>{optionList[1]}</SelectItem>
+            <SelectItem value={optionList[2]}>{optionList[2]}</SelectItem>
+            <SelectItem value={optionList[3]}>{optionList[3]}</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

@@ -38,25 +38,26 @@ export default function EditSectionsPopUp() {
             Edit Sections
           </div>
         </DialogTrigger>
-        <DialogContent className="w-10/12 min-h-[400px] max-w-full">
+        <DialogContent className="w-10/12 min-h-[400px] max-w-full bg-slate-900">
           <DialogHeader>
             <DialogTitle>
-              <span className="text-2xl">All Sections</span>
+              <span className="text-2xl text-white">All Sections</span>
             </DialogTitle>
             <DialogDescription>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-black">Section ID</TableHead>
-                    <TableHead className="text-black">Section Name</TableHead>
-                    <TableHead className="text-black">
-                      Section Description
-                    </TableHead>
+                    <TableHead>Section ID</TableHead>
+                    <TableHead>Section Name</TableHead>
+                    <TableHead>Section Description</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sectionsList.map((section: GetSectionApiType) => (
-                    <TableRow key={section.subject_id}>
+                    <TableRow
+                      key={section.subject_id}
+                      className="text-white hover:bg-slate-800"
+                    >
                       <TableCell className="font-medium text-black">
                         {section.subject_id}
                       </TableCell>

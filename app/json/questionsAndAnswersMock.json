@@ -4,41 +4,41 @@
     "attachments": ["https://abc.com", "https://abc.com"],
     "answerType": "SingleAnswer",
     "options": ["AA", "BB", "CC", "DD"],
-    "correctOption": ["One"]
+    "correctOption": ["AA"]
   },
   {
     "question": "Who is the prime minister of Canada",
     "attachments": ["https://abc.com", "https://abc.com"],
     "answerType": "MultipleChoiceAnswers",
     "options": ["AA", "BB", "CC", "DD"],
-    "correctOption": ["One", "Two"]
+    "correctOption": ["AA", "CC"]
   },
   {
     "question": "Who is the prime minister of Kenya",
     "attachments": ["https://abc.com", "https://abc.com"],
     "answerType": "MultipleChoiceAnswers",
     "options": ["AA", "BB", "CC", "DD"],
-    "correctOption": ["One", "Two"]
+    "correctOption": ["AA", "CC"]
   },
   {
     "question": "Who is the prime minister of Spain",
     "attachments": ["https://abc.com", "https://abc.com"],
     "answerType": "MultipleChoiceAnswers",
     "options": ["AA", "BB", "CC", "DD"],
-    "correctOption": ["One", "Two"]
+    "correctOption": ["AA", "CC"]
   },
   {
     "question": "Who is the prime minister of Barbados",
     "attachments": ["https://abc.com", "https://abc.com"],
     "answerType": "MultipleChoiceAnswers",
     "options": ["AA", "BB", "CC", "DD"],
-    "correctOption": ["One", "Two"]
+    "correctOption": ["AA", "CC"]
   },
   {
     "question": "Who is the prime minister of India",
     "attachments": ["https://abc.com", "https://abc.com"],
     "answerType": "MultipleChoiceAnswers",
     "options": ["AA", "BB", "CC", "DD"],
-    "correctOption": ["One", "Two"]
+    "correctOption": ["AA", "CC"]
   }
 ]

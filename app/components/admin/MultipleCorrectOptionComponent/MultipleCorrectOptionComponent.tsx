@@ -13,41 +13,27 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
 export interface MultipleCorrectOptionComponentProps {
-  correctOptionsList: string[];
+  optionList: string[];
+  correctOptionList: string[];
   setCorrectOption: Dispatch<SetStateAction<string[]>>;
 }
 
 export default function MultipleCorrectOptionComponent({
-  correctOptionsList,
+  optionList,
+  correctOptionList,
   setCorrectOption,
 }: MultipleCorrectOptionComponentProps) {
   const [optionOne, setOptionOne] = useState<Checked>(
-    correctOptionsList
-      ? correctOptionsList.includes("One")
-        ? true
-        : false
-      : false
+    correctOptionList.includes(optionList[0]) ? true : false
   );
   const [optionTwo, setOptionTwo] = useState<Checked>(
-    correctOptionsList
-      ? correctOptionsList.includes("Two")
-        ? true
-        : false
-      : false
+    correctOptionList.includes(optionList[1]) ? true : false
   );
   const [optionThree, setOptionThree] = useState<Checked>(
-    correctOptionsList
-      ? correctOptionsList.includes("Three")
-        ? true
-        : false
-      : false
+    correctOptionList.includes(optionList[2]) ? true : false
   );
   const [optionFour, setOptionFour] = useState<Checked>(
-    correctOptionsList
-      ? correctOptionsList.includes("Four")
-        ? true
-        : false
-      : false
+    correctOptionList.includes(optionList[3]) ? true : false
   );
 
   const [selectedOptions, setSelectedOptions] = useState<string>("");
@@ -55,16 +41,16 @@ export default function MultipleCorrectOptionComponent({
   useEffect(() => {
     let selectedOptionsText: string = "";
     if (optionOne) {
-      selectedOptionsText = selectedOptionsText + correctOptionsList[0];
+      selectedOptionsText = selectedOptionsText + optionList[0];
     }
     if (optionTwo) {
-      selectedOptionsText = selectedOptionsText + ", " + correctOptionsList[1];
+      selectedOptionsText = selectedOptionsText + ", " + optionList[1];
     }
     if (optionThree) {
-      selectedOptionsText = selectedOptionsText + ", " + correctOptionsList[2];
+      selectedOptionsText = selectedOptionsText + ", " + optionList[2];
     }
     if (optionFour) {
-      selectedOptionsText = selectedOptionsText + ", " + correctOptionsList[3];
+      selectedOptionsText = selectedOptionsText + ", " + optionList[3];
     }
     if (selectedOptionsText[0] === ",") {
       selectedOptionsText = selectedOptionsText.slice(1);
@@ -82,7 +68,7 @@ export default function MultipleCorrectOptionComponent({
     <div className="w-[180px]">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">
+          <Button variant="outline" className="text-black">
             {selectedOptions ? selectedOptions : "Please choose your options"}
           </Button>
         </DropdownMenuTrigger>
@@ -93,25 +79,25 @@ export default function MultipleCorrectOptionComponent({
             checked={optionOne}
             onCheckedChange={setOptionOne}
           >
-            {correctOptionsList[0]}
+            {optionList[0]}
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={optionTwo}
             onCheckedChange={setOptionTwo}
           >
-            {correctOptionsList[1]}
+            {optionList[1]}
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={optionThree}
             onCheckedChange={setOptionThree}
           >
-            {correctOptionsList[2]}
+            {optionList[2]}
           </DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem
             checked={optionFour}
             onCheckedChange={setOptionFour}
           >
-            {correctOptionsList[3]}
+            {optionList[3]}
           </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>

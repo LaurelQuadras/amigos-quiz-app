@@ -39,10 +39,10 @@ export default function DeleteSectionsPopUp() {
             Delete Sections
           </div>
         </DialogTrigger>
-        <DialogContent className="w-10/12 min-h-[400px] max-w-full">
+        <DialogContent className="w-10/12 min-h-[400px] max-w-full bg-slate-900">
           <DialogHeader>
             <DialogTitle>
-              <span className="text-2xl">All Sections</span>
+              <span className="text-2xl text-white">All Sections</span>
             </DialogTitle>
             <DialogDescription>
               <Table>
@@ -56,7 +56,10 @@ export default function DeleteSectionsPopUp() {
                 </TableHeader>
                 <TableBody>
                   {sectionsList.map((section: GetSectionApiType) => (
-                    <TableRow key={section.subject_id}>
+                    <TableRow
+                      key={section.subject_id}
+                      className="text-white hover:bg-slate-800"
+                    >
                       <TableCell className="font-medium">
                         {section.subject_id}
                       </TableCell>

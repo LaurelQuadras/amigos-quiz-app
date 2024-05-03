@@ -23,7 +23,7 @@ export default function TrueFalseComponent({
   };
 
   return (
-    <div>
+    <div className="text-black">
       <Select defaultValue={correctOption} onValueChange={handleValueChange}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select an option" />

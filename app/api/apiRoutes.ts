@@ -133,3 +133,24 @@ export const postAnswersApi = async (
     console.log("Failed api post answer");
   }
 };
+
+export const postCorrectOptionApi = async (
+  questionId: string,
+  answerId: string
+) => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/correctOption",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          question_id: questionId,
+          answer_id: answerId,
+        }),
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post answer");
+  }
+};

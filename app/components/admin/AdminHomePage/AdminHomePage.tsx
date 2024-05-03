@@ -1,6 +1,6 @@
 "use client";
 
-import { dancing_script } from "@/app/fonts/fonts";
+import { output_script } from "@/app/fonts/fonts";
 import { motion } from "framer-motion";
 import { postSectionsApi } from "@/app/api/apiRoutes";
 import ViewAllSectionsPopUp from "../ViewAllSectionsPopUp/ViewAllSectionsPopUp";
@@ -22,8 +22,8 @@ export default function AdminHomePage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-16 m-2 md:m-8">
-      <span className={`${dancing_script.className} text-3xl md:text-6xl`}>
+    <div className="flex flex-col h-full w-full gap-16 m-2 md:m-8 text-white">
+      <span className={`${output_script.className} text-3xl md:text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}

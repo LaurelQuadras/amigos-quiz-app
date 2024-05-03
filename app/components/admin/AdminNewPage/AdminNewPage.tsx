@@ -1,6 +1,6 @@
 "use client";
 
-import { dancing_script } from "@/app/fonts/fonts";
+import { output_script } from "@/app/fonts/fonts";
 import SectionComponent from "../SectionComponent/SectionComponent";
 import QuestionForm from "../QuestionForm/QuestionForm";
 import { useEffect, useState } from "react";
@@ -12,8 +12,10 @@ import {
   getApi,
   getSectionApi,
   postAnswersApi,
+  postCorrectOptionApi,
   postQuestionsApi,
 } from "@/app/api/apiRoutes";
+import sectionsListValues from "../../../json/sectionsList.json";
 
 export default function AdminNewPage() {
   const [noOfQuestions, setNoOfQuestions] = useState<number>(1);
@@ -67,7 +69,6 @@ export default function AdminNewPage() {
   const postQuestionAndAnswers = async (): Promise<void> => {
     console.log("came ", questionsAndAnswersListValues);
     questionsAndAnswersListValues.forEach(
-      // post api call for saving question
       async (questionAndAnswers: QuestionsAndAnswersType) => {
         const questionId: any = await postQuestionsApi(
           "9",
@@ -75,26 +76,22 @@ export default function AdminNewPage() {
           questionAndAnswers.answerType
         );
 
-        let answerIds: string[] = [];
-
         questionAndAnswers.options.forEach(
           async (option: string, index: number) => {
-            const answerId: any = await postAnswersApi(
+            const answerIdResponse: any = await postAnswersApi(
               questionId.question_id,
               option
             );
-
-            answerIds.push(answerId);
-
-            console.log(answerIds);
-
-            // questionAndAnswers.correctOption.forEach(
-            //   async (correctOption: string) => {
-            //     if (parseInt(Object.keys(AnswerOptions)[index]) === index) {
-            //       console.log("here");
-            //     }
-            //   }
-            // );
+            if (
+              questionAndAnswers.correctOption.includes(
+                answerIdResponse.answerText
+              )
+            ) {
+              await postCorrectOptionApi(
+                questionId.question_id,
+                answerIdResponse.answer_id
+              );
+            }
           }
         );
       }
@@ -102,8 +99,8 @@ export default function AdminNewPage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-16 m-8">
-      <span className={`${dancing_script.className} text-6xl`}>
+    <div className="flex flex-col h-full w-full gap-16 m-8 text-white">
+      <span className={`${output_script.className} text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}
@@ -158,7 +155,7 @@ export default function AdminNewPage() {
               )}
               onSectionOptionSelected={onSectionOptionSelected}
             />
-            <span>
+            <span className="text-white">
               {sectionSelected ? sectionSelected.subject_description : ""}
             </span>
             <div
@@ -199,7 +196,7 @@ export default function AdminNewPage() {
               onClick={onPreviousButtonClick}
               disabled={noOfQuestions === 1}
               whileTap={{ scale: 0.8 }}
-              className="bg-black text-white px-4 py-2 rounded-lg"
+              className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               Previous{" "}
             </MotionButton>
@@ -207,7 +204,7 @@ export default function AdminNewPage() {
               onClick={onNextButtonClick}
               disabled={noOfQuestions === 10}
               whileTap={{ scale: 0.8 }}
-              className="bg-black text-white px-4 py-2 rounded-lg"
+              className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
             >
               Next
             </MotionButton>

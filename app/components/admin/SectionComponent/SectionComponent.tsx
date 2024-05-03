@@ -18,7 +18,7 @@ export default function SectionComponent({
   onSectionOptionSelected,
 }: SectionComponentProps) {
   return (
-    <div>
+    <div className="text-black">
       <Select onValueChange={onSectionOptionSelected}>
         <SelectTrigger className="w-[300px]">
           <SelectValue placeholder="Select a section" />
@@ -27,7 +27,7 @@ export default function SectionComponent({
           <SelectGroup>
             <SelectLabel>Sections</SelectLabel>
             {sectionsList.map((section: string) => (
-              <SelectItem key={section} value={section}>
+              <SelectItem key={section} value={section} className="text-black">
                 {section}
               </SelectItem>
             ))}

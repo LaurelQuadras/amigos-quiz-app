@@ -54,16 +54,16 @@ export default function ViewAllSectionsPopUp({
             {title}
           </div>
         </DialogTrigger>
-        <DialogContent className="w-10/12 min-h-[400px] max-w-full">
+        <DialogContent className="w-10/12 min-h-[400px] max-w-full bg-slate-900">
           <DialogHeader>
             <DialogTitle>
-              <span className="text-2xl">All Sections</span>
+              <span className="text-2xl text-white">All Sections</span>
             </DialogTitle>
             <DialogDescription>
-              <Table>
+              <Table className="text-white">
                 <TableCaption>A list of all sections available.</TableCaption>
                 <TableHeader>
-                  <TableRow>
+                  <TableRow className="text-white hover:bg-slate-900">
                     <TableHead>Section ID</TableHead>
                     <TableHead>Section Name</TableHead>
                     <TableHead>Section Description</TableHead>
@@ -76,6 +76,7 @@ export default function ViewAllSectionsPopUp({
                       onClick={() =>
                         router.push(`/admin/edit/${section.subject_id}`)
                       }
+                      className="hover:bg-slate-800"
                     >
                       <TableCell className="font-medium">
                         {section.subject_id}
