@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import sectionsListValues from "../../../json/sectionsList.json";
+import { Input } from "@/components/ui/input";
 
 export interface ViewAllSectionsPopUpProps {
   title: string;
@@ -31,17 +33,36 @@ export default function ViewAllSectionsPopUp({
   title,
 }: ViewAllSectionsPopUpProps) {
   const router = useRouter();
+  const [sectionsListApiResponse, setSectionsListApiResponse] = useState<
+    GetSectionApiType[]
+  >([]);
   const [sectionsList, setSectionsList] = useState<GetSectionApiType[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
 
   const getSectionList = async (): Promise<void> => {
     const response: GetSectionApiType[] = await getSectionApi();
+    setSectionsListApiResponse(response);
     setSectionsList(response);
   };
 
   useEffect(() => {
     getSectionList();
-    getQuestionsApi();
   }, []);
+
+  const onSearchTextResponse = (text: string): void => {
+    setSearchText(text);
+    const newSectionList: GetSectionApiType[] = sectionsListApiResponse.filter(
+      (section: GetSectionApiType) => {
+        if (
+          section.subject_name.includes(text) ||
+          section.subject_description.includes(text)
+        ) {
+          return section;
+        }
+      }
+    );
+    setSectionsList(newSectionList);
+  };
 
   return (
     <div className="w-full max-w-full">
@@ -55,6 +76,16 @@ export default function ViewAllSectionsPopUp({
           <DialogHeader>
             <DialogTitle>
               <span className="text-2xl text-white">All Sections</span>
+              <div className="w-full flex justify-center">
+                <Input
+                  placeholder="Enter the searched text"
+                  value={searchText}
+                  onChange={(e) => {
+                    onSearchTextResponse(e.target.value);
+                  }}
+                  className="w-96 bg-slate-900 text-white"
+                />
+              </div>
             </DialogTitle>
             <DialogDescription>
               <Table className="text-white">

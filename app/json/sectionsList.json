@@ -2,42 +2,42 @@
   {
     "subject_id": "1",
     "subject_name": "Maths",
-    "subject_description": "Maths",
+    "subject_description": "Mathematics",
     "sub_subject": "Part 1",
     "user": "Test User"
   },
   {
     "subject_id": "2",
     "subject_name": "Science",
-    "subject_description": "Science",
+    "subject_description": "Biology",
     "sub_subject": "Part 1",
     "user": "Test User"
   },
   {
     "subject_id": "3",
     "subject_name": "Geography",
-    "subject_description": "Geography",
+    "subject_description": "Continents and Places",
     "sub_subject": "Part 1",
     "user": "Test User"
   },
   {
     "subject_id": "4",
     "subject_name": "Physics",
-    "subject_description": "Physics",
+    "subject_description": "Laws and Universe",
     "sub_subject": "Part 1",
     "user": "Test User"
   },
   {
     "subject_id": "5",
     "subject_name": "Chemistry",
-    "subject_description": "Chemistry",
+    "subject_description": "Reactions",
     "sub_subject": "Part 1",
     "user": "Test User"
   },
   {
     "subject_id": "6",
     "subject_name": "Geology",
-    "subject_description": "Geology",
+    "subject_description": "Rocks and Soil",
     "sub_subject": "Part 1",
     "user": "Test User"
   }
