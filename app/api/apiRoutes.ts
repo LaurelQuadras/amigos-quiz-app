@@ -140,7 +140,7 @@ export const postCorrectOptionApi = async (
 ) => {
   try {
     const response: Response = await fetch(
-      "https://gamewithcolors.online/exams/correctOption",
+      "https://gamewithcolors.online/exams/correctanswers",
       {
         method: "POST",
         body: JSON.stringify({
