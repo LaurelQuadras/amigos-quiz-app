@@ -32,7 +32,7 @@ export const postSectionsApi = async (
           sub_section: subsection,
           authority: "ALL",
           level: "ALL",
-          user: "Test User",
+          user: "Nathu Ram",
         }),
       }
     );
@@ -61,7 +61,7 @@ export type QuestionsAndAnswersType = {
 export const getSectionApi = async (): Promise<GetSectionApiType[]> => {
   try {
     const response: Response = await fetch(
-      "https://gamewithcolors.online/exams/subjects",
+      "https://gamewithcolors.online/exams/subjects?user=Nathu Ram",
       {
         method: "GET",
       }
@@ -76,7 +76,7 @@ export const getSectionApi = async (): Promise<GetSectionApiType[]> => {
 export const getQuestionsApi = async (): Promise<GetSectionApiType[]> => {
   try {
     const response: Response = await fetch(
-      "https://gamewithcolors.online/exams/questions",
+      "https://gamewithcolors.online/exams/questions?user=Nathu Ram",
       {
         method: "GET",
       }
@@ -104,6 +104,7 @@ export const postQuestionsApi = async (
           question_type: questionType,
           authority: "ALL",
           level: "ALL",
+          user: "Nathu Ram",
         }),
       }
     );
