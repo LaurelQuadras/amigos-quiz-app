@@ -26,11 +26,17 @@ export default function SectionComponent({
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Sections</SelectLabel>
-            {sectionsList.map((section: string) => (
-              <SelectItem key={section} value={section} className="text-black">
-                {section}
-              </SelectItem>
-            ))}
+            {sectionsList
+              .filter((item, index) => sectionsList.indexOf(item) === index)
+              .map((section: string) => (
+                <SelectItem
+                  key={section}
+                  value={section}
+                  className="text-black"
+                >
+                  {section}
+                </SelectItem>
+              ))}
           </SelectGroup>
         </SelectContent>
       </Select>

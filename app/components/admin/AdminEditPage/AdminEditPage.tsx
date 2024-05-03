@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import QuestionForm from "../QuestionForm/QuestionForm";
-import SectionComponent from "../SectionComponent/SectionComponent";
 import questionsAndAnswersMockValues from "../../../json/questionsAndAnswersMock.json";
 import sectionsListValues from "../../../json/sectionsList.json";
 

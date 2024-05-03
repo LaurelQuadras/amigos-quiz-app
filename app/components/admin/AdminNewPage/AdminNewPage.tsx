@@ -173,8 +173,8 @@ export default function AdminNewPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{
-                  duration: 1,
-                  delay: 1.4,
+                  duration: 0.2,
+                  delay: 0,
                 }}
                 className="flex flex-col gap-4 border-2 p-4 rounded-lg"
                 key={i}
