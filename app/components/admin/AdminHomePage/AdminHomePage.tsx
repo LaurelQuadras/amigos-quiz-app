@@ -2,8 +2,7 @@
 
 import { dancing_script } from "@/app/fonts/fonts";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { getSectionApi, postSectionsApi } from "@/app/api/apiRoutes";
+import { postSectionsApi } from "@/app/api/apiRoutes";
 import ViewAllSectionsPopUp from "../ViewAllSectionsPopUp/ViewAllSectionsPopUp";
 import EditSectionsPopUp from "../../EditSectionsPopUp/EditSectionsPopUp";
 import DeleteSectionsPopUp from "../DeleteSectionsPopUp/DeleteSectionsPopUp";
@@ -62,7 +61,7 @@ export default function AdminHomePage() {
             }}
             className="flex flex-col md:flex-row gap-16 items-center text-sm w-full"
           >
-            <ViewAllSectionsPopUp />
+            <ViewAllSectionsPopUp title="View All Sections" />
             <div className="w-full">
               <AddSectionComponent onAddNewSection={onAddNewSection} />
             </div>
@@ -89,8 +88,8 @@ export default function AdminHomePage() {
             >
               <div>Add Questions and Answers</div>
             </Link>
-            <div className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
-              Edit Questions and Answers
+            <div className="w-full">
+              <ViewAllSectionsPopUp title="Edit Questions and Answers" />
             </div>
           </motion.span>
         </div>

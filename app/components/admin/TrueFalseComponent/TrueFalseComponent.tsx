@@ -7,11 +7,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Dispatch, SetStateAction } from "react";
 
-export default function TrueFalseComponent() {
+export interface TrueFalseComponentProps {
+  correctOption?: string;
+  setCorrectOption: Dispatch<SetStateAction<string[]>>;
+}
+
+export default function TrueFalseComponent({
+  correctOption,
+  setCorrectOption,
+}: TrueFalseComponentProps) {
+  const handleValueChange = (value: string): void => {
+    setCorrectOption([value]);
+  };
+
   return (
     <div>
-      <Select>
+      <Select defaultValue={correctOption} onValueChange={handleValueChange}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>

@@ -1,14 +1,20 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import CorrectOptionComponent from "../MultipleCorrectOptionComponent/MultipleCorrectOptionComponent";
+import MultipleCorrectOptionComponent from "../MultipleCorrectOptionComponent/MultipleCorrectOptionComponent";
 import AnswerTypeComponent from "../AnswerTypeComponent/AnswerTypeComponent";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SingleCorrectAnswerComponent from "../SingleCorrectOptionComponent/SingleCorrectOptionComponent";
 import TrueFalseComponent from "../TrueFalseComponent/TrueFalseComponent";
 import Image from "next/image";
+import { QuestionsAndAnswersType } from "@/app/api/apiRoutes";
 
 export interface QuestionFormInterface {
   index: number;
+  questionsAndAnswers: QuestionsAndAnswersType;
+  updateQuestionsAndAnswersListValues: (
+    questionsAndAnswers: QuestionsAndAnswersType,
+    index: number
+  ) => void;
 }
 
 export enum AnswerTypeEnums {
@@ -17,12 +23,38 @@ export enum AnswerTypeEnums {
   BooleanAnswer = "BooleanAnswer",
 }
 
-export default function QuestionForm({ index }: QuestionFormInterface) {
-  const [answerTypeSelected, setAnswerTypeSelected] = useState<AnswerTypeEnums>(
-    AnswerTypeEnums.MultipleChoiceAnswers
-  );
-  const [selectedFiles, setSelectedFiles] = useState<any>([]);
+export enum AnswerOptions {
+  one,
+  two,
+  three,
+  four,
+}
 
+export default function QuestionForm({
+  index,
+  questionsAndAnswers,
+  updateQuestionsAndAnswersListValues,
+}: QuestionFormInterface) {
+  const [selectedFiles, setSelectedFiles] = useState<any>([]);
+  const [question, setQuestion] = useState<string>(
+    questionsAndAnswers ? questionsAndAnswers.question : ""
+  );
+
+  const [optionOne, setOptionOne] = useState<string>("");
+  const [optionTwo, setOptionTwo] = useState<string>("");
+  const [optionThree, setOptionThree] = useState<string>("");
+  const [optionFour, setOptionFour] = useState<string>("");
+
+  const [correctOption, setCorrectOption] = useState<string[]>(
+    questionsAndAnswers ? questionsAndAnswers.correctOption : []
+  );
+  const [answerTypeSelected, setAnswerTypeSelected] = useState<
+    AnswerTypeEnums | string
+  >(
+    questionsAndAnswers
+      ? questionsAndAnswers.answerType
+      : AnswerTypeEnums.MultipleChoiceAnswers
+  );
   const onAnswerTypeOptionSelected = (value: AnswerTypeEnums): void => {
     setAnswerTypeSelected(value);
   };
@@ -35,12 +67,52 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
     }
   };
 
+  const handleContentChange = (): void => {
+    const optionsList: string[] =
+      answerTypeSelected === AnswerTypeEnums.BooleanAnswer
+        ? ["true", "false"]
+        : [optionOne, optionTwo, optionThree, optionFour];
+    const newQuestionsAndAnswers: QuestionsAndAnswersType = {
+      question,
+      attachments: [],
+      answerType: answerTypeSelected,
+      options: optionsList,
+      correctOption,
+    };
+
+    console.log("N ", newQuestionsAndAnswers);
+
+    updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
+  };
+
+  // useEffect(() => {
+  //   console.log(optionOne, " ", optionTwo, " ", optionThree, " ", optionFour);
+  // }, [optionOne, optionTwo, optionThree, optionFour]);
+
+  useEffect(() => {
+    handleContentChange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    question,
+    answerTypeSelected,
+    correctOption,
+    optionOne,
+    optionTwo,
+    optionThree,
+    optionFour,
+  ]);
+
   return (
     <>
       <div className="flex gap-8 items-center">
-        <span className="w-40">Question {index}</span>
+        <span className="w-40">Question {index + 1}</span>
         <div className="w-[1010px]">
-          <Textarea placeholder="Please enter your question here." />
+          <Textarea
+            placeholder="Please enter your question here."
+            defaultValue={questionsAndAnswers?.question}
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+          />
         </div>
       </div>
       <div className="flex gap-8 items-center flex-wrap h-auto">
@@ -73,6 +145,7 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
         <span className="w-40">Answer Type</span>
         <div>
           <AnswerTypeComponent
+            defaultOptionSelected={questionsAndAnswers?.answerType}
             onAnswerTypeOptionSelected={onAnswerTypeOptionSelected}
           />
         </div>
@@ -81,10 +154,38 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
         <span className="w-40">Options</span>
         {answerTypeSelected !== AnswerTypeEnums.BooleanAnswer && (
           <div className="flex gap-4">
-            <Input placeholder="Option 1" />
-            <Input placeholder="Option 2" />
-            <Input placeholder="Option 3" />
-            <Input placeholder="Option 4" />
+            <Input
+              placeholder="Option 1"
+              defaultValue={questionsAndAnswers?.options[0]}
+              value={optionOne}
+              onChange={(e) => {
+                setOptionOne(e.target.value);
+              }}
+            />
+            <Input
+              placeholder="Option 2"
+              defaultValue={questionsAndAnswers?.options[1]}
+              value={optionTwo}
+              onChange={(e) => {
+                setOptionTwo(e.target.value);
+              }}
+            />
+            <Input
+              placeholder="Option 3"
+              defaultValue={questionsAndAnswers?.options[2]}
+              value={optionThree}
+              onChange={(e) => {
+                setOptionThree(e.target.value);
+              }}
+            />
+            <Input
+              placeholder="Option 4"
+              defaultValue={questionsAndAnswers?.options[3]}
+              value={optionFour}
+              onChange={(e) => {
+                setOptionFour(e.target.value);
+              }}
+            />
           </div>
         )}
         {answerTypeSelected === AnswerTypeEnums.BooleanAnswer && (
@@ -96,14 +197,44 @@ export default function QuestionForm({ index }: QuestionFormInterface) {
       </div>
       <div className="flex gap-8 items-center">
         <span className="w-40">Correct Option</span>
-        {answerTypeSelected === AnswerTypeEnums.MultipleChoiceAnswers && (
-          <CorrectOptionComponent />
-        )}
-        {answerTypeSelected === AnswerTypeEnums.SingleAnswer && (
-          <SingleCorrectAnswerComponent />
-        )}
+        {answerTypeSelected === AnswerTypeEnums.MultipleChoiceAnswers &&
+          optionOne !== "" &&
+          optionTwo !== "" &&
+          optionThree !== "" &&
+          optionFour !== "" && (
+            <MultipleCorrectOptionComponent
+              correctOptionsList={[
+                optionOne,
+                optionTwo,
+                optionThree,
+                optionFour,
+              ]}
+              setCorrectOption={setCorrectOption}
+            />
+          )}
+        {answerTypeSelected === AnswerTypeEnums.SingleAnswer &&
+          optionOne !== "" &&
+          optionTwo !== "" &&
+          optionThree !== "" &&
+          optionFour !== "" && (
+            <SingleCorrectAnswerComponent
+              correctOptionsList={[
+                optionOne,
+                optionTwo,
+                optionThree,
+                optionFour,
+              ]}
+              correctOption={questionsAndAnswers?.correctOption
+                .toString()
+                .trim()}
+              setCorrectOption={setCorrectOption}
+            />
+          )}
         {answerTypeSelected === AnswerTypeEnums.BooleanAnswer && (
-          <TrueFalseComponent />
+          <TrueFalseComponent
+            correctOption={questionsAndAnswers?.correctOption.toString().trim()}
+            setCorrectOption={setCorrectOption}
+          />
         )}
       </div>
     </>

@@ -10,10 +10,12 @@ import {
 import { AnswerTypeEnums } from "../QuestionForm/QuestionForm";
 
 export interface AnswerTypeComponentProps {
+  defaultOptionSelected?: AnswerTypeEnums | string;
   onAnswerTypeOptionSelected: (value: AnswerTypeEnums) => void;
 }
 
 export default function AnswerTypeComponent({
+  defaultOptionSelected,
   onAnswerTypeOptionSelected,
 }: AnswerTypeComponentProps) {
   const onAnswerTypeValueChange = (value: string): void => {
@@ -25,7 +27,11 @@ export default function AnswerTypeComponent({
   return (
     <div>
       <Select
-        defaultValue="MultipleChoiceAnswers"
+        defaultValue={
+          defaultOptionSelected
+            ? defaultOptionSelected
+            : "MultipleChoiceAnswers"
+        }
         onValueChange={onAnswerTypeValueChange}
       >
         <SelectTrigger className="w-[324px]">

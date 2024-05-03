@@ -1,4 +1,8 @@
-import { GetSectionApiType, getSectionApi } from "@/app/api/apiRoutes";
+import {
+  GetSectionApiType,
+  getQuestionsApi,
+  getSectionApi,
+} from "@/app/api/apiRoutes";
 import {
   Dialog,
   DialogContent,
@@ -16,18 +20,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import sectionsListValues from "../../../json/sectionsList.json";
+import { useRouter } from "next/navigation";
 
-export default function ViewAllSectionsPopUp() {
+export interface ViewAllSectionsPopUpProps {
+  title: string;
+}
+
+export default function ViewAllSectionsPopUp({
+  title,
+}: ViewAllSectionsPopUpProps) {
+  const router = useRouter();
   const [sectionsList, setSectionsList] = useState<GetSectionApiType[]>([]);
 
   const getSectionList = async (): Promise<void> => {
     const response: GetSectionApiType[] = await getSectionApi();
-    setSectionsList(response);
+    console.log(sectionsListValues);
+    setSectionsList(sectionsListValues);
   };
 
   useEffect(() => {
     getSectionList();
+    getQuestionsApi();
   }, []);
 
   return (
@@ -35,7 +51,7 @@ export default function ViewAllSectionsPopUp() {
       <Dialog>
         <DialogTrigger className="w-full">
           <div className="w-full p-3 bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
-            View All Sections
+            {title}
           </div>
         </DialogTrigger>
         <DialogContent className="w-10/12 min-h-[400px] max-w-full">
@@ -55,7 +71,12 @@ export default function ViewAllSectionsPopUp() {
                 </TableHeader>
                 <TableBody>
                   {sectionsList.map((section: GetSectionApiType) => (
-                    <TableRow key={section.subject_id}>
+                    <TableRow
+                      key={section.subject_id}
+                      onClick={() =>
+                        router.push(`/admin/edit/${section.subject_id}`)
+                      }
+                    >
                       <TableCell className="font-medium">
                         {section.subject_id}
                       </TableCell>

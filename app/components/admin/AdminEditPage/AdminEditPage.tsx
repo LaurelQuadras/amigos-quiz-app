@@ -1,27 +1,34 @@
 "use client";
 
-import { dancing_script } from "@/app/fonts/fonts";
-import SectionComponent from "../SectionComponent/SectionComponent";
-import QuestionForm from "../QuestionForm/QuestionForm";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import {
   GetSectionApiType,
-  QuestionsAndAnswersType,
-  getApi,
+  postSectionsApi,
   getSectionApi,
-  postAnswersApi,
-  postQuestionsApi,
+  getApi,
+  QuestionsAndAnswersType,
 } from "@/app/api/apiRoutes";
+import { dancing_script } from "@/app/fonts/fonts";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import QuestionForm from "../QuestionForm/QuestionForm";
+import SectionComponent from "../SectionComponent/SectionComponent";
+import questionsAndAnswersMockValues from "../../../json/questionsAndAnswersMock.json";
+import sectionsListValues from "../../../json/sectionsList.json";
 
-export default function AdminNewPage() {
-  const [noOfQuestions, setNoOfQuestions] = useState<number>(1);
+export interface AdminEditPageProps {
+  sectionId: string;
+}
+
+export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
+  const [noOfQuestions, setNoOfQuestions] = useState<number>(
+    questionsAndAnswersMockValues.length
+  );
   const [sectionSelected, setSectionSelected] = useState<GetSectionApiType>();
   const [sectionsList, setSectionsList] = useState<GetSectionApiType[]>([]);
 
   const [questionsAndAnswersListValues, setQuestionAndAnswersListValues] =
-    useState<QuestionsAndAnswersType[]>([]);
+    useState<QuestionsAndAnswersType[]>(questionsAndAnswersMockValues);
 
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
   const fillInformationText: string = "Please fill the following information.";
@@ -53,6 +60,12 @@ export default function AdminNewPage() {
     getApi();
   }, []);
 
+  useEffect(() => {
+    if (sectionId) {
+      setSectionSelected(sectionsListValues[0]);
+    }
+  }, [sectionId]);
+
   const updateQuestionsAndAnswersListValues = (
     questionsAndAnswers: QuestionsAndAnswersType,
     index: number
@@ -61,44 +74,6 @@ export default function AdminNewPage() {
       questionsAndAnswersListValues;
     newQuestionsAndAnswers[index] = questionsAndAnswers;
     console.log(newQuestionsAndAnswers);
-    setQuestionAndAnswersListValues(newQuestionsAndAnswers);
-  };
-
-  const postQuestionAndAnswers = async (): Promise<void> => {
-    console.log("came ", questionsAndAnswersListValues);
-    questionsAndAnswersListValues.forEach(
-      // post api call for saving question
-      async (questionAndAnswers: QuestionsAndAnswersType) => {
-        const questionId: any = await postQuestionsApi(
-          "9",
-          questionAndAnswers.question,
-          questionAndAnswers.answerType
-        );
-
-        let answerIds: string[] = [];
-
-        questionAndAnswers.options.forEach(
-          async (option: string, index: number) => {
-            const answerId: any = await postAnswersApi(
-              questionId.question_id,
-              option
-            );
-
-            answerIds.push(answerId);
-
-            console.log(answerIds);
-
-            // questionAndAnswers.correctOption.forEach(
-            //   async (correctOption: string) => {
-            //     if (parseInt(Object.keys(AnswerOptions)[index]) === index) {
-            //       console.log("here");
-            //     }
-            //   }
-            // );
-          }
-        );
-      }
-    );
   };
 
   return (
@@ -152,21 +127,13 @@ export default function AdminNewPage() {
             }}
             className="flex gap-8 items-center text-sm"
           >
-            <SectionComponent
-              sectionsList={sectionsList.map(
-                (section: GetSectionApiType) => section.subject_name
-              )}
-              onSectionOptionSelected={onSectionOptionSelected}
-            />
-            <span>
+            <span className="w-40 text-base">
+              {sectionSelected?.subject_name.toString()}
+            </span>
+            <span className="w-40 text-base">
+              Sub Section:{" "}
               {sectionSelected ? sectionSelected.subject_description : ""}
             </span>
-            <div
-              className="p-3 px-8 cursor-pointer bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
-              onClick={postQuestionAndAnswers}
-            >
-              Save
-            </div>
           </motion.span>
         </div>
         {sectionSelected && (
@@ -184,7 +151,7 @@ export default function AdminNewPage() {
               >
                 <QuestionForm
                   index={i}
-                  questionsAndAnswers={questionsAndAnswersListValues[i]}
+                  questionsAndAnswers={questionsAndAnswersMockValues[i]}
                   updateQuestionsAndAnswersListValues={
                     updateQuestionsAndAnswersListValues
                   }
