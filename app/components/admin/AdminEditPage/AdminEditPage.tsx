@@ -61,8 +61,15 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
       sectionId
     );
 
+    const uniqueQuestions: GetQuestionType[] = questions.filter(
+      (obj, index, self) => {
+        const key = obj.question_text;
+        return index === self.findIndex((item) => item.question_text === key);
+      }
+    );
+
     const questionAndAnswerList: QuestionsAndAnswersType[] =
-      await getQuestionAndAnswerList(questions);
+      await getQuestionAndAnswerList(uniqueQuestions);
 
     setNoOfQuestions(questionAndAnswerList.length);
     setQuestionAndAnswersListValues(questionAndAnswerList);
