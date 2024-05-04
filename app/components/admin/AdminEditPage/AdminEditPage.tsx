@@ -2,13 +2,17 @@
 
 import {
   GetSectionApiType,
-  postSectionsApi,
   getSectionApi,
-  getApi,
   QuestionsAndAnswersType,
   postQuestionsApi,
   postAnswersApi,
   postCorrectOptionApi,
+  getQuestionsWithSubjectIdApi,
+  GetQuestionType,
+  GetAnswerType,
+  getAnswersWithQuestionId,
+  getCorrectOptionWithQuestionIdApi,
+  GetCorrectAnswerType,
 } from "@/app/api/apiRoutes";
 import { output_script } from "@/app/fonts/fonts";
 import { Button } from "@/components/ui/button";
@@ -16,7 +20,6 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import QuestionForm from "../QuestionForm/QuestionForm";
 import questionsAndAnswersMockValues from "../../../json/questionsAndAnswersMock.json";
-import sectionsListValues from "../../../json/sectionsList.json";
 
 export interface AdminEditPageProps {
   sectionId: string;
@@ -27,10 +30,9 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     questionsAndAnswersMockValues.length
   );
   const [sectionSelected, setSectionSelected] = useState<GetSectionApiType>();
-  const [sectionsList, setSectionsList] = useState<GetSectionApiType[]>([]);
 
   const [questionsAndAnswersListValues, setQuestionAndAnswersListValues] =
-    useState<QuestionsAndAnswersType[]>(questionsAndAnswersMockValues);
+    useState<QuestionsAndAnswersType[]>([]);
 
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
   const fillInformationText: string = "Please fill the following information.";
@@ -45,27 +47,85 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
 
   const MotionButton = motion(Button);
 
-  const onSectionOptionSelected = (value: string): void => {
-    const getSectionSelected: GetSectionApiType = sectionsList.filter(
-      (section: GetSectionApiType) => section.subject_name === value
-    )[0];
-    setSectionSelected(getSectionSelected);
+  const getSubjectWithId = async (): Promise<void> => {
+    const sectionList: GetSectionApiType[] = await getSectionApi();
+    setSectionSelected(
+      sectionList.filter(
+        (section: GetSectionApiType) => section.subject_id === sectionId
+      )[0]
+    );
   };
 
-  const getSectionList = async (): Promise<void> => {
-    const response: GetSectionApiType[] = await getSectionApi();
-    setSectionsList(response);
+  const getQuestionsWithSubjectId = async (): Promise<void> => {
+    const questions: GetQuestionType[] = await getQuestionsWithSubjectIdApi(
+      sectionId
+    );
+
+    const questionAndAnswerList: QuestionsAndAnswersType[] =
+      await getQuestionAndAnswerList(questions);
+
+    setNoOfQuestions(questionAndAnswerList.length);
+    setQuestionAndAnswersListValues(questionAndAnswerList);
   };
 
-  useEffect(() => {
-    getSectionList();
-    getApi();
-  }, []);
+  const getQuestionAndAnswerList = async (
+    questions: GetQuestionType[]
+  ): Promise<QuestionsAndAnswersType[]> => {
+    const questionsAndAnswersList: QuestionsAndAnswersType[] = [];
+
+    await Promise.all(
+      questions.map(async (question: GetQuestionType, index: number) => {
+        const questionAndAnswerValue: any =
+          await getQuestionAndAnswerApiResponseList(question);
+
+        if (questionAndAnswerValue) {
+          questionsAndAnswersList.push(questionAndAnswerValue);
+        }
+      })
+    );
+
+    return questionsAndAnswersList;
+  };
+
+  const getQuestionAndAnswerApiResponseList = async (
+    question: GetQuestionType
+  ): Promise<any> => {
+    const answerList: GetAnswerType[] = await getAnswersWithQuestionId(
+      question.question_id
+    );
+
+    const correctOptionList: GetCorrectAnswerType[] =
+      await getCorrectOptionWithQuestionIdApi(question.question_id);
+
+    const correctOptionWithText: string[] = [];
+
+    if (correctOptionList[0]) {
+      correctOptionList.forEach((correctOption: GetCorrectAnswerType) => {
+        answerList.forEach((answer: GetAnswerType) => {
+          if (correctOption.answer_id === answer.answer_id) {
+            correctOptionWithText.push(answer.answer_text);
+          }
+        });
+      });
+
+      const questionAndAnswerValue: QuestionsAndAnswersType = {
+        question: question.question_text,
+        attachments: [],
+        answerType: question.question_type,
+        options: answerList.map((answer: GetAnswerType) => answer.answer_text),
+        correctOption: correctOptionWithText,
+      };
+
+      return questionAndAnswerValue;
+    }
+  };
 
   useEffect(() => {
     if (sectionId) {
-      setSectionSelected(sectionsListValues[0]);
+      getSubjectWithId();
+      getQuestionsWithSubjectId();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionId]);
 
   const updateQuestionsAndAnswersListValues = (
@@ -75,7 +135,6 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     const newQuestionsAndAnswers: QuestionsAndAnswersType[] =
       questionsAndAnswersListValues;
     newQuestionsAndAnswers[index] = questionsAndAnswers;
-    console.log(newQuestionsAndAnswers);
   };
 
   const postQuestionAndAnswers = async (): Promise<void> => {
@@ -152,7 +211,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
           >
             Section
           </motion.span>
-          <motion.span
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -164,7 +223,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
             <span className="w-40 text-base">
               {sectionSelected?.subject_name.toString()}
             </span>
-            <span className="w-40 text-base">
+            <span className="w-fit text-base text-nowrap">
               Sub Section:{" "}
               {sectionSelected ? sectionSelected.subject_description : ""}
             </span>
@@ -174,52 +233,52 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
             >
               Save
             </div>
-          </motion.span>
+          </motion.div>
         </div>
-        {sectionSelected && (
-          <div className="flex flex-col gap-16">
-            {[...Array(noOfQuestions)].map((e: number, i) => (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  duration: 1,
-                  delay: 1.4,
-                }}
-                className="flex flex-col gap-4 border-2 p-4 rounded-lg"
-                key={i}
-              >
-                <QuestionForm
-                  index={i}
-                  questionsAndAnswers={questionsAndAnswersMockValues[i]}
-                  updateQuestionsAndAnswersListValues={
-                    updateQuestionsAndAnswersListValues
-                  }
-                />
-              </motion.div>
-            ))}
-          </div>
-        )}
-        {sectionSelected && (
-          <div className="flex justify-end gap-8">
-            <MotionButton
-              onClick={onPreviousButtonClick}
-              disabled={noOfQuestions === 1}
-              whileTap={{ scale: 0.8 }}
-              className="bg-black text-white px-4 py-2 rounded-lg"
-            >
-              Previous{" "}
-            </MotionButton>
-            <MotionButton
-              onClick={onNextButtonClick}
-              disabled={noOfQuestions === 10}
-              whileTap={{ scale: 0.8 }}
-              className="bg-black text-white px-4 py-2 rounded-lg"
-            >
-              Next
-            </MotionButton>
-          </div>
-        )}
+        <div className="flex flex-col gap-16">
+          {questionsAndAnswersListValues.length > 0 && (
+            <>
+              {[...Array(noOfQuestions)].map((e: number, i) => (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 1,
+                    delay: 1.4,
+                  }}
+                  className="flex flex-col gap-4 border-2 p-4 rounded-lg"
+                  key={i}
+                >
+                  <QuestionForm
+                    index={i}
+                    questionsAndAnswers={questionsAndAnswersListValues[i]}
+                    updateQuestionsAndAnswersListValues={
+                      updateQuestionsAndAnswersListValues
+                    }
+                  />
+                </motion.div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className="flex justify-end gap-8">
+          <MotionButton
+            onClick={onPreviousButtonClick}
+            disabled={noOfQuestions === 1}
+            whileTap={{ scale: 0.8 }}
+            className="bg-black text-white px-4 py-2 rounded-lg"
+          >
+            Previous{" "}
+          </MotionButton>
+          <MotionButton
+            onClick={onNextButtonClick}
+            disabled={noOfQuestions === 10}
+            whileTap={{ scale: 0.8 }}
+            className="bg-black text-white px-4 py-2 rounded-lg"
+          >
+            Next
+          </MotionButton>
+        </div>
       </div>
     </div>
   );

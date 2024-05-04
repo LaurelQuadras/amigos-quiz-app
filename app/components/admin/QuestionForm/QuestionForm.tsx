@@ -18,7 +18,7 @@ export interface QuestionFormInterface {
 }
 
 export enum AnswerTypeEnums {
-  MultipleChoiceAnswers = "MultipleChoiceAnswers",
+  MultipleChoiceAnswers = "MULTIPLE_CHOICE",
   SingleAnswer = "SingleAnswer",
   BooleanAnswer = "BooleanAnswer",
 }
@@ -87,8 +87,6 @@ export default function QuestionForm({
       options: optionsList,
       correctOption,
     };
-
-    console.log("N ", newQuestionsAndAnswers);
 
     updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
   };

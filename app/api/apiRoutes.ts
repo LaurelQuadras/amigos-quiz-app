@@ -58,6 +58,28 @@ export type QuestionsAndAnswersType = {
   correctOption: string[];
 };
 
+export type GetQuestionType = {
+  question_id: string;
+  subject_id: string;
+  question_text: string;
+  question_type: string;
+  authority: string;
+  level: string;
+  image_data: string;
+};
+
+export type GetAnswerType = {
+  question_id: string;
+  answer_text: string;
+  answer_id: string;
+};
+
+export type GetCorrectAnswerType = {
+  answer_id: string;
+  correct_answer_id: string;
+  question_id: string;
+};
+
 export const getSectionApi = async (): Promise<GetSectionApiType[]> => {
   try {
     const response: Response = await fetch(
@@ -73,7 +95,7 @@ export const getSectionApi = async (): Promise<GetSectionApiType[]> => {
   }
 };
 
-export const getQuestionsApi = async (): Promise<GetSectionApiType[]> => {
+export const getQuestionsApi = async (): Promise<GetQuestionType[]> => {
   try {
     const response: Response = await fetch(
       "https://gamewithcolors.online/exams/questions?user=Nathu Ram",
@@ -83,7 +105,25 @@ export const getQuestionsApi = async (): Promise<GetSectionApiType[]> => {
     );
     return await response.json();
   } catch {
-    console.log("Failed api get section");
+    console.log("Failed api post question");
+    return [];
+  }
+};
+
+export const getQuestionsWithSubjectIdApi = async (
+  subjectId: string
+): Promise<GetQuestionType[]> => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/questions?subject_id=9",
+      {
+        method: "GET",
+      }
+    );
+
+    return await response.json();
+  } catch {
+    console.log("Failed api get question with Subject Id");
     return [];
   }
 };
@@ -114,6 +154,23 @@ export const postQuestionsApi = async (
   }
 };
 
+export const getAnswersWithQuestionId = async (
+  questionId: string
+): Promise<GetAnswerType[]> => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/answers?question_id=" + questionId,
+      {
+        method: "GET",
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api get answer with question Id");
+    return [];
+  }
+};
+
 export const postAnswersApi = async (
   questionId: string,
   answerText: string
@@ -135,6 +192,24 @@ export const postAnswersApi = async (
   }
 };
 
+export const getCorrectOptionWithQuestionIdApi = async (
+  questionId: string
+): Promise<GetCorrectAnswerType[]> => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/correctanswers?question_id=" +
+        questionId,
+      {
+        method: "GET",
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api get correct answer");
+    return [];
+  }
+};
+
 export const postCorrectOptionApi = async (
   questionId: string,
   answerId: string
@@ -152,6 +227,6 @@ export const postCorrectOptionApi = async (
     );
     return await response.json();
   } catch {
-    console.log("Failed api post answer");
+    console.log("Failed api post correct answer");
   }
 };

@@ -1,8 +1,4 @@
-import {
-  GetSectionApiType,
-  getQuestionsApi,
-  getSectionApi,
-} from "@/app/api/apiRoutes";
+import { GetSectionApiType, getSectionApi } from "@/app/api/apiRoutes";
 import {
   Dialog,
   DialogContent,
