@@ -155,7 +155,7 @@ export default function QuestionForm({
       <div className="flex gap-8 items-center">
         <span className="w-40">Options</span>
         {answerTypeSelected !== AnswerTypeEnums.BooleanAnswer && (
-          <div className="flex gap-4 text-black">
+          <div className="flex gap-4 text-black flex-col md:flex-row">
             <Input
               placeholder="Option 1"
               defaultValue={questionsAndAnswers?.options[0]}
@@ -191,7 +191,7 @@ export default function QuestionForm({
           </div>
         )}
         {answerTypeSelected === AnswerTypeEnums.BooleanAnswer && (
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-col md:flex-row">
             <span className="w-44 border p-2  rounded-lg text-sm">True</span>
             <span className="w-44 border p-2  rounded-lg text-sm">False</span>
           </div>

@@ -51,6 +51,7 @@ export default function AdminNewPage() {
   };
 
   useEffect(() => {
+    setSectionSelected(sectionsListValues[0]);
     getSectionList();
     getApi();
   }, []);
@@ -99,8 +100,8 @@ export default function AdminNewPage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-16 m-8 text-white">
-      <span className={`${output_script.className} text-6xl`}>
+    <div className="flex flex-col h-full w-full gap-8 md:gap-16 md:m-8 text-white">
+      <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}
@@ -115,7 +116,7 @@ export default function AdminNewPage() {
           </motion.span>
         ))}
       </span>
-      <span className="text-4xl">
+      <span className="mx-4 text-xl md:text-4xl">
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -147,22 +148,24 @@ export default function AdminNewPage() {
               duration: 1,
               delay: 1.4,
             }}
-            className="flex gap-8 items-center text-sm"
+            className="flex  items-center text-sm"
           >
-            <SectionComponent
-              sectionsList={sectionsList.map(
-                (section: GetSectionApiType) => section.subject_name
-              )}
-              onSectionOptionSelected={onSectionOptionSelected}
-            />
-            <span className="text-white">
-              {sectionSelected ? sectionSelected.subject_description : ""}
-            </span>
-            <div
-              className="p-3 px-8 cursor-pointer bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
-              onClick={postQuestionAndAnswers}
-            >
-              Save
+            <div className="flex gap-2 md:gap-8 flex-col md:flex-row">
+              <SectionComponent
+                sectionsList={sectionsList.map(
+                  (section: GetSectionApiType) => section.subject_name
+                )}
+                onSectionOptionSelected={onSectionOptionSelected}
+              />
+              <span className="text-white">
+                {sectionSelected ? sectionSelected.subject_description : ""}
+              </span>
+              <div
+                className="p-3 px-8 cursor-pointer bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
+                onClick={postQuestionAndAnswers}
+              >
+                Save
+              </div>
             </div>
           </motion.span>
         </div>

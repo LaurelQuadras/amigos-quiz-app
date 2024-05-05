@@ -22,8 +22,8 @@ export default function AdminHomePage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-16 m-2 md:m-8 text-white">
-      <span className={`${output_script.className} text-3xl md:text-6xl`}>
+    <div className="flex flex-col h-full w-full gap-16 md:m-8 text-white">
+      <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}
@@ -38,7 +38,7 @@ export default function AdminHomePage() {
           </motion.span>
         ))}
       </span>
-      <span className="text-xl md:text-4xl">
+      <span className="mx-4 text-xl md:text-4xl">
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

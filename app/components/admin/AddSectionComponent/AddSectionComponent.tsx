@@ -44,7 +44,7 @@ export default function AddSectionComponent({
             Add a new Section
           </div>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-slate-900">
+        <DialogContent className="max-w-72 sm:max-w-[425px] bg-slate-900 overflow-y-scroll md:overflow-auto max-h-[400px] md:max-h-full">
           <DialogHeader>
             <DialogTitle className="text-white">Add Section</DialogTitle>
             <DialogDescription>

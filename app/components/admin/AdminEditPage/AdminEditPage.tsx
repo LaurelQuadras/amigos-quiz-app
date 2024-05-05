@@ -177,8 +177,8 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-16 m-8 text-white">
-      <span className={`${output_script.className} text-6xl`}>
+    <div className="flex flex-col h-full w-full gap-8 md:gap-16 md:m-8 text-white">
+      <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}
@@ -193,7 +193,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
           </motion.span>
         ))}
       </span>
-      <span className="text-4xl">
+      <span className="mx-4 text-xl md:text-4xl">
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -206,7 +206,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
         </motion.span>
       </span>
       <div className="flex flex-col gap-4 m-4">
-        <div className="flex gap-8 items-center w-full">
+        <div className="flex flex-col md:flex-row gap-8 md:items-center w-full">
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -225,20 +225,21 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
               duration: 1,
               delay: 1.4,
             }}
-            className="flex gap-8 items-center text-sm"
           >
             <span className="w-40 text-base">
               {sectionSelected?.subject_name.toString()}
             </span>
-            <span className="w-fit text-base text-nowrap">
-              Sub Section:{" "}
-              {sectionSelected ? sectionSelected.subject_description : ""}
-            </span>
-            <div
-              className="p-3 px-8 cursor-pointer bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
-              onClick={postQuestionAndAnswers}
-            >
-              Save
+            <div className="flex flex-col md:flex-row gap-8 md:items-center">
+              <span className="w-fit text-base text-nowrap">
+                Sub Section:{" "}
+                {sectionSelected ? sectionSelected.subject_description : ""}
+              </span>
+              <div
+                className="p-3 px-8 cursor-pointer bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white w-28"
+                onClick={postQuestionAndAnswers}
+              >
+                Save
+              </div>
             </div>
           </motion.div>
         </div>

@@ -34,10 +34,10 @@ export default function AnswerTypeComponent({
         }
         onValueChange={onAnswerTypeValueChange}
       >
-        <SelectTrigger className="w-[324px]">
+        <SelectTrigger className="md:w-[324px]">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="md:w-[324px]">
           <SelectGroup>
             <SelectLabel>Options</SelectLabel>
             <SelectItem value="MultipleChoiceAnswers">

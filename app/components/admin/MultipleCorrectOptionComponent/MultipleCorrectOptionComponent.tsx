@@ -65,11 +65,11 @@ export default function MultipleCorrectOptionComponent({
   }, [optionOne, optionTwo, optionThree, optionFour]);
 
   return (
-    <div className="w-[180px]">
+    <div className="md:w-[180px]">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="text-black">
-            {selectedOptions ? selectedOptions : "Please choose your options"}
+          <Button variant="outline" className="text-black text-wrap h-fit">
+            {selectedOptions ? selectedOptions : "Options"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-[180px]">
