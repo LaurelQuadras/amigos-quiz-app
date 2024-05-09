@@ -7,6 +7,7 @@ import SingleCorrectAnswerComponent from "../SingleCorrectOptionComponent/Single
 import TrueFalseComponent from "../TrueFalseComponent/TrueFalseComponent";
 import Image from "next/image";
 import { QuestionsAndAnswersType } from "@/app/api/apiRoutes";
+import QuestionImageData from "../QuestionImageData/QuestionImageData";
 
 export interface QuestionFormInterface {
   index: number;
@@ -35,7 +36,6 @@ export default function QuestionForm({
   questionsAndAnswers,
   updateQuestionsAndAnswersListValues,
 }: QuestionFormInterface) {
-  const [selectedFiles, setSelectedFiles] = useState<any>([]);
   const [question, setQuestion] = useState<string>(
     questionsAndAnswers ? questionsAndAnswers.question : ""
   );
@@ -67,14 +67,6 @@ export default function QuestionForm({
     setAnswerTypeSelected(value);
   };
 
-  const handleFileChange = (e: any): void => {
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files);
-      setSelectedFiles([...selectedFiles, ...fileArray]);
-    }
-  };
-
   const handleContentChange = (): void => {
     const optionsList: string[] =
       answerTypeSelected === AnswerTypeEnums.BooleanAnswer
@@ -83,6 +75,7 @@ export default function QuestionForm({
     const newQuestionsAndAnswers: QuestionsAndAnswersType = {
       question,
       attachments: [],
+      image_data: new Blob(),
       answerType: answerTypeSelected,
       options: optionsList,
       correctOption,
@@ -118,30 +111,9 @@ export default function QuestionForm({
         </div>
       </div>
       <div className="flex gap-8 items-center flex-wrap h-auto">
-        <span className="w-40">Attachments</span>
-        <div>
-          <Input
-            id="picture"
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          {selectedFiles.length > 0 && (
-            <div className="mt-2 h-64 object-contain flex gap-3 flex-wrap">
-              {selectedFiles.map((file: any, index: number) => (
-                <Image
-                  key={index}
-                  src={URL.createObjectURL(file)}
-                  alt={`Preview ${index + 1}`}
-                  className="rounded-md h-64"
-                  width={250}
-                  height={250}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        {questionsAndAnswers && questionsAndAnswers.image_data && (
+          <QuestionImageData image_data={questionsAndAnswers.image_data} />
+        )}
       </div>
       <div className="flex gap-8 items-center">
         <span className="w-40">Answer Type</span>

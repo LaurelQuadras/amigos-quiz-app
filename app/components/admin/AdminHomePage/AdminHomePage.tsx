@@ -22,7 +22,7 @@ export default function AdminHomePage() {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-16 md:m-8 text-white">
+    <div className="flex flex-col h-full w-full gap-16 text-white">
       <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span

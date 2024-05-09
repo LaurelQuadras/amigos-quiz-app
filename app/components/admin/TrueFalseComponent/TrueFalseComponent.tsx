@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 export interface TrueFalseComponentProps {
   correctOption?: string;
@@ -18,6 +18,10 @@ export default function TrueFalseComponent({
   correctOption,
   setCorrectOption,
 }: TrueFalseComponentProps) {
+  useEffect(() => {
+    console.log("Correct Option");
+  }, [correctOption]);
+
   const handleValueChange = (value: string): void => {
     setCorrectOption([value]);
   };

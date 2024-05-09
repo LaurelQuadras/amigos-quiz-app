@@ -117,6 +117,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
 
       const questionAndAnswerValue: QuestionsAndAnswersType = {
         question: question.question_text,
+        image_data: question.image_data,
         attachments: [],
         answerType: question.question_type,
         options: answerList.map((answer: GetAnswerType) => answer.answer_text),
@@ -177,7 +178,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-8 md:gap-16 md:m-8 text-white">
+    <div className="flex flex-col h-full w-full gap-8 md:gap-16 text-white">
       <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
         {welcomeAdminText.map((el, i) => (
           <motion.span
@@ -274,7 +275,13 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
             onClick={onPreviousButtonClick}
             disabled={noOfQuestions === 1}
             whileTap={{ scale: 0.8 }}
-            className="bg-black text-white px-4 py-2 rounded-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+              delay: 1.4,
+            }}
+            className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
           >
             Previous{" "}
           </MotionButton>
@@ -282,7 +289,13 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
             onClick={onNextButtonClick}
             disabled={noOfQuestions === 10}
             whileTap={{ scale: 0.8 }}
-            className="bg-black text-white px-4 py-2 rounded-lg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+              delay: 1.4,
+            }}
+            className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
           >
             Next
           </MotionButton>

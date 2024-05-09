@@ -52,6 +52,7 @@ export type GetSectionApiType = {
 
 export type QuestionsAndAnswersType = {
   question: string;
+  image_data: Blob;
   attachments: string[];
   answerType: AnswerTypeEnums | string;
   options: string[];
@@ -65,7 +66,7 @@ export type GetQuestionType = {
   question_type: string;
   authority: string;
   level: string;
-  image_data: string;
+  image_data: Blob;
 };
 
 export type GetAnswerType = {
