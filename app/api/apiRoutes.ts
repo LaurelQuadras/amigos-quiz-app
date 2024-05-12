@@ -52,7 +52,7 @@ export const putSectionsApi = async (
     const response: Response = await fetch(
       `https://gamewithcolors.online/exams/subjects?id=${id}`,
       {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify({
           subject_name: name,
           subject_description: description,
