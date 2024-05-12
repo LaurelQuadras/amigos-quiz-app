@@ -26,7 +26,9 @@ export default function EditSectionsRow({
       subSubject,
       subjectDescription
     );
-    if (result.message.length > 0) {
+    if (result.error) {
+      alert("Two or more subjects cannot have the same Subject Description");
+    } else if (result.message.length > 0) {
       alert("Subject Updated succesfully");
       await getSectionList();
     }
