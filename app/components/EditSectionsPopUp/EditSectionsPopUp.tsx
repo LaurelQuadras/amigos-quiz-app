@@ -1,4 +1,5 @@
 import { GetSectionApiType, getSectionApi } from "@/app/api/apiRoutes";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -17,6 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
+import EditSectionsRow from "./EditSectionsRowa/EditSectionsRowa";
 
 export default function EditSectionsPopUp() {
   const [sectionsListApiResponse, setSectionsListApiResponse] = useState<
@@ -62,7 +64,7 @@ export default function EditSectionsPopUp() {
           <DialogHeader>
             <DialogTitle>
               <span className="text-2xl text-white">All Sections</span>
-              <div className="w-full flex justify-center">
+              <span className="w-full flex justify-center">
                 <Input
                   placeholder="Enter the searched text"
                   value={searchText}
@@ -71,7 +73,7 @@ export default function EditSectionsPopUp() {
                   }}
                   className="w-96 bg-slate-900 text-white"
                 />
-              </div>
+              </span>
             </DialogTitle>
             <DialogDescription>
               <Table>
@@ -79,31 +81,17 @@ export default function EditSectionsPopUp() {
                   <TableRow>
                     <TableHead>Section ID</TableHead>
                     <TableHead>Section Name</TableHead>
+                    <TableHead>Sub Subject</TableHead>
                     <TableHead>Section Description</TableHead>
+                    <TableHead>Save</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {sectionsList.map((section: GetSectionApiType) => (
-                    <TableRow
+                    <EditSectionsRow
                       key={section.subject_id}
-                      className="text-white hover:bg-slate-800"
-                    >
-                      <TableCell className="font-medium text-black">
-                        {section.subject_id}
-                      </TableCell>
-                      <TableCell className="text-black">
-                        <Input
-                          className="w-1/2"
-                          defaultValue={section.subject_name}
-                        />
-                      </TableCell>
-                      <TableCell className="text-black">
-                        <Input
-                          className="w-1/2"
-                          defaultValue={section.subject_description}
-                        />
-                      </TableCell>
-                    </TableRow>
+                      section={section}
+                    />
                   ))}
                 </TableBody>
               </Table>
