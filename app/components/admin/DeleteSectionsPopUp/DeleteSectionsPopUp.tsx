@@ -16,7 +16,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { GetSectionApiType, getSectionApi } from "@/app/api/apiRoutes";
+import {
+  GetSectionApiType,
+  deleteSectionsApi,
+  getSectionApi,
+} from "@/app/api/apiRoutes";
 import { useState, useEffect } from "react";
 
 export default function DeleteSectionsPopUp() {
@@ -51,6 +55,14 @@ export default function DeleteSectionsPopUp() {
     setSectionsList(newSectionList);
   };
 
+  const onDeleteButtonClick = async (id: string) => {
+    const result: string = await deleteSectionsApi(id);
+    if (result.length > 0) {
+      alert("Subject Deleted succesfully");
+      await getSectionList();
+    }
+  };
+
   return (
     <div className="w-full max-w-full">
       <Dialog>
@@ -80,6 +92,7 @@ export default function DeleteSectionsPopUp() {
                   <TableRow>
                     <TableHead>Section ID</TableHead>
                     <TableHead>Section Name</TableHead>
+                    <TableHead>Sub Subject</TableHead>
                     <TableHead>Section Description</TableHead>
                     <TableHead>Delete</TableHead>
                   </TableRow>
@@ -94,9 +107,15 @@ export default function DeleteSectionsPopUp() {
                         {section.subject_id}
                       </TableCell>
                       <TableCell>{section.subject_name}</TableCell>
+                      <TableCell>{section.sub_subject}</TableCell>
                       <TableCell>{section.subject_description}</TableCell>
                       <TableCell>
-                        <Button className="bg-red-600 hover:bg-red-800 w-24">
+                        <Button
+                          className="bg-red-600 hover:bg-red-800 w-24"
+                          onClick={() =>
+                            onDeleteButtonClick(section.subject_id)
+                          }
+                        >
                           Delete
                         </Button>
                       </TableCell>

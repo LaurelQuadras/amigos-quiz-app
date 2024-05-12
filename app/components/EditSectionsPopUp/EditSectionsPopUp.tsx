@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
-import EditSectionsRow from "./EditSectionsRowa/EditSectionsRowa";
+import EditSectionsRow from "./EditSectionsRow/EditSectionsRow";
 
 export default function EditSectionsPopUp() {
   const [sectionsListApiResponse, setSectionsListApiResponse] = useState<
@@ -91,6 +91,7 @@ export default function EditSectionsPopUp() {
                     <EditSectionsRow
                       key={section.subject_id}
                       section={section}
+                      getSectionList={getSectionList}
                     />
                   ))}
                 </TableBody>

@@ -91,6 +91,12 @@ export default function AdminHomePage() {
             <div className="w-full">
               <ViewAllSectionsPopUp title="Edit Questions and Answers" />
             </div>
+            <Link
+              href="/admin/new"
+              className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
+            >
+              <div>Delete Questions and Answers</div>
+            </Link>
           </motion.span>
         </div>
       </div>

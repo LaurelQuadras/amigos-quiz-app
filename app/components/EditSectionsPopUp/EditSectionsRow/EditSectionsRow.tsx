@@ -6,9 +6,13 @@ import { useState } from "react";
 
 export interface EditSectionsRowProps {
   section: GetSectionApiType;
+  getSectionList: () => Promise<void>;
 }
 
-export default function EditSectionsRow({ section }: EditSectionsRowProps) {
+export default function EditSectionsRow({
+  section,
+  getSectionList,
+}: EditSectionsRowProps) {
   const [subjectName, setSubjectName] = useState<string>(section.subject_name);
   const [subSubject, setSubSubject] = useState<string>(section.sub_subject);
   const [subjectDescription, setSubjectDescription] = useState<string>(
@@ -16,12 +20,16 @@ export default function EditSectionsRow({ section }: EditSectionsRowProps) {
   );
 
   const onSaveButtonClick = async () => {
-    const result = await putSectionsApi(
+    const result: string = await putSectionsApi(
       section.subject_id,
       subjectName,
       subSubject,
       subjectDescription
     );
+    if (result.length > 0) {
+      alert("Subject Updated succesfully");
+      await getSectionList();
+    }
   };
 
   return (

@@ -69,6 +69,20 @@ export const putSectionsApi = async (
   }
 };
 
+export const deleteSectionsApi = async (id: string) => {
+  try {
+    const response: Response = await fetch(
+      `https://gamewithcolors.online/exams/subjects?id=${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post section");
+  }
+};
+
 export type GetSectionApiType = {
   subject_id: string;
   subject_name: string;
