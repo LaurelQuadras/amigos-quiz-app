@@ -20,8 +20,8 @@ export interface QuestionFormInterface {
 
 export enum AnswerTypeEnums {
   MultipleChoiceAnswers = "MULTIPLE_CHOICE",
-  SingleAnswer = "SingleAnswer",
-  BooleanAnswer = "BooleanAnswer",
+  SingleAnswer = "SINGLE_CHOICE",
+  BooleanAnswer = "TRUE_FALSE",
 }
 
 export enum AnswerOptions {
@@ -111,9 +111,7 @@ export default function QuestionForm({
         </div>
       </div>
       <div className="flex gap-8 items-center flex-wrap h-auto">
-        {questionsAndAnswers && questionsAndAnswers.image_data && (
-          <QuestionImageData image_data={questionsAndAnswers.image_data} />
-        )}
+        <QuestionImageData image_data={questionsAndAnswers?.image_data} />
       </div>
       <div className="flex gap-8 items-center">
         <span className="w-40">Answer Type</span>

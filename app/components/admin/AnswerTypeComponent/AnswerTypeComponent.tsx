@@ -28,9 +28,7 @@ export default function AnswerTypeComponent({
     <div className="text-black">
       <Select
         defaultValue={
-          defaultOptionSelected
-            ? defaultOptionSelected
-            : "MultipleChoiceAnswers"
+          defaultOptionSelected ? defaultOptionSelected : "MULTIPLE_CHOICE"
         }
         onValueChange={onAnswerTypeValueChange}
       >
@@ -40,11 +38,11 @@ export default function AnswerTypeComponent({
         <SelectContent className="md:w-[324px]">
           <SelectGroup>
             <SelectLabel>Options</SelectLabel>
-            <SelectItem value="MultipleChoiceAnswers">
+            <SelectItem value="MULTIPLE_CHOICE">
               Multiple Choice Answers
             </SelectItem>
-            <SelectItem value="SingleAnswer">Single Answer</SelectItem>
-            <SelectItem value="BooleanAnswer">True / False Answer</SelectItem>
+            <SelectItem value="SINGLE_CHOICE">Single Answer</SelectItem>
+            <SelectItem value="TRUE_FALSE">True / False Answer</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

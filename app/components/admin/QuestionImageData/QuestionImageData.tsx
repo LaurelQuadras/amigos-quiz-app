@@ -18,22 +18,34 @@ export default function QuestionImageData({
     const files = e.target.files;
     if (files) {
       const fileArray = Array.from(files);
-      setSelectedFiles([...selectedFiles, ...fileArray]);
+      if (
+        selectedFiles.length +
+          fileArray.length +
+          (typeof image_data === "string" ? 1 : 0) >
+        4
+      ) {
+        alert("You cannot add more than 4 images");
+      } else {
+        setSelectedFiles([...selectedFiles, ...fileArray]);
+      }
     }
   };
 
-  /**
-   * <span className="w-40">Attachments</span>
-        <div>
-          <Input
-            id="picture"
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+  return (
+    <div className="flex gap-8 flex-auto items-center flex-wrap h-auto">
+      <span className="w-40">Attachments</span>
+      <div className="w-9/12 h-full">
+        <Input
+          id="picture"
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleFileChange}
+          className="w-82"
+        />
+        <div className="mt-2 h-fit object-contain flex gap-3 flex-wrap">
           {selectedFiles.length > 0 && (
-            <div className="mt-2 h-64 object-contain flex gap-3 flex-wrap">
+            <div className="flex gap-3">
               {selectedFiles.map((file: any, index: number) => (
                 <Image
                   key={index}
@@ -46,31 +58,19 @@ export default function QuestionImageData({
               ))}
             </div>
           )}
-   */
-
-  return (
-    <div className="flex gap-8 items-center flex-wrap h-auto">
-      <span className="w-40">Attachments</span>
-      <div>
-        <Input
-          id="picture"
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFileChange}
-        />
-        {typeof image_data === "string" && (
-          <div className="w-auto h-auto">
-            <Image
-              src={dataUrl}
-              alt={`Preview`}
-              className="rounded-md h-64 object-contain"
-              width={250}
-              height={256}
-              unoptimized
-            />
-          </div>
-        )}
+          {typeof image_data === "string" && (
+            <div className="w-auto h-auto">
+              <Image
+                src={dataUrl}
+                alt={`Preview`}
+                className="rounded-md h-64 object-contain"
+                width={250}
+                height={256}
+                unoptimized
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

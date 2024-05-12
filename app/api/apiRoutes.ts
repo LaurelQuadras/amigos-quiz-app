@@ -42,6 +42,33 @@ export const postSectionsApi = async (
   }
 };
 
+export const putSectionsApi = async (
+  id: string,
+  name: string,
+  subsection: string,
+  description: string
+) => {
+  try {
+    const response: Response = await fetch(
+      `https://gamewithcolors.online/exams/subjects?id=${id}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          subject_name: name,
+          subject_description: description,
+          sub_section: subsection,
+          authority: "ALL",
+          level: "ALL",
+          user: "Nathu Ram",
+        }),
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post section");
+  }
+};
+
 export type GetSectionApiType = {
   subject_id: string;
   subject_name: string;

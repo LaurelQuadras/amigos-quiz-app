@@ -2,7 +2,7 @@
   {
     "question": "Who is the prime minister of Sri Lanka",
     "attachments": ["https://abc.com", "https://abc.com"],
-    "answerType": "SingleAnswer",
+    "answerType": "SINGLE_CHOICE",
     "options": ["AA", "BB", "CC", "DD"],
     "correctOption": ["AA"]
   },
