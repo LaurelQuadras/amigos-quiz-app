@@ -57,6 +57,7 @@ export default function DeleteSectionsPopUp() {
 
   const onDeleteButtonClick = async (id: string) => {
     const result: any = await deleteSectionsApi(id);
+    console.log(result);
     if (result) {
       alert("Subject Deleted succesfully");
       await getSectionList();
