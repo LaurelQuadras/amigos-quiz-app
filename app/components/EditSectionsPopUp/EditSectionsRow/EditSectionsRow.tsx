@@ -20,13 +20,13 @@ export default function EditSectionsRow({
   );
 
   const onSaveButtonClick = async () => {
-    const result: string = await putSectionsApi(
+    const result: any = await putSectionsApi(
       section.subject_id,
       subjectName,
       subSubject,
       subjectDescription
     );
-    if (result.length > 0) {
+    if (result.message.length > 0) {
       alert("Subject Updated succesfully");
       await getSectionList();
     }
