@@ -63,25 +63,53 @@ export default function QuestionForm({
       ? questionsAndAnswers.answerType
       : AnswerTypeEnums.MultipleChoiceAnswers
   );
+  const [selectedImageFiles, setSelectedImageFiles] = useState<any>([]);
+
   const onAnswerTypeOptionSelected = (value: AnswerTypeEnums): void => {
     setAnswerTypeSelected(value);
   };
 
-  const handleContentChange = (): void => {
+  const handleContentChange = async (): Promise<void> => {
     const optionsList: string[] =
       answerTypeSelected === AnswerTypeEnums.BooleanAnswer
         ? ["true", "false"]
         : [optionOne, optionTwo, optionThree, optionFour];
-    const newQuestionsAndAnswers: QuestionsAndAnswersType = {
-      question,
-      attachments: [],
-      image_data: new Blob(),
-      answerType: answerTypeSelected,
-      options: optionsList,
-      correctOption,
-    };
 
-    updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
+    if (selectedImageFiles.length > 0) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(selectedImageFiles[0]);
+
+      reader.onload = (event: any) => {
+        const arrayBuffer = event.target.result;
+        const imageBlob = new Blob([arrayBuffer], {
+          type: selectedImageFiles[0].type,
+        });
+
+        const newQuestionsAndAnswers: QuestionsAndAnswersType = {
+          question,
+          image_data: selectedImageFiles.length > 0 ? imageBlob : undefined,
+          answerType: answerTypeSelected,
+          options: optionsList,
+          correctOption,
+        };
+
+        console.log(newQuestionsAndAnswers);
+
+        updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
+      };
+    } else {
+      const newQuestionsAndAnswers: QuestionsAndAnswersType = {
+        question,
+        image_data: undefined,
+        answerType: answerTypeSelected,
+        options: optionsList,
+        correctOption,
+      };
+
+      console.log(newQuestionsAndAnswers);
+
+      updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
+    }
   };
 
   useEffect(() => {
@@ -95,6 +123,7 @@ export default function QuestionForm({
     optionTwo,
     optionThree,
     optionFour,
+    selectedImageFiles,
   ]);
 
   return (
@@ -111,7 +140,11 @@ export default function QuestionForm({
         </div>
       </div>
       <div className="flex gap-8 items-center flex-wrap h-auto">
-        <QuestionImageData image_data={questionsAndAnswers?.image_data} />
+        <QuestionImageData
+          image_data={questionsAndAnswers?.image_data}
+          selectedImageFiles={selectedImageFiles}
+          setSelectedImageFiles={setSelectedImageFiles}
+        />
       </div>
       <div className="flex gap-8 items-center">
         <span className="w-40">Answer Type</span>

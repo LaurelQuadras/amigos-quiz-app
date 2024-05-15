@@ -1,15 +1,18 @@
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export interface QuestionImageDataProps {
   image_data: Blob | undefined;
+  selectedImageFiles: any[];
+  setSelectedImageFiles: Dispatch<SetStateAction<any[]>>;
 }
 
 export default function QuestionImageData({
   image_data,
+  selectedImageFiles,
+  setSelectedImageFiles,
 }: QuestionImageDataProps) {
-  const [selectedFiles, setSelectedFiles] = useState<any>([]);
   const dataUrl: string = image_data
     ? `data:image/png;base64,${image_data}`
     : "";
@@ -19,14 +22,14 @@ export default function QuestionImageData({
     if (files) {
       const fileArray = Array.from(files);
       if (
-        selectedFiles.length +
+        selectedImageFiles.length +
           fileArray.length +
           (typeof image_data === "string" ? 1 : 0) >
         4
       ) {
         alert("You cannot add more than 4 images");
       } else {
-        setSelectedFiles([...selectedFiles, ...fileArray]);
+        setSelectedImageFiles([...selectedImageFiles, ...fileArray]);
       }
     }
   };
@@ -44,9 +47,9 @@ export default function QuestionImageData({
           className="w-82"
         />
         <div className="mt-2 h-fit object-contain flex gap-3 flex-wrap">
-          {selectedFiles.length > 0 && (
+          {selectedImageFiles.length > 0 && (
             <div className="flex gap-3">
-              {selectedFiles.map((file: any, index: number) => (
+              {selectedImageFiles.map((file: any, index: number) => (
                 <Image
                   key={index}
                   src={URL.createObjectURL(file)}

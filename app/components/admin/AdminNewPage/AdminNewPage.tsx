@@ -51,7 +51,6 @@ export default function AdminNewPage() {
   };
 
   useEffect(() => {
-    setSectionSelected(sectionsListValues[0]);
     getSectionList();
     getApi();
   }, []);
@@ -156,7 +155,7 @@ export default function AdminNewPage() {
                 )}
                 onSectionOptionSelected={onSectionOptionSelected}
               />
-              <span className="text-white">
+              <span className="text-white flex items-center">
                 {sectionSelected ? sectionSelected.subject_description : ""}
               </span>
               <div
