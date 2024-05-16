@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/pagination";
 
 export interface QuizPaginationProps {
+  noOfQuestions: number;
   visibleQuestion: number;
   onNextButtonClick: () => void;
   onPreviousButtonClick: () => void;
@@ -15,6 +16,7 @@ export interface QuizPaginationProps {
 }
 
 export default function QuizPagination({
+  noOfQuestions,
   visibleQuestion,
   onNextButtonClick,
   onPreviousButtonClick,
@@ -22,73 +24,22 @@ export default function QuizPagination({
 }: QuizPaginationProps) {
   return (
     <Pagination>
-      <PaginationContent className="cursor-pointer">
+      <PaginationContent className="cursor-pointer text-white">
         <PaginationItem className={visibleQuestion === 1 ? `opacity-25` : ""}>
           <PaginationPrevious onClick={onPreviousButtonClick} />
         </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 1 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(1)}>
-            1
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 2 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(2)}>
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 3 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(3)}>
-            3
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 4 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(4)}>
-            4
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 5 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(5)}>
-            5
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 6 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(6)}>
-            6
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 7 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(7)}>
-            7
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 8 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(8)}>
-            8
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem
-          className={visibleQuestion === 9 ? `border-2 rounded-lg` : ""}
-        >
-          <PaginationLink onClick={() => onCustomQuestionPageLink(9)}>
-            9
-          </PaginationLink>
-        </PaginationItem>
+        {Array.from({ length: noOfQuestions }, (_, i) => i).map(
+          (e: number, i) => (
+            <PaginationItem
+              key={i}
+              className={visibleQuestion === 1 ? `border-2 rounded-lg` : ""}
+            >
+              <PaginationLink onClick={() => onCustomQuestionPageLink(i + 1)}>
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          )
+        )}
         <PaginationItem className={visibleQuestion === 9 ? `opacity-25` : ""}>
           <PaginationNext onClick={onNextButtonClick} />
         </PaginationItem>

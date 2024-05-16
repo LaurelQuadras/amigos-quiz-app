@@ -1,14 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { QuestionsAndAnswersType } from "@/app/api/apiRoutes";
 
 export interface QuizQuestionProps {
   visibleQuestion: number;
   onNextButtonClick: () => void;
   onPreviousButtonClick: () => void;
   lastQuestionIndex: number;
+  questionAndAnswerValue: QuestionsAndAnswersType;
 }
 
 export default function QuizQuestion({
@@ -16,6 +18,7 @@ export default function QuizQuestion({
   onNextButtonClick,
   onPreviousButtonClick,
   lastQuestionIndex,
+  questionAndAnswerValue,
 }: QuizQuestionProps) {
   const [selectedOption, setSelectedOption] = useState<number>(0);
 
@@ -41,7 +44,9 @@ export default function QuizQuestion({
           className="w-full h-full flex flex-col"
         >
           <div className="m-16 p-8 border-2 rounded-lg flex flex-col gap-8 justify-center">
-            <span>Who is the president of India? {visibleQuestion}</span>
+            <span className="text-white">
+              {questionAndAnswerValue.question}
+            </span>
             <div className="flex flex-col gap-4">
               <Button
                 className={`${
@@ -51,7 +56,7 @@ export default function QuizQuestion({
                 }  hover:text-white border-2 rounded-lg`}
                 onClick={() => onOptionClick(1)}
               >
-                Option 1
+                {questionAndAnswerValue.options[0].answerText}
               </Button>
               <Button
                 className={`${
@@ -61,7 +66,7 @@ export default function QuizQuestion({
                 }  hover:text-white border-2 rounded-lg`}
                 onClick={() => onOptionClick(2)}
               >
-                Option 2
+                {questionAndAnswerValue.options[1].answerText}
               </Button>
               <Button
                 className={`${
@@ -71,7 +76,7 @@ export default function QuizQuestion({
                 }  hover:text-white border-2 rounded-lg`}
                 onClick={() => onOptionClick(3)}
               >
-                Option 3
+                {questionAndAnswerValue.options[2].answerText}
               </Button>
               <Button
                 className={`${
@@ -81,7 +86,7 @@ export default function QuizQuestion({
                 }  hover:text-white border-2 rounded-lg`}
                 onClick={() => onOptionClick(4)}
               >
-                Option 4
+                {questionAndAnswerValue.options[3].answerText}
               </Button>
             </div>
           </div>

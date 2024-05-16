@@ -29,9 +29,7 @@ export interface AdminEditPageProps {
 }
 
 export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
-  const [noOfQuestions, setNoOfQuestions] = useState<number>(
-    questionsAndAnswersMockValues.length
-  );
+  const [noOfQuestions, setNoOfQuestions] = useState<number>(10);
   const [sectionSelected, setSectionSelected] = useState<GetSectionApiType>();
   const [questionsAndAnswersListValues, setQuestionAndAnswersListValues] =
     useState<QuestionsAndAnswersType[]>([]);

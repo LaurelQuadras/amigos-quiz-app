@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import QuizQuestion from "../components/user/QuizQuestion";
 import QuizPagination from "../components/user/QuizPagination";
 import { motion } from "framer-motion";
+import { AnswerTypeEnums } from "../components/admin/QuestionForm/QuestionForm";
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState<number>(0);
@@ -40,6 +41,19 @@ export default function Home() {
             onPreviousButtonClick={onPreviousButtonClick}
             key={index}
             lastQuestionIndex={ArrayList.length}
+            questionAndAnswerValue={{
+              question: "Prime Minister",
+              questionId: "1",
+              image_data: undefined,
+              answerType: AnswerTypeEnums.MultipleChoiceAnswers,
+              correctOption: ["1", "2"],
+              options: [
+                { answerId: "1", answerText: "One" },
+                { answerId: "2", answerText: "Two" },
+                { answerId: "3", answerText: "Three" },
+                { answerId: "4", answerText: "Four" },
+              ],
+            }}
           />
         ) : (
           <></>
@@ -58,6 +72,7 @@ export default function Home() {
           onNextButtonClick={onNextButtonClick}
           onPreviousButtonClick={onPreviousButtonClick}
           onCustomQuestionPageLink={onCustomQuestionPageLink}
+          noOfQuestions={ArrayList.length}
         />
       </motion.div>
     </div>

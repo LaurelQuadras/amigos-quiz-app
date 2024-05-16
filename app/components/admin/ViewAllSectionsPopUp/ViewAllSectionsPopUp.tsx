@@ -18,15 +18,18 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import sectionsListValues from "../../../json/sectionsList.json";
 import { Input } from "@/components/ui/input";
 
 export interface ViewAllSectionsPopUpProps {
   title: string;
+  routeOnRowClick: boolean;
+  routeUrlPath: string;
 }
 
 export default function ViewAllSectionsPopUp({
   title,
+  routeOnRowClick,
+  routeUrlPath,
 }: ViewAllSectionsPopUpProps) {
   const router = useRouter();
   const [sectionsListApiResponse, setSectionsListApiResponse] = useState<
@@ -97,8 +100,13 @@ export default function ViewAllSectionsPopUp({
                   {sectionsList.map((section: GetSectionApiType) => (
                     <TableRow
                       key={section.subject_id}
-                      onClick={() =>
-                        router.push(`/admin/edit/${section.subject_id}`)
+                      onClick={
+                        routeOnRowClick
+                          ? () =>
+                              router.push(
+                                `/admin/${routeUrlPath}/${section.subject_id}`
+                              )
+                          : () => {}
                       }
                       className="hover:bg-slate-800"
                     >

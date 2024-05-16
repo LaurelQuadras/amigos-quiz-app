@@ -61,7 +61,11 @@ export default function AdminHomePage() {
             }}
             className="flex flex-col md:flex-row gap-16 items-center text-sm w-full"
           >
-            <ViewAllSectionsPopUp title="View All Sections" />
+            <ViewAllSectionsPopUp
+              title="View All Sections"
+              routeOnRowClick={false}
+              routeUrlPath=""
+            />
             <div className="w-full">
               <AddSectionComponent onAddNewSection={onAddNewSection} />
             </div>
@@ -79,8 +83,12 @@ export default function AdminHomePage() {
             }}
             className="flex flex-col md:flex-row gap-16 mt-16 md:mt-0 items-center text-sm w-full"
           >
-            <div className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
-              View Questions and Answers
+            <div className="w-full">
+              <ViewAllSectionsPopUp
+                title="View Questions and Answers"
+                routeOnRowClick
+                routeUrlPath={encodeURI("view")}
+              />
             </div>
             <Link
               href="/admin/new"
@@ -89,7 +97,11 @@ export default function AdminHomePage() {
               <div>Add Questions and Answers</div>
             </Link>
             <div className="w-full">
-              <ViewAllSectionsPopUp title="Edit Questions and Answers" />
+              <ViewAllSectionsPopUp
+                title="Edit Questions and Answers"
+                routeOnRowClick
+                routeUrlPath={encodeURI("edit")}
+              />
             </div>
             <Link
               href="/admin/new"
