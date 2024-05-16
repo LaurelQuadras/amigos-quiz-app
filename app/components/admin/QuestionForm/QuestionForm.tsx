@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import SingleCorrectAnswerComponent from "../SingleCorrectOptionComponent/SingleCorrectOptionComponent";
 import TrueFalseComponent from "../TrueFalseComponent/TrueFalseComponent";
 import Image from "next/image";
-import { QuestionsAndAnswersType } from "@/app/api/apiRoutes";
+import { AnswerType, QuestionsAndAnswersType } from "@/app/api/apiRoutes";
 import QuestionImageData from "../QuestionImageData/QuestionImageData";
 
 export interface QuestionFormInterface {
@@ -40,17 +40,25 @@ export default function QuestionForm({
     questionsAndAnswers ? questionsAndAnswers.question : ""
   );
 
-  const [optionOne, setOptionOne] = useState<string>(
-    questionsAndAnswers ? questionsAndAnswers.options[0] : ""
+  const [optionOne, setOptionOne] = useState<AnswerType>(
+    questionsAndAnswers
+      ? questionsAndAnswers.options[0]
+      : { answerId: "", answerText: "" }
   );
-  const [optionTwo, setOptionTwo] = useState<string>(
-    questionsAndAnswers ? questionsAndAnswers.options[1] : ""
+  const [optionTwo, setOptionTwo] = useState<AnswerType>(
+    questionsAndAnswers
+      ? questionsAndAnswers.options[1]
+      : { answerId: "", answerText: "" }
   );
-  const [optionThree, setOptionThree] = useState<string>(
-    questionsAndAnswers ? questionsAndAnswers.options[2] : ""
+  const [optionThree, setOptionThree] = useState<AnswerType>(
+    questionsAndAnswers
+      ? questionsAndAnswers.options[2]
+      : { answerId: "", answerText: "" }
   );
-  const [optionFour, setOptionFour] = useState<string>(
-    questionsAndAnswers ? questionsAndAnswers.options[3] : ""
+  const [optionFour, setOptionFour] = useState<AnswerType>(
+    questionsAndAnswers
+      ? questionsAndAnswers.options[3]
+      : { answerId: "", answerText: "" }
   );
 
   const [correctOption, setCorrectOption] = useState<string[]>(
@@ -70,9 +78,12 @@ export default function QuestionForm({
   };
 
   const handleContentChange = async (): Promise<void> => {
-    const optionsList: string[] =
+    const optionsList: AnswerType[] =
       answerTypeSelected === AnswerTypeEnums.BooleanAnswer
-        ? ["true", "false"]
+        ? [
+            { answerId: optionOne.answerId, answerText: "true" },
+            { answerId: optionTwo.answerId, answerText: "false" },
+          ]
         : [optionOne, optionTwo, optionThree, optionFour];
 
     if (selectedImageFiles.length > 0) {
@@ -86,6 +97,9 @@ export default function QuestionForm({
         });
 
         const newQuestionsAndAnswers: QuestionsAndAnswersType = {
+          questionId: questionsAndAnswers
+            ? questionsAndAnswers.questionId
+            : "0",
           question,
           image_data: selectedImageFiles.length > 0 ? imageBlob : undefined,
           answerType: answerTypeSelected,
@@ -93,20 +107,17 @@ export default function QuestionForm({
           correctOption,
         };
 
-        console.log(newQuestionsAndAnswers);
-
         updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
       };
     } else {
       const newQuestionsAndAnswers: QuestionsAndAnswersType = {
+        questionId: questionsAndAnswers ? questionsAndAnswers.questionId : "0",
         question,
         image_data: undefined,
         answerType: answerTypeSelected,
         options: optionsList,
         correctOption,
       };
-
-      console.log(newQuestionsAndAnswers);
 
       updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
     }
@@ -156,39 +167,51 @@ export default function QuestionForm({
         </div>
       </div>
       <div className="flex gap-8 items-center">
-        <span className="w-40">Options</span>
+        <span className="w-40">Answers</span>
         {answerTypeSelected !== AnswerTypeEnums.BooleanAnswer && (
           <div className="flex gap-4 text-black flex-col md:flex-row">
             <Input
-              placeholder="Option 1"
-              defaultValue={questionsAndAnswers?.options[0]}
-              value={optionOne}
+              placeholder="Answer 1"
+              defaultValue={questionsAndAnswers?.options[0].answerText}
+              value={optionOne.answerText}
               onChange={(e) => {
-                setOptionOne(e.target.value);
+                setOptionOne({
+                  answerId: optionOne.answerId,
+                  answerText: e.target.value,
+                });
               }}
             />
             <Input
-              placeholder="Option 2"
-              defaultValue={questionsAndAnswers?.options[1]}
-              value={optionTwo}
+              placeholder="Answer 2"
+              defaultValue={questionsAndAnswers?.options[1].answerText}
+              value={optionTwo.answerText}
               onChange={(e) => {
-                setOptionTwo(e.target.value);
+                setOptionTwo({
+                  answerId: optionTwo.answerId,
+                  answerText: e.target.value,
+                });
               }}
             />
             <Input
-              placeholder="Option 3"
-              defaultValue={questionsAndAnswers?.options[2]}
-              value={optionThree}
+              placeholder="Answer 3"
+              defaultValue={questionsAndAnswers?.options[2].answerText}
+              value={optionThree.answerText}
               onChange={(e) => {
-                setOptionThree(e.target.value);
+                setOptionThree({
+                  answerId: optionThree.answerId,
+                  answerText: e.target.value,
+                });
               }}
             />
             <Input
-              placeholder="Option 4"
-              defaultValue={questionsAndAnswers?.options[3]}
-              value={optionFour}
+              placeholder="Answer 4"
+              defaultValue={questionsAndAnswers?.options[3].answerText}
+              value={optionFour.answerText}
               onChange={(e) => {
-                setOptionFour(e.target.value);
+                setOptionFour({
+                  answerId: optionFour.answerId,
+                  answerText: e.target.value,
+                });
               }}
             />
           </div>
@@ -201,14 +224,19 @@ export default function QuestionForm({
         )}
       </div>
       <div className="flex gap-8 items-center">
-        <span className="w-40">Correct Option</span>
+        <span className="w-40">Correct Answer</span>
         {answerTypeSelected === AnswerTypeEnums.MultipleChoiceAnswers &&
-          optionOne !== "" &&
-          optionTwo !== "" &&
-          optionThree !== "" &&
-          optionFour !== "" && (
+          optionOne.answerText !== "" &&
+          optionTwo.answerText !== "" &&
+          optionThree.answerText !== "" &&
+          optionFour.answerText !== "" && (
             <MultipleCorrectOptionComponent
-              optionList={[optionOne, optionTwo, optionThree, optionFour]}
+              optionList={[
+                optionOne.answerText,
+                optionTwo.answerText,
+                optionThree.answerText,
+                optionFour.answerText,
+              ]}
               correctOptionList={
                 questionsAndAnswers ? questionsAndAnswers.correctOption : []
               }
@@ -216,12 +244,17 @@ export default function QuestionForm({
             />
           )}
         {answerTypeSelected === AnswerTypeEnums.SingleAnswer &&
-          optionOne !== "" &&
-          optionTwo !== "" &&
-          optionThree !== "" &&
-          optionFour !== "" && (
+          optionOne.answerText !== "" &&
+          optionTwo.answerText !== "" &&
+          optionThree.answerText !== "" &&
+          optionFour.answerText !== "" && (
             <SingleCorrectAnswerComponent
-              optionList={[optionOne, optionTwo, optionThree, optionFour]}
+              optionList={[
+                optionOne.answerText,
+                optionTwo.answerText,
+                optionThree.answerText,
+                optionFour.answerText,
+              ]}
               correctOption={questionsAndAnswers?.correctOption
                 .toString()
                 .trim()}

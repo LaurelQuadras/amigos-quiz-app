@@ -13,6 +13,9 @@ import {
   getAnswersWithQuestionId,
   getCorrectOptionWithQuestionIdApi,
   GetCorrectAnswerType,
+  putQuestionApi,
+  putAnswerApi,
+  AnswerType,
 } from "@/app/api/apiRoutes";
 import { output_script } from "@/app/fonts/fonts";
 import { Button } from "@/components/ui/button";
@@ -30,7 +33,6 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     questionsAndAnswersMockValues.length
   );
   const [sectionSelected, setSectionSelected] = useState<GetSectionApiType>();
-
   const [questionsAndAnswersListValues, setQuestionAndAnswersListValues] =
     useState<QuestionsAndAnswersType[]>([]);
 
@@ -71,6 +73,8 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     const questionAndAnswerList: QuestionsAndAnswersType[] =
       await getQuestionAndAnswerList(uniqueQuestions);
 
+    console.log(uniqueQuestions);
+
     setNoOfQuestions(questionAndAnswerList.length);
     setQuestionAndAnswersListValues(questionAndAnswerList);
   };
@@ -82,7 +86,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
 
     await Promise.all(
       questions.map(async (question: GetQuestionType, index: number) => {
-        const questionAndAnswerValue: any =
+        const questionAndAnswerValue: QuestionsAndAnswersType | undefined =
           await getQuestionAndAnswerApiResponseList(question);
 
         if (questionAndAnswerValue) {
@@ -91,12 +95,13 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
       })
     );
 
+    console.log("A ", questionsAndAnswersList);
     return questionsAndAnswersList;
   };
 
   const getQuestionAndAnswerApiResponseList = async (
     question: GetQuestionType
-  ): Promise<any> => {
+  ): Promise<QuestionsAndAnswersType | undefined> => {
     const answerList: GetAnswerType[] = await getAnswersWithQuestionId(
       question.question_id
     );
@@ -116,11 +121,16 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
       });
 
       const questionAndAnswerValue: QuestionsAndAnswersType = {
+        questionId: question.question_id,
         question: question.question_text,
         image_data: question.image_data,
-        attachments: [],
         answerType: question.question_type,
-        options: answerList.map((answer: GetAnswerType) => answer.answer_text),
+        options: answerList.map((answer: GetAnswerType) => {
+          return {
+            answerId: answer.answer_id,
+            answerText: answer.answer_text,
+          };
+        }),
         correctOption: correctOptionWithText,
       };
 
@@ -145,35 +155,98 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     newQuestionsAndAnswers[index] = questionsAndAnswers;
   };
 
-  const postQuestionAndAnswers = async (): Promise<void> => {
-    console.log("came ", questionsAndAnswersListValues);
-    questionsAndAnswersListValues.forEach(
-      async (questionAndAnswers: QuestionsAndAnswersType) => {
-        const questionId: any = await postQuestionsApi(
-          "9",
-          questionAndAnswers.question,
-          questionAndAnswers.answerType
-        );
+  const updateQuestion = async (
+    questionAndAnswerValue: QuestionsAndAnswersType
+  ): Promise<void> => {
+    const questionAndAnswerList = questionsAndAnswersListValues.filter(
+      (questionAndAnswerListValue: QuestionsAndAnswersType) =>
+        questionAndAnswerValue.questionId ===
+        questionAndAnswerListValue.questionId
+    )[0];
 
-        questionAndAnswers.options.forEach(
-          async (option: string, index: number) => {
-            const answerIdResponse: any = await postAnswersApi(
-              questionId.question_id,
-              option
-            );
-            if (
-              questionAndAnswers.correctOption.includes(
-                answerIdResponse.answerText
-              )
-            ) {
-              await postCorrectOptionApi(
-                questionId.question_id,
-                answerIdResponse.answer_id
-              );
-            }
-          }
-        );
+    try {
+      const response = await putQuestionApi(
+        questionAndAnswerList.questionId,
+        sectionId,
+        questionAndAnswerList.question,
+        questionAndAnswerList.answerType
+      );
+      if (response) {
+        alert("Question updated successfully");
       }
+    } catch {
+      alert("Error");
+    }
+  };
+
+  const updateAnswers = async (
+    questionAndAnswerValue: QuestionsAndAnswersType
+  ): Promise<void> => {
+    const questionAndAnswerList = questionsAndAnswersListValues.filter(
+      (questionAndAnswerListValue: QuestionsAndAnswersType) =>
+        questionAndAnswerValue.questionId ===
+        questionAndAnswerListValue.questionId
+    )[0];
+
+    try {
+      questionAndAnswerList.options.forEach(async (answer: AnswerType) => {
+        await putAnswerApi(
+          answer.answerId,
+          questionAndAnswerList.questionId,
+          answer.answerText
+        );
+      });
+      alert("Answers updated successfully");
+    } catch {
+      alert("Error");
+    }
+  };
+
+  //Need to implement once backend is ready
+  const updateCorrectAnswers = async (
+    questionAndAnswerValue: QuestionsAndAnswersType
+  ): Promise<void> => {
+    const questionAndAnswerList = questionsAndAnswersListValues.filter(
+      (questionAndAnswerListValue: QuestionsAndAnswersType) =>
+        questionAndAnswerValue.questionId ===
+        questionAndAnswerListValue.questionId
+    )[0];
+
+    try {
+      questionAndAnswerList.options.forEach(async (answer: AnswerType) => {
+        await putAnswerApi(
+          answer.answerId,
+          questionAndAnswerList.questionId,
+          answer.answerText
+        );
+      });
+      alert("Correct Answers updated successfully");
+    } catch {
+      alert("Error");
+    }
+  };
+
+  const editOptions = (
+    questionAndAnswerValue: QuestionsAndAnswersType
+  ): JSX.Element => {
+    return (
+      <div className="flex flex-col">
+        <Button
+          className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 mb-[8.8rem] h-fit text-wrap"
+          onClick={() => updateQuestion(questionAndAnswerValue)}
+        >
+          Update Question, Attachments and Answer Type
+        </Button>
+        <Button
+          className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 mb-4"
+          onClick={() => updateAnswers(questionAndAnswerValue)}
+        >
+          Update Answers
+        </Button>
+        <Button className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300">
+          Update Correct Answer
+        </Button>
+      </div>
     );
   };
 
@@ -226,22 +299,15 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
               duration: 1,
               delay: 1.4,
             }}
+            className="flex"
           >
             <span className="w-40 text-base">
               {sectionSelected?.subject_name.toString()}
             </span>
-            <div className="flex flex-col md:flex-row gap-8 md:items-center">
-              <span className="w-fit text-base text-nowrap">
-                Sub Section:{" "}
-                {sectionSelected ? sectionSelected.subject_description : ""}
-              </span>
-              <div
-                className="p-3 px-8 cursor-pointer bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white w-28"
-                onClick={postQuestionAndAnswers}
-              >
-                Save
-              </div>
-            </div>
+            <span className="text-white flex items-center">
+              Sub section:{" "}
+              {sectionSelected ? sectionSelected.subject_description : ""}
+            </span>
           </motion.div>
         </div>
         <div className="flex flex-col gap-16">
@@ -255,16 +321,26 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
                     duration: 1,
                     delay: 1.4,
                   }}
-                  className="flex flex-col gap-4 border-2 p-4 rounded-lg"
+                  className="flex gap-4 border-2 p-4 rounded-lg"
                   key={i}
                 >
-                  <QuestionForm
-                    index={i}
-                    questionsAndAnswers={questionsAndAnswersListValues[i]}
-                    updateQuestionsAndAnswersListValues={
-                      updateQuestionsAndAnswersListValues
-                    }
-                  />
+                  <div className="flex flex-col gap-4">
+                    <QuestionForm
+                      index={i}
+                      questionsAndAnswers={questionsAndAnswersListValues[i]}
+                      updateQuestionsAndAnswersListValues={
+                        updateQuestionsAndAnswersListValues
+                      }
+                    />
+                    <div className="w-full flex justify-center items-center">
+                      <Button className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-64">
+                        Delete Question
+                      </Button>
+                    </div>
+                  </div>
+                  {questionsAndAnswersListValues[i] &&
+                    questionsAndAnswersListValues[i].questionId !== "0" &&
+                    editOptions(questionsAndAnswersListValues[i])}
                 </motion.div>
               ))}
             </>

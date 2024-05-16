@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
+  AnswerType,
   GetSectionApiType,
   QuestionsAndAnswersType,
   getApi,
@@ -66,20 +67,20 @@ export default function AdminNewPage() {
   };
 
   const postQuestionAndAnswers = async (): Promise<void> => {
-    console.log("came ", questionsAndAnswersListValues);
+    console.log("came ", sectionSelected?.subject_id!);
     questionsAndAnswersListValues.forEach(
       async (questionAndAnswers: QuestionsAndAnswersType) => {
         const questionId: any = await postQuestionsApi(
-          "9",
+          sectionSelected?.subject_id!,
           questionAndAnswers.question,
           questionAndAnswers.answerType
         );
 
         questionAndAnswers.options.forEach(
-          async (option: string, index: number) => {
+          async (option: AnswerType, index: number) => {
             const answerIdResponse: any = await postAnswersApi(
               questionId.question_id,
-              option
+              option.answerText
             );
             if (
               questionAndAnswers.correctOption.includes(
