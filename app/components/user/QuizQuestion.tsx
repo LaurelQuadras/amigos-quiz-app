@@ -32,7 +32,7 @@ export default function QuizQuestion({
 
   return (
     <AnimatePresence>
-      {visibleQuestion && (
+      {typeof visibleQuestion === "number" && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -92,7 +92,7 @@ export default function QuizQuestion({
           </div>
           <div className="mx-16 flex items-end justify-end gap-8">
             <Button
-              disabled={visibleQuestion === 1}
+              disabled={visibleQuestion === 0}
               onClick={onPreviousButtonClick}
             >
               Previous

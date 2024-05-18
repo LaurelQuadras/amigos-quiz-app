@@ -93,7 +93,6 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
       })
     );
 
-    console.log("A ", questionsAndAnswersList);
     return questionsAndAnswersList;
   };
 

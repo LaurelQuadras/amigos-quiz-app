@@ -26,8 +26,6 @@ export default function Home() {
   };
 
   const onCustomQuestionPageLink = (value: number): void => {
-    console.log(ArrayList[7]);
-
     setIsVisible(ArrayList[value - 1]);
   };
 

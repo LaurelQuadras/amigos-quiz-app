@@ -55,8 +55,6 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
     const questionAndAnswerList: QuestionsAndAnswersType[] =
       await getQuestionAndAnswerList(uniqueQuestions);
 
-    console.log(questionAndAnswerList);
-
     setNoOfQuestions(questionAndAnswerList.length);
     setQuestionAndAnswersListValues(questionAndAnswerList);
   };
@@ -128,18 +126,26 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
   }, [sectionId]);
 
   useEffect(() => {
-    setIsVisible(Array.from({ length: noOfQuestions }, (_, i) => i)[1]);
+    setIsVisible(Array.from({ length: noOfQuestions }, (_, i) => i)[0]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [noOfQuestions]);
 
   const onNextButtonClick = (): void => {
-    const index: number = [...Array(noOfQuestions)].indexOf(isVisible);
+    const index: number = Array.from(
+      { length: noOfQuestions },
+      (_, i) => i
+    ).indexOf(isVisible);
     setIsVisible(Array.from({ length: noOfQuestions }, (_, i) => i)[index + 1]);
   };
 
   const onPreviousButtonClick = (): void => {
-    const index: number = [...Array(noOfQuestions)].indexOf(isVisible);
-    setIsVisible(Array.from({ length: noOfQuestions }, (_, i) => i)[index - 1]);
+    const index: number = Array.from(
+      { length: noOfQuestions },
+      (_, i) => i
+    ).indexOf(isVisible);
+    setIsVisible(
+      Array.from({ length: noOfQuestions - 1 }, (_, i) => i)[index - 1]
+    );
   };
 
   const onCustomQuestionPageLink = (value: number): void => {
@@ -152,14 +158,14 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
       <div>
         {Array.from({ length: noOfQuestions }, (_, i) => i).map(
           (e: number, i) =>
-            i === isVisible ? (
+            e === isVisible ? (
               <QuizQuestion
                 visibleQuestion={isVisible}
                 onNextButtonClick={onNextButtonClick}
                 onPreviousButtonClick={onPreviousButtonClick}
                 key={i}
                 lastQuestionIndex={noOfQuestions}
-                questionAndAnswerValue={questionsAndAnswersListValues[i - 1]}
+                questionAndAnswerValue={questionsAndAnswersListValues[e]}
               />
             ) : (
               <></>
