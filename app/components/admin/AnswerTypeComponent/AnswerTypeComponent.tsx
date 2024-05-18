@@ -18,9 +18,9 @@ export default function AnswerTypeComponent({
   defaultOptionSelected,
   onAnswerTypeOptionSelected,
 }: AnswerTypeComponentProps) {
-  const onAnswerTypeValueChange = (value: string): void => {
-    let answerType: AnswerTypeEnums =
-      AnswerTypeEnums[value as keyof typeof AnswerTypeEnums];
+  const onAnswerTypeValueChange = (value: AnswerTypeEnums): void => {
+    console.log("NA ", value);
+    let answerType: AnswerTypeEnums = value;
     onAnswerTypeOptionSelected(answerType);
   };
 
@@ -38,11 +38,15 @@ export default function AnswerTypeComponent({
         <SelectContent className="md:w-[324px]">
           <SelectGroup>
             <SelectLabel>Options</SelectLabel>
-            <SelectItem value="MULTIPLE_CHOICE">
+            <SelectItem value={AnswerTypeEnums.MultipleChoiceAnswers}>
               Multiple Choice Answers
             </SelectItem>
-            <SelectItem value="SINGLE_CHOICE">Single Answer</SelectItem>
-            <SelectItem value="TRUE_FALSE">True / False Answer</SelectItem>
+            <SelectItem value={AnswerTypeEnums.SingleAnswer}>
+              Single Answer
+            </SelectItem>
+            <SelectItem value={AnswerTypeEnums.BooleanAnswer}>
+              True / False Answer
+            </SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>

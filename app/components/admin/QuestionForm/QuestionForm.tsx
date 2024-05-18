@@ -72,6 +72,8 @@ export default function QuestionForm({
       : AnswerTypeEnums.MultipleChoiceAnswers
   );
   const [selectedImageFiles, setSelectedImageFiles] = useState<any>([]);
+  const [validAnswersEntered, setValidAnswersEntered] =
+    useState<boolean>(false);
 
   const onAnswerTypeOptionSelected = (value: AnswerTypeEnums): void => {
     setAnswerTypeSelected(value);
@@ -135,6 +137,21 @@ export default function QuestionForm({
     optionThree,
     optionFour,
     selectedImageFiles,
+  ]);
+
+  useEffect(() => {
+    const validAnswersResponse: boolean =
+      optionOne.answerText !== "" &&
+      optionTwo.answerText !== "" &&
+      optionThree.answerText !== "" &&
+      optionFour.answerText !== "";
+    setValidAnswersEntered(validAnswersResponse);
+  }, [
+    optionOne.answerText,
+    optionTwo.answerText,
+    optionThree.answerText,
+    optionFour.answerText,
+    answerTypeSelected,
   ]);
 
   return (
@@ -226,10 +243,7 @@ export default function QuestionForm({
       <div className="flex gap-8 items-center">
         <span className="w-40">Correct Answer</span>
         {answerTypeSelected === AnswerTypeEnums.MultipleChoiceAnswers &&
-          optionOne.answerText !== "" &&
-          optionTwo.answerText !== "" &&
-          optionThree.answerText !== "" &&
-          optionFour.answerText !== "" && (
+          validAnswersEntered && (
             <MultipleCorrectOptionComponent
               optionList={[
                 optionOne.answerText,
@@ -244,10 +258,7 @@ export default function QuestionForm({
             />
           )}
         {answerTypeSelected === AnswerTypeEnums.SingleAnswer &&
-          optionOne.answerText !== "" &&
-          optionTwo.answerText !== "" &&
-          optionThree.answerText !== "" &&
-          optionFour.answerText !== "" && (
+          validAnswersEntered && (
             <SingleCorrectAnswerComponent
               optionList={[
                 optionOne.answerText,
