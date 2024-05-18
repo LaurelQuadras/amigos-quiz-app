@@ -185,9 +185,13 @@ export default function AdminNewPage() {
           >
             <div className="flex gap-2 md:gap-8 flex-col md:flex-row">
               <SectionComponent
-                sectionsList={sectionsList.map(
-                  (section: GetSectionApiType) => section.subject_name
-                )}
+                sectionsList={
+                  sectionsList.length !== undefined
+                    ? sectionsList.map(
+                        (section: GetSectionApiType) => section.subject_name
+                      )
+                    : []
+                }
                 onSectionOptionSelected={onSectionOptionSelected}
               />
               <span className="text-white flex items-center">

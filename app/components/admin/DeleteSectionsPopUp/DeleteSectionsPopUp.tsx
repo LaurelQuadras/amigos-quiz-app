@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -86,6 +87,11 @@ export default function DeleteSectionsPopUp() {
             </DialogTitle>
             <DialogDescription>
               <Table>
+                <TableCaption>
+                  {sectionsList.length === undefined
+                    ? "There are no Subjects created"
+                    : "A list of all subjects available."}
+                </TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Section ID</TableHead>
@@ -96,29 +102,30 @@ export default function DeleteSectionsPopUp() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sectionsList.map((section: GetSectionApiType) => (
-                    <TableRow
-                      key={section.subject_id}
-                      className="text-white hover:bg-slate-800"
-                    >
-                      <TableCell className="font-medium">
-                        {section.subject_id}
-                      </TableCell>
-                      <TableCell>{section.subject_name}</TableCell>
-                      <TableCell>{section.sub_subject}</TableCell>
-                      <TableCell>{section.subject_description}</TableCell>
-                      <TableCell>
-                        <Button
-                          className="bg-red-600 hover:bg-red-800 w-24"
-                          onClick={() =>
-                            onDeleteButtonClick(section.subject_id)
-                          }
-                        >
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {sectionsList.length !== undefined &&
+                    sectionsList.map((section: GetSectionApiType) => (
+                      <TableRow
+                        key={section.subject_id}
+                        className="text-white hover:bg-slate-800"
+                      >
+                        <TableCell className="font-medium">
+                          {section.subject_id}
+                        </TableCell>
+                        <TableCell>{section.subject_name}</TableCell>
+                        <TableCell>{section.sub_subject}</TableCell>
+                        <TableCell>{section.subject_description}</TableCell>
+                        <TableCell>
+                          <Button
+                            className="bg-red-600 hover:bg-red-800 w-24"
+                            onClick={() =>
+                              onDeleteButtonClick(section.subject_id)
+                            }
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </DialogDescription>

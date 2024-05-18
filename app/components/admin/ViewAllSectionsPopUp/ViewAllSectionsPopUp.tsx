@@ -88,7 +88,11 @@ export default function ViewAllSectionsPopUp({
             </DialogTitle>
             <DialogDescription>
               <Table className="text-white">
-                <TableCaption>A list of all sections available.</TableCaption>
+                <TableCaption>
+                  {sectionsList.length === undefined
+                    ? "There are no Subjects created"
+                    : "A list of all subjects available."}
+                </TableCaption>
                 <TableHeader>
                   <TableRow className="text-white hover:bg-slate-900">
                     <TableHead>Section ID</TableHead>
@@ -97,26 +101,27 @@ export default function ViewAllSectionsPopUp({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sectionsList.map((section: GetSectionApiType) => (
-                    <TableRow
-                      key={section.subject_id}
-                      onClick={
-                        routeOnRowClick
-                          ? () =>
-                              router.push(
-                                `/admin/${routeUrlPath}/${section.subject_id}`
-                              )
-                          : () => {}
-                      }
-                      className="hover:bg-slate-800"
-                    >
-                      <TableCell className="font-medium">
-                        {section.subject_id}
-                      </TableCell>
-                      <TableCell>{section.subject_name}</TableCell>
-                      <TableCell>{section.subject_description}</TableCell>
-                    </TableRow>
-                  ))}
+                  {sectionsList.length !== undefined &&
+                    sectionsList.map((section: GetSectionApiType) => (
+                      <TableRow
+                        key={section.subject_id}
+                        onClick={
+                          routeOnRowClick
+                            ? () =>
+                                router.push(
+                                  `/admin/${routeUrlPath}/${section.subject_id}`
+                                )
+                            : () => {}
+                        }
+                        className="hover:bg-slate-800"
+                      >
+                        <TableCell className="font-medium">
+                          {section.subject_id}
+                        </TableCell>
+                        <TableCell>{section.subject_name}</TableCell>
+                        <TableCell>{section.subject_description}</TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </DialogDescription>

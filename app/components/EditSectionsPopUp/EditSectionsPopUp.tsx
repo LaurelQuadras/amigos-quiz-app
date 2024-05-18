@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -77,6 +78,11 @@ export default function EditSectionsPopUp() {
             </DialogTitle>
             <DialogDescription>
               <Table>
+                <TableCaption>
+                  {sectionsList.length === undefined
+                    ? "There are no Subjects created"
+                    : "A list of all subjects available."}
+                </TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Section ID</TableHead>
@@ -87,13 +93,14 @@ export default function EditSectionsPopUp() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sectionsList.map((section: GetSectionApiType) => (
-                    <EditSectionsRow
-                      key={section.subject_id}
-                      section={section}
-                      getSectionList={getSectionList}
-                    />
-                  ))}
+                  {sectionsList.length !== undefined &&
+                    sectionsList.map((section: GetSectionApiType) => (
+                      <EditSectionsRow
+                        key={section.subject_id}
+                        section={section}
+                        getSectionList={getSectionList}
+                      />
+                    ))}
                 </TableBody>
               </Table>
             </DialogDescription>
