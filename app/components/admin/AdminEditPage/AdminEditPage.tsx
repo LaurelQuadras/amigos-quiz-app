@@ -42,7 +42,13 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
   };
 
   const onPreviousButtonClick = (): void => {
-    setNoOfQuestions((noOfQuestions) => noOfQuestions - 1);
+    if (
+      confirm(
+        "Are you sure you want to delete this question? It will delete the attachments, options and correct options as well"
+      )
+    ) {
+      setNoOfQuestions((noOfQuestions) => noOfQuestions - 1);
+    }
   };
 
   const MotionButton = motion(Button);
@@ -155,18 +161,23 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
   const updateQuestion = async (
     questionAndAnswerValue: QuestionsAndAnswersType
   ): Promise<void> => {
-    const questionAndAnswerList = questionsAndAnswersListValues.filter(
+    const editedQuestionAndAnswerValue = questionsAndAnswersListValues.filter(
       (questionAndAnswerListValue: QuestionsAndAnswersType) =>
         questionAndAnswerValue.questionId ===
         questionAndAnswerListValue.questionId
     )[0];
 
+    if (editedQuestionAndAnswerValue.question === "") {
+      alert("Please add a valid question.");
+      return;
+    }
+
     try {
       const response = await putQuestionApi(
-        questionAndAnswerList.questionId,
+        editedQuestionAndAnswerValue.questionId,
         sectionId,
-        questionAndAnswerList.question,
-        questionAndAnswerList.answerType
+        editedQuestionAndAnswerValue.question,
+        editedQuestionAndAnswerValue.answerType
       );
       if (response) {
         alert("Question updated successfully");
@@ -179,20 +190,36 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
   const updateAnswers = async (
     questionAndAnswerValue: QuestionsAndAnswersType
   ): Promise<void> => {
-    const questionAndAnswerList = questionsAndAnswersListValues.filter(
+    const editedQuestionAndAnswerValue = questionsAndAnswersListValues.filter(
       (questionAndAnswerListValue: QuestionsAndAnswersType) =>
         questionAndAnswerValue.questionId ===
         questionAndAnswerListValue.questionId
     )[0];
 
+    if (
+      editedQuestionAndAnswerValue.options[0].answerText === "" ||
+      editedQuestionAndAnswerValue.options[1].answerText === "" ||
+      editedQuestionAndAnswerValue.options[2].answerText === "" ||
+      editedQuestionAndAnswerValue.options[3].answerText === ""
+    ) {
+      alert(
+        "Please add all valid answers to question '" +
+          editedQuestionAndAnswerValue.question +
+          "'"
+      );
+      return;
+    }
+
     try {
-      questionAndAnswerList.options.forEach(async (answer: AnswerType) => {
-        await putAnswerApi(
-          answer.answerId,
-          questionAndAnswerList.questionId,
-          answer.answerText
-        );
-      });
+      editedQuestionAndAnswerValue.options.forEach(
+        async (answer: AnswerType) => {
+          await putAnswerApi(
+            answer.answerId,
+            editedQuestionAndAnswerValue.questionId,
+            answer.answerText
+          );
+        }
+      );
       alert("Answers updated successfully");
     } catch {
       alert("Error");
@@ -250,6 +277,35 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
   const saveNewQuestionAndAnswer = async (index: number): Promise<void> => {
     const selectedQuestionAndAnswer: QuestionsAndAnswersType =
       questionsAndAnswersListValues[index];
+
+    if (selectedQuestionAndAnswer.question === "") {
+      alert("Please add a valid question.");
+      return;
+    }
+    if (
+      selectedQuestionAndAnswer.options[0].answerText === "" ||
+      selectedQuestionAndAnswer.options[1].answerText === "" ||
+      selectedQuestionAndAnswer.options[2].answerText === "" ||
+      selectedQuestionAndAnswer.options[3].answerText === ""
+    ) {
+      alert(
+        "Please add all valid answers to question '" +
+          selectedQuestionAndAnswer.question +
+          "'"
+      );
+      return;
+    }
+    if (
+      selectedQuestionAndAnswer.correctOption.length === 1 &&
+      selectedQuestionAndAnswer.correctOption[0] === ""
+    ) {
+      alert(
+        "Please add all valid correct answers to question '" +
+          selectedQuestionAndAnswer.question +
+          "'"
+      );
+      return;
+    }
 
     const questionId: any = await postQuestionsApi(
       sectionSelected?.subject_id!,
@@ -360,7 +416,11 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
                       }
                     />
                     <div className="w-full flex justify-center items-center">
-                      <Button className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-64">
+                      <Button
+                        className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-64"
+                        onClick={onPreviousButtonClick}
+                        disabled={noOfQuestions === 1}
+                      >
                         Delete Question
                       </Button>
                     </div>
@@ -382,20 +442,6 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
           )}
         </div>
         <div className="flex justify-end gap-8">
-          <MotionButton
-            onClick={onPreviousButtonClick}
-            disabled={noOfQuestions === 1}
-            whileTap={{ scale: 0.8 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 1,
-              delay: 1.4,
-            }}
-            className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
-          >
-            Previous{" "}
-          </MotionButton>
           <MotionButton
             onClick={onNextButtonClick}
             disabled={noOfQuestions === 10}

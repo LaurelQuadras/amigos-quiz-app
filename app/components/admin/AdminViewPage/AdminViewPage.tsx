@@ -15,7 +15,7 @@ import {
   GetCorrectAnswerType,
   getCorrectOptionWithQuestionIdApi,
 } from "@/app/api/apiRoutes";
-import { Button } from "@/components/ui/button";
+import { output_script } from "@/app/fonts/fonts";
 
 export interface AdminViewPageProps {
   sectionId: string;
@@ -29,7 +29,7 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
   const [questionsAndAnswersListValues, setQuestionAndAnswersListValues] =
     useState<QuestionsAndAnswersType[]>([]);
 
-  const MotionButton = motion(Button);
+  const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
 
   const getSubjectWithId = async (): Promise<void> => {
     const sectionList: GetSectionApiType[] = await getSectionApi();
@@ -153,41 +153,68 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
   };
 
   return (
-    noOfQuestions !== 0 &&
-    questionsAndAnswersListValues.length > 0 && (
-      <div>
-        {Array.from({ length: noOfQuestions }, (_, i) => i).map(
-          (e: number, i) =>
-            e === isVisible ? (
-              <QuizQuestion
-                visibleQuestion={isVisible}
-                onNextButtonClick={onNextButtonClick}
-                onPreviousButtonClick={onPreviousButtonClick}
-                key={i}
-                lastQuestionIndex={noOfQuestions}
-                questionAndAnswerValue={questionsAndAnswersListValues[e]}
-              />
-            ) : (
-              <></>
-            )
-        )}
-        <motion.div
+    <div className="flex flex-col h-full w-full gap-8 md:gap-16 text-white">
+      <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
+        {`${sectionSelected?.subject_name}`.split(" ").map((el, i) => (
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 2,
+              delay: i / 10,
+            }}
+            key={i}
+          >
+            {el}{" "}
+          </motion.span>
+        ))}
+      </span>
+      <span className="mx-4 text-xl md:text-4xl">
+        <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
-            duration: 1,
-            delay: 0.25,
+            duration: 2,
+            delay: 0,
           }}
         >
-          <QuizPagination
-            noOfQuestions={noOfQuestions}
-            visibleQuestion={isVisible}
-            onNextButtonClick={onNextButtonClick}
-            onPreviousButtonClick={onPreviousButtonClick}
-            onCustomQuestionPageLink={onCustomQuestionPageLink}
-          />
-        </motion.div>
-      </div>
-    )
+          {sectionSelected?.subject_description}
+        </motion.span>
+      </span>
+      {noOfQuestions !== 0 && questionsAndAnswersListValues.length > 0 && (
+        <div>
+          {Array.from({ length: noOfQuestions }, (_, i) => i).map(
+            (e: number, i) =>
+              e === isVisible ? (
+                <QuizQuestion
+                  visibleQuestion={isVisible}
+                  onNextButtonClick={onNextButtonClick}
+                  onPreviousButtonClick={onPreviousButtonClick}
+                  key={i}
+                  questionAndAnswerValue={questionsAndAnswersListValues[e]}
+                />
+              ) : (
+                <></>
+              )
+          )}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+              delay: 0.25,
+            }}
+          >
+            <QuizPagination
+              noOfQuestions={noOfQuestions}
+              visibleQuestion={isVisible}
+              onNextButtonClick={onNextButtonClick}
+              onPreviousButtonClick={onPreviousButtonClick}
+              onCustomQuestionPageLink={onCustomQuestionPageLink}
+            />
+          </motion.div>
+        </div>
+      )}
+    </div>
   );
 }

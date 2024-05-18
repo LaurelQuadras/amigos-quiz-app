@@ -34,7 +34,13 @@ export default function AdminNewPage() {
   };
 
   const onPreviousButtonClick = (): void => {
-    setNoOfQuestions((noOfQuestions) => noOfQuestions - 1);
+    if (
+      confirm(
+        "Are you sure you want to delete this question? It will delete the attachments, options and correct options as well"
+      )
+    ) {
+      setNoOfQuestions((noOfQuestions) => noOfQuestions - 1);
+    }
   };
 
   const MotionButton = motion(Button);
@@ -67,9 +73,37 @@ export default function AdminNewPage() {
   };
 
   const postQuestionAndAnswers = async (): Promise<void> => {
-    console.log("came ", sectionSelected?.subject_id!);
+    console.log("came ", questionsAndAnswersListValues);
     questionsAndAnswersListValues.forEach(
       async (questionAndAnswers: QuestionsAndAnswersType) => {
+        if (questionAndAnswers.question === "") {
+          alert("Please add a valid question.");
+          return;
+        }
+        if (
+          questionAndAnswers.options[0].answerText === "" ||
+          questionAndAnswers.options[1].answerText === "" ||
+          questionAndAnswers.options[2].answerText === "" ||
+          questionAndAnswers.options[3].answerText === ""
+        ) {
+          alert(
+            "Please add all valid answers to question '" +
+              questionAndAnswers.question +
+              "'"
+          );
+          return;
+        }
+        if (
+          questionAndAnswers.correctOption.length === 1 &&
+          questionAndAnswers.correctOption[0] === ""
+        ) {
+          alert(
+            "Please add all valid correct answers to question '" +
+              questionAndAnswers.question +
+              "'"
+          );
+          return;
+        }
         const questionId: any = await postQuestionsApi(
           sectionSelected?.subject_id!,
           questionAndAnswers.question,
@@ -188,26 +222,21 @@ export default function AdminNewPage() {
                     updateQuestionsAndAnswersListValues
                   }
                 />
+                <div className="w-full flex justify-center items-center">
+                  <Button
+                    className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-64"
+                    onClick={onPreviousButtonClick}
+                    disabled={noOfQuestions === 1}
+                  >
+                    Delete Question
+                  </Button>
+                </div>
               </motion.div>
             ))}
           </div>
         )}
         {sectionSelected && (
           <div className="flex justify-end gap-8">
-            <MotionButton
-              onClick={onPreviousButtonClick}
-              disabled={noOfQuestions === 1}
-              whileTap={{ scale: 0.8 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                duration: 1,
-                delay: 1.4,
-              }}
-              className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
-            >
-              Previous{" "}
-            </MotionButton>
             <MotionButton
               onClick={onNextButtonClick}
               disabled={noOfQuestions === 10}
