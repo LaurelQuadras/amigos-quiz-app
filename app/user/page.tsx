@@ -35,10 +35,7 @@ export default function Home() {
         value === isVisible ? (
           <QuizQuestion
             visibleQuestion={isVisible}
-            onNextButtonClick={onNextButtonClick}
-            onPreviousButtonClick={onPreviousButtonClick}
             key={index}
-            lastQuestionIndex={ArrayList.length}
             questionAndAnswerValue={{
               question: "Prime Minister",
               questionId: "1",

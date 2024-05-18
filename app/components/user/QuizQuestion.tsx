@@ -8,15 +8,11 @@ import { AnswerTypeEnums } from "../admin/QuestionForm/QuestionForm";
 
 export interface QuizQuestionProps {
   visibleQuestion: number;
-  onNextButtonClick: () => void;
-  onPreviousButtonClick: () => void;
   questionAndAnswerValue: QuestionsAndAnswersType;
 }
 
 export default function QuizQuestion({
   visibleQuestion,
-  onNextButtonClick,
-  onPreviousButtonClick,
   questionAndAnswerValue,
 }: QuizQuestionProps) {
   const [selectedOption, setSelectedOption] = useState<number>(0);

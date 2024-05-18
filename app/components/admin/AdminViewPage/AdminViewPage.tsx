@@ -188,8 +188,6 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
               e === isVisible ? (
                 <QuizQuestion
                   visibleQuestion={isVisible}
-                  onNextButtonClick={onNextButtonClick}
-                  onPreviousButtonClick={onPreviousButtonClick}
                   key={i}
                   questionAndAnswerValue={questionsAndAnswersListValues[e]}
                 />
