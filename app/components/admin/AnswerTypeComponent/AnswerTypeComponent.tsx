@@ -19,7 +19,6 @@ export default function AnswerTypeComponent({
   onAnswerTypeOptionSelected,
 }: AnswerTypeComponentProps) {
   const onAnswerTypeValueChange = (value: AnswerTypeEnums): void => {
-    console.log("NA ", value);
     let answerType: AnswerTypeEnums = value;
     onAnswerTypeOptionSelected(answerType);
   };

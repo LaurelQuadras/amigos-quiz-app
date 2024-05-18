@@ -90,20 +90,6 @@ export default function QuizQuestion({
               </Button>
             </div>
           </div>
-          <div className="mx-16 flex items-end justify-end gap-8">
-            <Button
-              disabled={visibleQuestion === 0}
-              onClick={onPreviousButtonClick}
-            >
-              Previous
-            </Button>
-            <Button
-              disabled={visibleQuestion === lastQuestionIndex}
-              onClick={onNextButtonClick}
-            >
-              Next
-            </Button>
-          </div>
         </motion.div>
       )}{" "}
     </AnimatePresence>

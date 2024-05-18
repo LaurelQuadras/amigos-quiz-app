@@ -247,6 +247,36 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     );
   };
 
+  const saveNewQuestionAndAnswer = async (index: number): Promise<void> => {
+    const selectedQuestionAndAnswer: QuestionsAndAnswersType =
+      questionsAndAnswersListValues[index];
+
+    const questionId: any = await postQuestionsApi(
+      sectionSelected?.subject_id!,
+      selectedQuestionAndAnswer.question,
+      selectedQuestionAndAnswer.answerType
+    );
+
+    selectedQuestionAndAnswer.options.forEach(
+      async (option: AnswerType, index: number) => {
+        const answerIdResponse: any = await postAnswersApi(
+          questionId.question_id,
+          option.answerText
+        );
+        if (
+          selectedQuestionAndAnswer.correctOption.includes(
+            answerIdResponse.answerText
+          )
+        ) {
+          await postCorrectOptionApi(
+            questionId.question_id,
+            answerIdResponse.answer_id
+          );
+        }
+      }
+    );
+  };
+
   return (
     <div className="flex flex-col h-full w-full gap-8 md:gap-16 text-white">
       <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
@@ -336,8 +366,16 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
                     </div>
                   </div>
                   {questionsAndAnswersListValues[i] &&
-                    questionsAndAnswersListValues[i].questionId !== "0" &&
-                    editOptions(questionsAndAnswersListValues[i])}
+                  questionsAndAnswersListValues[i].questionId !== "0" ? (
+                    editOptions(questionsAndAnswersListValues[i])
+                  ) : (
+                    <Button
+                      className="w-full bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 mb-[8.8rem] h-20 text-wrap"
+                      onClick={() => saveNewQuestionAndAnswer(i)}
+                    >
+                      Add a new Question {i}
+                    </Button>
+                  )}
                 </motion.div>
               ))}
             </>

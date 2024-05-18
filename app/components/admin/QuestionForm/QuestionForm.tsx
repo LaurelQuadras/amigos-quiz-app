@@ -85,6 +85,8 @@ export default function QuestionForm({
         ? [
             { answerId: optionOne.answerId, answerText: "true" },
             { answerId: optionTwo.answerId, answerText: "false" },
+            { answerId: optionOne.answerId, answerText: "true" },
+            { answerId: optionTwo.answerId, answerText: "false" },
           ]
         : [optionOne, optionTwo, optionThree, optionFour];
 
