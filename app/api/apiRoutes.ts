@@ -6,6 +6,7 @@ export type GetSectionApiType = {
   subject_id: string;
   subject_name: string;
   subject_description: string;
+  subsectionID: string;
   subsection_name: string;
   subsection_description: string;
   user: string;
@@ -247,7 +248,7 @@ export const deleteSubSubjectsApi = async (id: string) => {
     );
     return await response.json();
   } catch {
-    console.log("Failed api post section");
+    console.log("Failed api post sub subject");
   }
 };
 

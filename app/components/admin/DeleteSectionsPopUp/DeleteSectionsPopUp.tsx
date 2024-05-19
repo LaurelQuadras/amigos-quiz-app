@@ -58,9 +58,40 @@ export default function DeleteSectionsPopUp() {
   };
 
   const onDeleteButtonClick = async (id: string) => {
-    const response: any = await deleteSubSubjectsApi(id);
-    console.log("R ", response);
-    alert("Subject Deleted succesfully");
+    const subSubjectToBeDeleted: GetSectionApiType = sectionsList.filter(
+      (section: GetSectionApiType) => section.subsectionID === id
+    )[0];
+    const subjectOfTheDeletedSubSubject: GetSectionApiType[] =
+      sectionsList.filter(
+        (section: GetSectionApiType) =>
+          section.subject_id === subSubjectToBeDeleted.subject_id
+      );
+
+    console.log("subSub ", subSubjectToBeDeleted);
+    console.log("subje ", subjectOfTheDeletedSubSubject);
+
+    const subSubjectResponse: any = await deleteSubSubjectsApi(
+      subSubjectToBeDeleted.subsectionID
+    );
+
+    if (subjectOfTheDeletedSubSubject.length === 1) {
+      const subjectResponse: any = await deleteSectionsApi(
+        subjectOfTheDeletedSubSubject[0].subject_id
+      );
+
+      if (subjectResponse.message && subSubjectResponse.message) {
+        alert(
+          `SubSubject ${subSubjectToBeDeleted.subsection_name} and Subject ${subjectOfTheDeletedSubSubject[0].subject_name} are deleted`
+        );
+        return;
+      }
+    }
+
+    if (subSubjectResponse.message) {
+      alert(`SubSubject ${subSubjectToBeDeleted.subsection_name} is deleted`);
+      return;
+    }
+
     await getSectionList();
   };
 
@@ -68,9 +99,9 @@ export default function DeleteSectionsPopUp() {
     <div className="w-full max-w-full">
       <Dialog>
         <DialogTrigger className="w-full">
-          <div className="w-full p-3 bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
+          <p className="w-full p-3 bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white">
             Delete Sections
-          </div>
+          </p>
         </DialogTrigger>
         <DialogContent className="w-10/12 min-h-[400px] max-w-full bg-slate-900 overflow-y-scroll max-h-8">
           <DialogHeader>
@@ -122,7 +153,7 @@ export default function DeleteSectionsPopUp() {
                           <Button
                             className="bg-red-600 hover:bg-red-800 w-24"
                             onClick={() =>
-                              onDeleteButtonClick(section.subject_id)
+                              onDeleteButtonClick(section.subsectionID)
                             }
                           >
                             Delete
