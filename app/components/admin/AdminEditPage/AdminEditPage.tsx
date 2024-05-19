@@ -25,14 +25,15 @@ import QuestionForm from "../QuestionForm/QuestionForm";
 import questionsAndAnswersMockValues from "../../../json/questionsAndAnswersMock.json";
 
 export interface AdminEditPageProps {
-  sectionId: string;
+  subSubject: string;
 }
 
-export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
+export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
   const [noOfQuestions, setNoOfQuestions] = useState<number>(10);
   const [sectionSelected, setSectionSelected] = useState<GetSectionApiType>();
   const [questionsAndAnswersListValues, setQuestionAndAnswersListValues] =
     useState<QuestionsAndAnswersType[]>([]);
+  const [noQuestionsPresent, setNoQuestionsPresent] = useState<boolean>(false);
 
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
   const fillInformationText: string = "Please fill the following information.";
@@ -57,15 +58,22 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     const sectionList: GetSectionApiType[] = await getSectionApi();
     setSectionSelected(
       sectionList.filter(
-        (section: GetSectionApiType) => section.subject_id === sectionId
+        (section: GetSectionApiType) => section.subsectionID === subSubject
       )[0]
     );
   };
 
   const getQuestionsWithSubjectId = async (): Promise<void> => {
     const questions: GetQuestionType[] = await getQuestionsWithSubjectIdApi(
-      sectionId
+      subSubject
     );
+
+    console.log("QQ ", questions);
+
+    if (questions.length === undefined) {
+      setNoQuestionsPresent(true);
+      return;
+    }
 
     const uniqueQuestions: GetQuestionType[] = questions.filter(
       (obj, index, self) => {
@@ -74,10 +82,10 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
       }
     );
 
+    console.log("AA ", uniqueQuestions);
+
     const questionAndAnswerList: QuestionsAndAnswersType[] =
       await getQuestionAndAnswerList(uniqueQuestions);
-
-    console.log(uniqueQuestions);
 
     setNoOfQuestions(questionAndAnswerList.length);
     setQuestionAndAnswersListValues(questionAndAnswerList);
@@ -142,12 +150,12 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
   };
 
   useEffect(() => {
-    if (sectionId) {
+    if (subSubject) {
       getSubjectWithId();
       getQuestionsWithSubjectId();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sectionId]);
+  }, [subSubject]);
 
   const updateQuestionsAndAnswersListValues = (
     questionsAndAnswers: QuestionsAndAnswersType,
@@ -175,7 +183,7 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
     try {
       const response = await putQuestionApi(
         editedQuestionAndAnswerValue.questionId,
-        sectionId,
+        subSubject,
         editedQuestionAndAnswerValue.question,
         editedQuestionAndAnswerValue.answerType
       );
@@ -362,6 +370,22 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
           {fillInformationText}
         </motion.span>
       </span>
+      {noQuestionsPresent && (
+        <span className="mx-4 text-xl md:text-2xl">
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 2,
+              delay: 1.2,
+            }}
+          >
+            {
+              "You cannot edit a Question Set which has not yet been created. Please create the questions in the Admin New Page."
+            }
+          </motion.span>
+        </span>
+      )}
       <div className="flex flex-col gap-4 m-4">
         <div className="flex flex-col md:flex-row gap-8 md:items-center w-full">
           <motion.span
@@ -441,22 +465,24 @@ export default function AdminEditPage({ sectionId }: AdminEditPageProps) {
             </>
           )}
         </div>
-        <div className="flex justify-end gap-8">
-          <MotionButton
-            onClick={onNextButtonClick}
-            disabled={noOfQuestions === 10}
-            whileTap={{ scale: 0.8 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 1,
-              delay: 1.4,
-            }}
-            className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
-          >
-            Next
-          </MotionButton>
-        </div>
+        {!noQuestionsPresent && (
+          <div className="flex justify-end gap-8">
+            <MotionButton
+              onClick={onNextButtonClick}
+              disabled={noOfQuestions === 10}
+              whileTap={{ scale: 0.8 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 1,
+                delay: 1.4,
+              }}
+              className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
+            >
+              Next
+            </MotionButton>
+          </div>
+        )}
       </div>
     </div>
   );

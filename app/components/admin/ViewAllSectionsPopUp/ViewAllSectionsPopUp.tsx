@@ -111,7 +111,7 @@ export default function ViewAllSectionsPopUp({
                           routeOnRowClick
                             ? () =>
                                 router.push(
-                                  `/admin/${routeUrlPath}/${section.subject_id}`
+                                  `/admin/${routeUrlPath}/${section.subsectionID}`
                                 )
                             : () => {}
                         }

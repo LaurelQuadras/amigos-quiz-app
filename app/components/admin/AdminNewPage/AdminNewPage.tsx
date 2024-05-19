@@ -105,7 +105,7 @@ export default function AdminNewPage() {
           return;
         }
         const questionId: any = await postQuestionsApi(
-          sectionSelected?.subject_id!,
+          sectionSelected?.subsectionID!,
           questionAndAnswers.question,
           questionAndAnswers.answerType
         );

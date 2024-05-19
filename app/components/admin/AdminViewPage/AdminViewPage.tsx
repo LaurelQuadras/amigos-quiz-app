@@ -18,32 +18,36 @@ import {
 import { output_script } from "@/app/fonts/fonts";
 
 export interface AdminViewPageProps {
-  sectionId: string;
+  subSubject: string;
 }
 
-export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
+export default function AdminViewPage({ subSubject }: AdminViewPageProps) {
   const [isVisible, setIsVisible] = useState<number>(0);
 
   const [noOfQuestions, setNoOfQuestions] = useState<number>(0);
   const [sectionSelected, setSectionSelected] = useState<GetSectionApiType>();
   const [questionsAndAnswersListValues, setQuestionAndAnswersListValues] =
     useState<QuestionsAndAnswersType[]>([]);
-
-  const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
+  const [noQuestionsPresent, setNoQuestionsPresent] = useState<boolean>(false);
 
   const getSubjectWithId = async (): Promise<void> => {
     const sectionList: GetSectionApiType[] = await getSectionApi();
     setSectionSelected(
       sectionList.filter(
-        (section: GetSectionApiType) => section.subject_id === sectionId
+        (section: GetSectionApiType) => section.subsectionID === subSubject
       )[0]
     );
   };
 
   const getQuestionsWithSubjectId = async (): Promise<void> => {
     const questions: GetQuestionType[] = await getQuestionsWithSubjectIdApi(
-      sectionId
+      subSubject
     );
+
+    if (questions.length === undefined) {
+      setNoQuestionsPresent(true);
+      return;
+    }
 
     const uniqueQuestions: GetQuestionType[] = questions.filter(
       (obj, index, self) => {
@@ -118,12 +122,12 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
   };
 
   useEffect(() => {
-    if (sectionId) {
+    if (subSubject) {
       getSubjectWithId();
       getQuestionsWithSubjectId();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sectionId]);
+  }, [subSubject]);
 
   useEffect(() => {
     setIsVisible(Array.from({ length: noOfQuestions }, (_, i) => i)[0]);
@@ -154,33 +158,55 @@ export default function AdminViewPage({ sectionId }: AdminViewPageProps) {
 
   return (
     <div className="flex flex-col h-full w-full gap-8 md:gap-16 text-white">
-      <span className={`${output_script.className} mx-4 text-3xl md:text-6xl`}>
-        {`${sectionSelected?.subject_name}`.split(" ").map((el, i) => (
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 2,
-              delay: i / 10,
-            }}
-            key={i}
+      {sectionSelected && (
+        <>
+          <span
+            className={`${output_script.className} mx-4 text-3xl md:text-6xl`}
           >
-            {el}{" "}
-          </motion.span>
-        ))}
-      </span>
-      <span className="mx-4 text-xl md:text-4xl">
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 2,
-            delay: 0,
-          }}
-        >
-          {sectionSelected?.subject_description}
-        </motion.span>
-      </span>
+            {`${sectionSelected.subject_name}`.split(" ").map((el, i) => (
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 2,
+                  delay: i / 10,
+                }}
+                key={i}
+              >
+                {el}{" "}
+              </motion.span>
+            ))}
+          </span>
+          <span className="mx-4 text-xl md:text-4xl">
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 2,
+                delay: 0,
+              }}
+            >
+              {sectionSelected.subject_description}
+            </motion.span>
+          </span>
+          {noQuestionsPresent && (
+            <span className="mx-4 text-xl md:text-2xl">
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 2,
+                  delay: 0,
+                }}
+              >
+                {
+                  "There are no Questions for this Subject and Subject. Please create the questions in the Admin New Page."
+                }
+              </motion.span>
+            </span>
+          )}
+        </>
+      )}
       {noOfQuestions !== 0 && questionsAndAnswersListValues.length > 0 && (
         <div>
           {Array.from({ length: noOfQuestions }, (_, i) => i).map(

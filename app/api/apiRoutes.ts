@@ -150,7 +150,6 @@ export const getCorrectOptionWithQuestionIdApi = async (
 export const putSectionsApi = async (
   id: string,
   name: string,
-  subsection: string,
   description: string
 ) => {
   try {
@@ -161,7 +160,6 @@ export const putSectionsApi = async (
         body: JSON.stringify({
           subject_name: name,
           subject_description: description,
-          sub_section: subsection,
           authority: "ALL",
           level: "ALL",
           user: "Nathu Ram",
@@ -171,6 +169,30 @@ export const putSectionsApi = async (
     return await response.json();
   } catch {
     console.log("Failed api put section");
+  }
+};
+
+export const putSubSubjectApi = async (
+  subjectId: string,
+  subSubjectId: string,
+  subsection: string,
+  subSectionDescription: string
+) => {
+  try {
+    const response: Response = await fetch(
+      `https://gamewithcolors.online/exams/sub-subjects?id=${subSubjectId}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          subject_id: subjectId,
+          subsection_name: subsection,
+          subsection_description: subSectionDescription,
+        }),
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api put sub subject");
   }
 };
 

@@ -1,4 +1,8 @@
-import { GetSectionApiType, putSectionsApi } from "@/app/api/apiRoutes";
+import {
+  GetSectionApiType,
+  putSectionsApi,
+  putSubSubjectApi,
+} from "@/app/api/apiRoutes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableRow, TableCell } from "@/components/ui/table";
@@ -23,16 +27,32 @@ export default function EditSectionsRow({
   );
 
   const onSaveButtonClick = async () => {
-    const result: any = await putSectionsApi(
+    const subSubjectResponse: any = await putSubSubjectApi(
+      section.subject_id,
+      section.subsectionID,
+      subSubject,
+      subSubjectDescription
+    );
+
+    if (subSubjectResponse.error) {
+      alert(
+        "Two or more Sub subjects cannot have the same Subject Description"
+      );
+      return;
+    }
+
+    const subjectResponse: any = await putSectionsApi(
       section.subject_id,
       subjectName,
-      subSubject,
       subjectDescription
     );
-    if (result.error) {
+    if (subjectResponse.error) {
       alert("Two or more subjects cannot have the same Subject Description");
-    } else if (result.message.length > 0) {
-      alert("Subject Updated succesfully");
+    } else if (
+      subjectResponse.message.length > 0 &&
+      subSubjectResponse.message.length > 0
+    ) {
+      alert("Subject and SubSubject Updated succesfully");
       await getSectionList();
     }
   };
