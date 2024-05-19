@@ -14,9 +14,12 @@ export default function EditSectionsRow({
   getSectionList,
 }: EditSectionsRowProps) {
   const [subjectName, setSubjectName] = useState<string>(section.subject_name);
-  const [subSubject, setSubSubject] = useState<string>(section.sub_subject);
   const [subjectDescription, setSubjectDescription] = useState<string>(
     section.subject_description
+  );
+  const [subSubject, setSubSubject] = useState<string>(section.subsection_name);
+  const [subSubjectDescription, setSubSubjectDescription] = useState<string>(
+    section.subsection_description
   );
 
   const onSaveButtonClick = async () => {
@@ -44,23 +47,30 @@ export default function EditSectionsRow({
       </TableCell>
       <TableCell className="text-black">
         <Input
-          className="w-1/2"
+          className="w"
           value={subjectName}
           onChange={(e: any) => setSubjectName(e.target.value)}
         />
       </TableCell>
       <TableCell className="text-black">
         <Input
-          className="w-1/2"
+          className="w"
+          value={subjectDescription}
+          onChange={(e: any) => setSubjectDescription(e.target.value)}
+        />
+      </TableCell>
+      <TableCell className="text-black">
+        <Input
+          className="w"
           value={subSubject}
           onChange={(e: any) => setSubSubject(e.target.value)}
         />
       </TableCell>
       <TableCell className="text-black">
         <Input
-          className="w-1/2"
-          value={subjectDescription}
-          onChange={(e: any) => setSubjectDescription(e.target.value)}
+          className="w"
+          value={subSubjectDescription}
+          onChange={(e: any) => setSubSubjectDescription(e.target.value)}
         />
       </TableCell>
       <TableCell>

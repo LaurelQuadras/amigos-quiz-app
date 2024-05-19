@@ -15,8 +15,9 @@ import { cn } from "@/lib/utils";
 export interface AddSectionComponentProps {
   onAddNewSection: (
     newSection: string,
+    newDescription: string,
     newSubSectionValue: string,
-    newDescription: string
+    newSubSubjectDescriptionValue: string
   ) => void;
 }
 
@@ -28,11 +29,17 @@ export default function AddSectionComponent({
   const onFormSubmitButtonClick = (
     event: any,
     newSectionValue: string,
+    newDescriptionValue: string,
     newSubSectionValue: string,
-    newDescriptionValue: string
+    newSubSubjectDescriptionValue: string
   ): void => {
     event.preventDefault();
-    onAddNewSection(newSectionValue, newSubSectionValue, newDescriptionValue);
+    onAddNewSection(
+      newSectionValue,
+      newSubSectionValue,
+      newDescriptionValue,
+      newSubSubjectDescriptionValue
+    );
     setOpen(false);
   };
 
@@ -62,35 +69,42 @@ interface ProfileFormProps {
   onFormSubmitButtonClick: (
     event: any,
     newSectionValue: string,
+    newDescriptionValue: string,
     newSubSectionValue: string,
-    newDescriptionValue: string
+    newSubSubjectDescriptionValue: string
   ) => void;
 }
 
 function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
-  const [newSection, setNewSection] = useState<string>("");
-  const [newSubSection, setNewSubSection] = useState<string>("");
-  const [newDescription, setNewDescription] = useState<string>("");
+  const [newSubject, setNewSubject] = useState<string>("");
+  const [newSubjectDescription, setNewSubjectDescription] =
+    useState<string>("");
+  const [newSubSubject, setNewSubSubject] = useState<string>("");
+  const [newSubSubjectDescription, setNewSubSubjectDescription] =
+    useState<string>("");
+
   const [error, setError] = useState<string>("");
 
   const onFormSubmitClick = (
     event: any,
     newSectionValue: string,
     newSubSectionValue: string,
-    newDescriptionValue: string
+    newDescriptionValue: string,
+    newSubSubjectDescriptionValue: string
   ): void => {
     event.preventDefault();
 
-    if (newSection === "") {
-      setError("Subject Name is mandatory field");
+    if (newSubject === "" || newSubSubject === "") {
+      setError("Subject Name and Sub Subject name is mandatory field");
       return;
     } else {
       setError("");
       onFormSubmitButtonClick(
         event,
         newSectionValue,
+        newDescriptionValue,
         newSubSectionValue,
-        newDescriptionValue
+        newSubSubjectDescriptionValue
       );
     }
   };
@@ -99,40 +113,58 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
     <form
       className={cn("grid items-start gap-4")}
       onSubmit={(e: any) =>
-        onFormSubmitClick(e, newSection, newSubSection, newDescription)
+        onFormSubmitClick(
+          e,
+          newSubject,
+          newSubSubject,
+          newSubjectDescription,
+          newSubSubjectDescription
+        )
       }
     >
       <div className="grid gap-2">
         <Label htmlFor="section" className="text-white">
-          Section
+          Subject
         </Label>
         <Input
           type="text"
           id="section"
-          value={newSection}
-          onChange={(e: any) => setNewSection(e.target.value)}
+          value={newSubject}
+          onChange={(e: any) => setNewSubject(e.target.value)}
         />
         <span className="text-sm text-red-600">{error}</span>
         <br />
-        <Label htmlFor="section" className="text-white">
-          Sub Section
-        </Label>
-        <Input
-          type="text"
-          id="section"
-          value={newSubSection}
-          onChange={(e: any) => setNewSubSection(e.target.value)}
-        />
-        <br />
         <Label htmlFor="description" className="text-white">
-          Description
+          Subject Description
         </Label>
         <Input
           type="text"
           id="description"
-          value={newDescription}
-          onChange={(e: any) => setNewDescription(e.target.value)}
+          value={newSubjectDescription}
+          onChange={(e: any) => setNewSubjectDescription(e.target.value)}
         />
+        <br />
+        <Label htmlFor="section" className="text-white">
+          Sub-subject
+        </Label>
+        <Input
+          type="text"
+          id="section"
+          value={newSubSubject}
+          onChange={(e: any) => setNewSubSubject(e.target.value)}
+        />
+        <span className="text-sm text-red-600">{error}</span>
+        <br />
+        <Label htmlFor="subsubjectdescription" className="text-white">
+          Sub-subject Description
+        </Label>
+        <Input
+          type="text"
+          id="description"
+          value={newSubSubjectDescription}
+          onChange={(e: any) => setNewSubSubjectDescription(e.target.value)}
+        />
+        <br />
       </div>
       <div className="w-full flex justify-center">
         <Button

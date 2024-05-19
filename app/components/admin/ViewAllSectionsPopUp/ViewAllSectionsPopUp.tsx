@@ -95,9 +95,11 @@ export default function ViewAllSectionsPopUp({
                 </TableCaption>
                 <TableHeader>
                   <TableRow className="text-white hover:bg-slate-900">
-                    <TableHead>Section ID</TableHead>
-                    <TableHead>Section Name</TableHead>
-                    <TableHead>Section Description</TableHead>
+                    <TableHead>Subject ID</TableHead>
+                    <TableHead>Subject Name</TableHead>
+                    <TableHead>Subject Description</TableHead>
+                    <TableHead>Sub-subject Name</TableHead>
+                    <TableHead>Sub-subject Description</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -120,6 +122,8 @@ export default function ViewAllSectionsPopUp({
                         </TableCell>
                         <TableCell>{section.subject_name}</TableCell>
                         <TableCell>{section.subject_description}</TableCell>
+                        <TableCell>{section.subsection_name}</TableCell>
+                        <TableCell>{section.subsection_description}</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>

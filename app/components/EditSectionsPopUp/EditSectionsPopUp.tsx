@@ -85,10 +85,11 @@ export default function EditSectionsPopUp() {
                 </TableCaption>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Section ID</TableHead>
-                    <TableHead>Section Name</TableHead>
-                    <TableHead>Sub Subject</TableHead>
-                    <TableHead>Section Description</TableHead>
+                    <TableHead>Subject ID</TableHead>
+                    <TableHead>Subject Name</TableHead>
+                    <TableHead>Subject Description</TableHead>
+                    <TableHead>Sub-subject Name</TableHead>
+                    <TableHead>Sub-subject Description</TableHead>
                     <TableHead>Save</TableHead>
                   </TableRow>
                 </TableHeader>

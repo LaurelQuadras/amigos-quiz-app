@@ -6,7 +6,8 @@ export type GetSectionApiType = {
   subject_id: string;
   subject_name: string;
   subject_description: string;
-  sub_subject: string;
+  subsection_name: string;
+  subsection_description: string;
   user: string;
 };
 
@@ -236,12 +237,22 @@ export const deleteSectionsApi = async (id: string) => {
   }
 };
 
+export const deleteSubSubjectsApi = async (id: string) => {
+  try {
+    const response: Response = await fetch(
+      `https://gamewithcolors.online/exams/sub-subjects?id=${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post section");
+  }
+};
+
 // Post API
-export const postSectionsApi = async (
-  name: string,
-  subsection: string,
-  description: string
-) => {
+export const postSectionsApi = async (name: string, description: string) => {
   try {
     const response: Response = await fetch(
       "https://gamewithcolors.online/exams/subjects",
@@ -250,10 +261,32 @@ export const postSectionsApi = async (
         body: JSON.stringify({
           subject_name: name,
           subject_description: description,
-          sub_section: subsection,
           authority: "ALL",
           level: "ALL",
           user: "Nathu Ram",
+        }),
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post section");
+  }
+};
+
+export const postSubSubjectApi = async (
+  subjectId: string,
+  subSectionName: string,
+  subSectionDescription: string
+) => {
+  try {
+    const response: Response = await fetch(
+      `https://gamewithcolors.online/exams/sub-subjects?subject_id=${subjectId}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          subject_id: subjectId,
+          subsection_name: subSectionName,
+          subsection_description: subSectionDescription,
         }),
       }
     );

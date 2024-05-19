@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import {
   GetSectionApiType,
   deleteSectionsApi,
+  deleteSubSubjectsApi,
   getSectionApi,
 } from "@/app/api/apiRoutes";
 import { useState, useEffect } from "react";
@@ -57,7 +58,8 @@ export default function DeleteSectionsPopUp() {
   };
 
   const onDeleteButtonClick = async (id: string) => {
-    const result: any = await deleteSectionsApi(id);
+    const response: any = await deleteSubSubjectsApi(id);
+    console.log("R ", response);
     alert("Subject Deleted succesfully");
     await getSectionList();
   };
@@ -94,10 +96,11 @@ export default function DeleteSectionsPopUp() {
                 </TableCaption>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Section ID</TableHead>
-                    <TableHead>Section Name</TableHead>
-                    <TableHead>Sub Subject</TableHead>
-                    <TableHead>Section Description</TableHead>
+                    <TableHead>Subject ID</TableHead>
+                    <TableHead>Subject Name</TableHead>
+                    <TableHead>Subject Description</TableHead>
+                    <TableHead>Sub-subject Name</TableHead>
+                    <TableHead>Sub-subject Description</TableHead>
                     <TableHead>Delete</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -112,8 +115,9 @@ export default function DeleteSectionsPopUp() {
                           {section.subject_id}
                         </TableCell>
                         <TableCell>{section.subject_name}</TableCell>
-                        <TableCell>{section.sub_subject}</TableCell>
                         <TableCell>{section.subject_description}</TableCell>
+                        <TableCell>{section.subsection_name}</TableCell>
+                        <TableCell>{section.subsection_description}</TableCell>
                         <TableCell>
                           <Button
                             className="bg-red-600 hover:bg-red-800 w-24"

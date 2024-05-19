@@ -2,7 +2,7 @@
 
 import { output_script } from "@/app/fonts/fonts";
 import { motion } from "framer-motion";
-import { postSectionsApi } from "@/app/api/apiRoutes";
+import { postSectionsApi, postSubSubjectApi } from "@/app/api/apiRoutes";
 import ViewAllSectionsPopUp from "../ViewAllSectionsPopUp/ViewAllSectionsPopUp";
 import EditSectionsPopUp from "../../EditSectionsPopUp/EditSectionsPopUp";
 import DeleteSectionsPopUp from "../DeleteSectionsPopUp/DeleteSectionsPopUp";
@@ -15,10 +15,18 @@ export default function AdminHomePage() {
 
   const onAddNewSection = async (
     newSection: string,
+    newDescription: string,
     newSubSection: string,
-    newDescription: string
+    newSubSubjectDescriptionValue: string
   ): Promise<void> => {
-    await postSectionsApi(newSection, newSubSection, newDescription);
+    const subjectId: any = await postSectionsApi(newSection, newDescription);
+    if (subjectId.subject_id) {
+      await postSubSubjectApi(
+        subjectId.subject_id,
+        newSubSection,
+        newSubSubjectDescriptionValue
+      );
+    }
   };
 
   return (
@@ -50,7 +58,7 @@ export default function AdminHomePage() {
           {fillInformationText}
         </motion.span>
       </span>
-      <div className="flex flex-col gap-4 mx-4 md:mx-28 my-4">
+      <div className="flex flex-col gap-8 mx-4 md:mx-28 my-4">
         <div className="flex gap-8 items-center w-full">
           <motion.span
             initial={{ opacity: 0 }}
@@ -103,12 +111,6 @@ export default function AdminHomePage() {
                 routeUrlPath={encodeURI("edit")}
               />
             </div>
-            <Link
-              href="/admin/new"
-              className="w-full cursor-pointer p-3 flex justify-center bg-white text-black border-2 rounded-lg hover:bg-gray-300 hover:text-white"
-            >
-              <div>Delete Questions and Answers</div>
-            </Link>
           </motion.span>
         </div>
       </div>
