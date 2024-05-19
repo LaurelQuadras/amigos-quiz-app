@@ -70,28 +70,25 @@ export default function DeleteSectionsPopUp() {
     console.log("subSub ", subSubjectToBeDeleted);
     console.log("subje ", subjectOfTheDeletedSubSubject);
 
-    const subSubjectResponse: any = await deleteSubSubjectsApi(
-      subSubjectToBeDeleted.subsectionID
-    );
+    await deleteSubSubjectsApi(subSubjectToBeDeleted.subsectionID);
 
     if (subjectOfTheDeletedSubSubject.length === 1) {
       const subjectResponse: any = await deleteSectionsApi(
         subjectOfTheDeletedSubSubject[0].subject_id
       );
 
-      if (subjectResponse.message && subSubjectResponse.message) {
+      console.log("Sub ", subjectResponse);
+
+      if (subjectResponse.message) {
         alert(
           `SubSubject ${subSubjectToBeDeleted.subsection_name} and Subject ${subjectOfTheDeletedSubSubject[0].subject_name} are deleted`
         );
+        await getSectionList();
         return;
       }
     }
 
-    if (subSubjectResponse.message) {
-      alert(`SubSubject ${subSubjectToBeDeleted.subsection_name} is deleted`);
-      return;
-    }
-
+    alert(`SubSubject ${subSubjectToBeDeleted.subsection_name} is deleted`);
     await getSectionList();
   };
 
