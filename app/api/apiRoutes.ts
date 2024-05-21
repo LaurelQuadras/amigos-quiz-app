@@ -15,7 +15,7 @@ export type GetSectionApiType = {
 export type QuestionsAndAnswersType = {
   questionId: string;
   question: string;
-  image_data: Blob | undefined;
+  image_data: Blob[] | undefined;
   answerType: AnswerTypeEnums | string;
   options: AnswerType[];
   correctOption: string[];
@@ -66,7 +66,7 @@ export const getApi = async () => {
 export const getSectionApi = async (): Promise<GetSectionApiType[]> => {
   try {
     const response: Response = await fetch(
-      "https://gamewithcolors.online/exams/subjects?user=Nathu Ram",
+      "https://gamewithcolors.online/exams/subjects?user=1",
       {
         method: "GET",
       }
@@ -81,7 +81,7 @@ export const getSectionApi = async (): Promise<GetSectionApiType[]> => {
 export const getQuestionsApi = async (): Promise<GetQuestionType[]> => {
   try {
     const response: Response = await fetch(
-      "https://gamewithcolors.online/exams/questions?user=Nathu Ram",
+      "https://gamewithcolors.online/exams/questions?user=1",
       {
         method: "GET",
       }
@@ -90,6 +90,20 @@ export const getQuestionsApi = async (): Promise<GetQuestionType[]> => {
   } catch {
     console.log("Failed api post question");
     return [];
+  }
+};
+
+export const getQuestionImageApi = async (questionId: string) => {
+  try {
+    const response: Response = await fetch(
+      `https://gamewithcolors.online/exams/questionImages?question_id=${questionId}`,
+      {
+        method: "GET",
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post question");
   }
 };
 
@@ -162,7 +176,7 @@ export const putSectionsApi = async (
           subject_description: description,
           authority: "ALL",
           level: "ALL",
-          user: "Nathu Ram",
+          user: "1",
         }),
       }
     );
@@ -213,7 +227,7 @@ export const putQuestionApi = async (
           question_Type: answerType,
           authority: "ALL",
           level: "ALL",
-          user: "Nathu Ram",
+          user: "1",
         }),
       }
     );
@@ -336,6 +350,26 @@ export const postQuestionsApi = async (
           authority: "ALL",
           level: "ALL",
           user: "Nathu Ram",
+        }),
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post question");
+  }
+};
+
+export const postQuestionImageApi = async (
+  questionId: string,
+  imageData: Blob
+) => {
+  try {
+    const response: Response = await fetch(
+      `https://gamewithcolors.online/exams/questionImages?question_id=${questionId}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          image_data: imageData,
         }),
       }
     );

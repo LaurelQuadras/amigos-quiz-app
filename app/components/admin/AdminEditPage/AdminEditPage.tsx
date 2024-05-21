@@ -16,6 +16,7 @@ import {
   putQuestionApi,
   putAnswerApi,
   AnswerType,
+  getQuestionImageApi,
 } from "@/app/api/apiRoutes";
 import { output_script } from "@/app/fonts/fonts";
 import { Button } from "@/components/ui/button";
@@ -113,6 +114,10 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
   const getQuestionAndAnswerApiResponseList = async (
     question: GetQuestionType
   ): Promise<QuestionsAndAnswersType | undefined> => {
+    const imagesDataList: any[] = await getQuestionImageApi(
+      question.question_id
+    );
+
     const answerList: GetAnswerType[] = await getAnswersWithQuestionId(
       question.question_id
     );
@@ -134,7 +139,10 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
       const questionAndAnswerValue: QuestionsAndAnswersType = {
         questionId: question.question_id,
         question: question.question_text,
-        image_data: question.image_data,
+        image_data:
+          imagesDataList.length > 0
+            ? imagesDataList.map((image: any) => image.image_data)
+            : undefined,
         answerType: question.question_type,
         options: answerList.map((answer: GetAnswerType) => {
           return {

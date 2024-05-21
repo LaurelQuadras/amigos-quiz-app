@@ -94,30 +94,28 @@ export default function QuestionForm({
       const reader = new FileReader();
       reader.readAsArrayBuffer(selectedImageFiles[0]);
 
-      reader.onload = (event: any) => {
-        const arrayBuffer = event.target.result;
-        const imageBlob = new Blob([arrayBuffer], {
-          type: selectedImageFiles[0].type,
-        });
+      const imageBlobs: Blob[] = [];
+      const promises = [];
 
-        const newQuestionsAndAnswers: QuestionsAndAnswersType = {
-          questionId: questionsAndAnswers
-            ? questionsAndAnswers.questionId
-            : "0",
-          question,
-          image_data: selectedImageFiles.length > 0 ? imageBlob : undefined,
-          answerType: answerTypeSelected,
-          options: optionsList,
-          correctOption,
-        };
+      for (const file of selectedImageFiles) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
 
-        updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
-      };
-    } else {
+        promises.push(
+          new Promise((resolve, reject) => {
+            reader.onload = (event: any) => {
+              const base64Image = event.target.result;
+              console.log("cc ", base64Image);
+              imageBlobs.push(base64Image);
+            };
+          })
+        );
+      }
+
       const newQuestionsAndAnswers: QuestionsAndAnswersType = {
         questionId: questionsAndAnswers ? questionsAndAnswers.questionId : "0",
         question,
-        image_data: undefined,
+        image_data: selectedImageFiles.length > 0 ? imageBlobs : undefined,
         answerType: answerTypeSelected,
         options: optionsList,
         correctOption,

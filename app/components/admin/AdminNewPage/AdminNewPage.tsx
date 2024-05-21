@@ -14,11 +14,14 @@ import {
   getSectionApi,
   postAnswersApi,
   postCorrectOptionApi,
+  postQuestionImageApi,
   postQuestionsApi,
 } from "@/app/api/apiRoutes";
 import sectionsListValues from "../../../json/sectionsList.json";
+import { useRouter } from "next/navigation";
 
 export default function AdminNewPage() {
+  const router = useRouter();
   const [noOfQuestions, setNoOfQuestions] = useState<number>(1);
   const [sectionSelected, setSectionSelected] = useState<GetSectionApiType>();
   const [sectionsList, setSectionsList] = useState<GetSectionApiType[]>([]);
@@ -79,8 +82,7 @@ export default function AdminNewPage() {
         if (questionAndAnswers.question === "") {
           alert("Please add a valid question.");
           return;
-        }
-        if (
+        } else if (
           questionAndAnswers.options[0].answerText === "" ||
           questionAndAnswers.options[1].answerText === "" ||
           questionAndAnswers.options[2].answerText === "" ||
@@ -92,8 +94,7 @@ export default function AdminNewPage() {
               "'"
           );
           return;
-        }
-        if (
+        } else if (
           questionAndAnswers.correctOption.length === 1 &&
           questionAndAnswers.correctOption[0] === ""
         ) {
@@ -103,15 +104,20 @@ export default function AdminNewPage() {
               "'"
           );
           return;
-        }
-        const questionId: any = await postQuestionsApi(
-          sectionSelected?.subsectionID!,
-          questionAndAnswers.question,
-          questionAndAnswers.answerType
-        );
+        } else {
+          const questionId: any = await postQuestionsApi(
+            sectionSelected?.subsectionID!,
+            questionAndAnswers.question,
+            questionAndAnswers.answerType
+          );
 
-        questionAndAnswers.options.forEach(
-          async (option: AnswerType, index: number) => {
+          if (questionAndAnswers.image_data) {
+            questionAndAnswers.image_data.forEach(async (imageData: Blob) => {
+              await postQuestionImageApi(questionId.question_id, imageData);
+            });
+          }
+
+          questionAndAnswers.options.forEach(async (option: AnswerType) => {
             const answerIdResponse: any = await postAnswersApi(
               questionId.question_id,
               option.answerText
@@ -126,8 +132,9 @@ export default function AdminNewPage() {
                 answerIdResponse.answer_id
               );
             }
-          }
-        );
+          });
+          router.push("/admin");
+        }
       }
     );
   };

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 
 export interface QuestionImageDataProps {
-  image_data: Blob | undefined;
+  image_data: Blob[] | undefined;
   selectedImageFiles: any[];
   setSelectedImageFiles: Dispatch<SetStateAction<any[]>>;
 }
@@ -13,10 +13,6 @@ export default function QuestionImageData({
   selectedImageFiles,
   setSelectedImageFiles,
 }: QuestionImageDataProps) {
-  const dataUrl: string = image_data
-    ? `data:image/png;base64,${image_data}`
-    : "";
-
   const handleFileChange = (e: any): void => {
     const files = e.target.files;
     if (files) {
@@ -61,18 +57,26 @@ export default function QuestionImageData({
               ))}
             </div>
           )}
-          {typeof image_data === "string" && (
-            <div className="w-auto h-auto">
-              <Image
-                src={dataUrl}
-                alt={`Preview`}
-                className="rounded-md h-64 object-contain"
-                width={250}
-                height={256}
-                unoptimized
-              />
-            </div>
-          )}
+          {image_data !== undefined &&
+            image_data.length > 0 &&
+            image_data.map((image: Blob, index: number) =>
+              image.toString().includes("image") ? (
+                <div className="w-auto h-auto" key={index}>
+                  <Image
+                    src={`${image}`}
+                    alt={`Preview`}
+                    className="rounded-md h-64 object-contain"
+                    width={250}
+                    height={256}
+                    unoptimized
+                  />
+                </div>
+              ) : (
+                <div className="w-auto h-auto" key={index}>
+                  <audio src={`${image}`} controls autoPlay />
+                </div>
+              )
+            )}
         </div>
       </div>
     </div>
