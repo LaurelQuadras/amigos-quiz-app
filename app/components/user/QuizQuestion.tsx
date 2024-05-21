@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { QuestionsAndAnswersType } from "@/app/api/apiRoutes";
 import { AnswerTypeEnums } from "../admin/QuestionForm/QuestionForm";
+import Image from "next/image";
 
 export interface QuizQuestionProps {
   visibleQuestion: number;
@@ -42,6 +43,29 @@ export default function QuizQuestion({
             <span className="text-white">
               {questionAndAnswerValue.question}
             </span>
+            <div className="flex">
+              {questionAndAnswerValue.image_data !== undefined &&
+                questionAndAnswerValue.image_data.length > 0 &&
+                questionAndAnswerValue.image_data.map(
+                  (image: Blob, index: number) =>
+                    image.toString().includes("image") ? (
+                      <div className="w-auto h-auto" key={index}>
+                        <Image
+                          src={`${image}`}
+                          alt={`Preview`}
+                          className="rounded-md h-64 object-contain"
+                          width={250}
+                          height={256}
+                          unoptimized
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-auto h-auto" key={index}>
+                        <audio src={`${image}`} controls autoPlay />
+                      </div>
+                    )
+                )}
+            </div>
             <div className="flex flex-col gap-4">
               <Button
                 className={`${

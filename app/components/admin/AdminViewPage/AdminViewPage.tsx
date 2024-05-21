@@ -14,6 +14,7 @@ import {
   getAnswersWithQuestionId,
   GetCorrectAnswerType,
   getCorrectOptionWithQuestionIdApi,
+  getQuestionImageApi,
 } from "@/app/api/apiRoutes";
 import { output_script } from "@/app/fonts/fonts";
 
@@ -85,6 +86,10 @@ export default function AdminViewPage({ subSubject }: AdminViewPageProps) {
   const getQuestionAndAnswerApiResponseList = async (
     question: GetQuestionType
   ): Promise<QuestionsAndAnswersType | undefined> => {
+    const imagesDataList: any[] = await getQuestionImageApi(
+      question.question_id
+    );
+
     const answerList: GetAnswerType[] = await getAnswersWithQuestionId(
       question.question_id
     );
@@ -106,7 +111,10 @@ export default function AdminViewPage({ subSubject }: AdminViewPageProps) {
       const questionAndAnswerValue: QuestionsAndAnswersType = {
         questionId: question.question_id,
         question: question.question_text,
-        image_data: question.image_data,
+        image_data:
+          imagesDataList.length > 0
+            ? imagesDataList.map((image: any) => image.image_data)
+            : undefined,
         answerType: question.question_type,
         options: answerList.map((answer: GetAnswerType) => {
           return {
