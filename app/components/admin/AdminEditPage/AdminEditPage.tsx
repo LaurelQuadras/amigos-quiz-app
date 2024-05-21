@@ -43,12 +43,18 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
     setNoOfQuestions((noOfQuestions) => noOfQuestions + 1);
   };
 
-  const onPreviousButtonClick = (): void => {
+  const onPreviousButtonClick = (questionId: string): void => {
     if (
       confirm(
         "Are you sure you want to delete this question? It will delete the attachments, options and correct options as well"
       )
     ) {
+      const questionAndAnswerListRemaining: QuestionsAndAnswersType[] =
+        questionsAndAnswersListValues.filter(
+          (questionAndAnswerValue: QuestionsAndAnswersType) =>
+            questionAndAnswerValue.questionId !== questionId
+        );
+      setQuestionAndAnswersListValues(questionAndAnswerListRemaining);
       setNoOfQuestions((noOfQuestions) => noOfQuestions - 1);
     }
   };
@@ -272,18 +278,18 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
     return (
       <div className="flex flex-col">
         <Button
-          className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 mb-[8.8rem] h-fit text-wrap"
+          className="bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 mb-[8.8rem] h-fit text-wrap"
           onClick={() => updateQuestion(questionAndAnswerValue)}
         >
           Update Question, Attachments and Answer Type
         </Button>
         <Button
-          className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 mb-4"
+          className="bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 mb-4"
           onClick={() => updateAnswers(questionAndAnswerValue)}
         >
           Update Answers
         </Button>
-        <Button className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300">
+        <Button className="bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900">
           Update Correct Answer
         </Button>
       </div>
@@ -449,8 +455,12 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
                     />
                     <div className="w-full flex justify-center items-center">
                       <Button
-                        className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-64"
-                        onClick={onPreviousButtonClick}
+                        className="bg-red-600 text-black px-4 py-2 rounded-lg hover:bg-red-800 w-64"
+                        onClick={() =>
+                          onPreviousButtonClick(
+                            questionsAndAnswersListValues[i].questionId
+                          )
+                        }
                         disabled={noOfQuestions === 1}
                       >
                         Delete Question
@@ -462,10 +472,10 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
                     editOptions(questionsAndAnswersListValues[i])
                   ) : (
                     <Button
-                      className="w-full bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 mb-[8.8rem] h-20 text-wrap"
+                      className="w-full bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 mb-[8.8rem] h-20 text-wrap"
                       onClick={() => saveNewQuestionAndAnswer(i)}
                     >
-                      Add a new Question {i}
+                      Add a new Question {i + 1}
                     </Button>
                   )}
                 </motion.div>

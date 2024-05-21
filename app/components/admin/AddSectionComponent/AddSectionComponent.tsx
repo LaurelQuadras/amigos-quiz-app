@@ -169,7 +169,7 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
       <div className="w-full flex justify-center">
         <Button
           type="submit"
-          className="bg-white text-black hover:bg-slate-300 w-48"
+          className="bg-lime-600 text-black hover:bg-lime-900 w-48"
         >
           Save changes
         </Button>

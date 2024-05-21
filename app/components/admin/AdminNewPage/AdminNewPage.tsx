@@ -235,7 +235,7 @@ export default function AdminNewPage() {
                 />
                 <div className="w-full flex justify-center items-center">
                   <Button
-                    className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-64"
+                    className="bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 w-64"
                     onClick={onPreviousButtonClick}
                     disabled={noOfQuestions === 1}
                   >

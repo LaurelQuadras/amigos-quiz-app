@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { QuestionsAndAnswersType } from "@/app/api/apiRoutes";
 import { AnswerTypeEnums } from "../admin/QuestionForm/QuestionForm";
