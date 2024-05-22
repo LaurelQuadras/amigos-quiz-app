@@ -4,7 +4,7 @@ import { output_script } from "@/app/fonts/fonts";
 import { motion } from "framer-motion";
 import { postSectionsApi, postSubSubjectApi } from "@/app/api/apiRoutes";
 import ViewAllSectionsPopUp from "../ViewAllSectionsPopUp/ViewAllSectionsPopUp";
-import EditSectionsPopUp from "../../EditSectionsPopUp/EditSectionsPopUp";
+import EditSectionsPopUp from "../EditSectionsPopUp/EditSectionsPopUp";
 import DeleteSectionsPopUp from "../DeleteSectionsPopUp/DeleteSectionsPopUp";
 import AddSectionComponent from "../AddSectionComponent/AddSectionComponent";
 import Link from "next/link";

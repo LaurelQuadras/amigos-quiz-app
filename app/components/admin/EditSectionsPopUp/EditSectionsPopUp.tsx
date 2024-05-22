@@ -19,7 +19,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState, useEffect } from "react";
-import EditSectionsRow from "./EditSectionsRow/EditSectionsRow";
+import EditSectionsRow from "../EditSectionsRow/EditSectionsRow";
 
 export default function EditSectionsPopUp() {
   const [sectionsListApiResponse, setSectionsListApiResponse] = useState<
