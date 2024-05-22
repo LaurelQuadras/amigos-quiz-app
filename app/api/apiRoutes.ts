@@ -300,7 +300,7 @@ export const postSectionsApi = async (name: string, description: string) => {
           subject_description: description,
           authority: "ALL",
           level: "ALL",
-          user: "Nathu Ram",
+          user: "1",
         }),
       }
     );
