@@ -8,6 +8,15 @@ import TrueFalseComponent from "../TrueFalseComponent/TrueFalseComponent";
 import Image from "next/image";
 import { AnswerType, QuestionsAndAnswersType } from "@/app/api/apiRoutes";
 import QuestionImageData from "../QuestionImageData/QuestionImageData";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface QuestionFormInterface {
   index: number;
@@ -24,6 +33,13 @@ export enum AnswerTypeEnums {
   BooleanAnswer = "TRUE_FALSE",
 }
 
+export enum AuthorityEnums {
+  ALL = "ALL",
+  BASIC = "BASIC",
+  ADVANCE = "ADVANCE",
+  PREMIUM = "PREMIUM",
+}
+
 export enum AnswerOptions {
   one,
   two,
@@ -38,6 +54,9 @@ export default function QuestionForm({
 }: QuestionFormInterface) {
   const [question, setQuestion] = useState<string>(
     questionsAndAnswers ? questionsAndAnswers.question : ""
+  );
+  const [authority, setAuthority] = useState<AuthorityEnums>(
+    AuthorityEnums.ALL
   );
 
   const [optionOne, setOptionOne] = useState<AnswerType>(
@@ -115,7 +134,20 @@ export default function QuestionForm({
       const newQuestionsAndAnswers: QuestionsAndAnswersType = {
         questionId: questionsAndAnswers ? questionsAndAnswers.questionId : "0",
         question,
+        authority,
         image_data: selectedImageFiles.length > 0 ? imageBlobs : undefined,
+        answerType: answerTypeSelected,
+        options: optionsList,
+        correctOption,
+      };
+
+      updateQuestionsAndAnswersListValues(newQuestionsAndAnswers, index);
+    } else {
+      const newQuestionsAndAnswers: QuestionsAndAnswersType = {
+        questionId: questionsAndAnswers ? questionsAndAnswers.questionId : "0",
+        question,
+        authority,
+        image_data: undefined,
         answerType: answerTypeSelected,
         options: optionsList,
         correctOption,
@@ -125,11 +157,17 @@ export default function QuestionForm({
     }
   };
 
+  const onAuthorityChange = (value: AuthorityEnums): void => {
+    let answerType: AuthorityEnums = value;
+    setAuthority(answerType);
+  };
+
   useEffect(() => {
     handleContentChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     question,
+    authority,
     answerTypeSelected,
     correctOption,
     optionOne,
@@ -165,6 +203,25 @@ export default function QuestionForm({
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
           />
+        </div>
+      </div>
+      <div className="flex gap-8 items-center">
+        <span className="w-40">Authority</span>
+        <div className="w-[323px] text-black">
+          <Select defaultValue={authority} onValueChange={onAuthorityChange}>
+            <SelectTrigger className="md:w-full">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent className="md:w-full">
+              <SelectGroup>
+                <SelectLabel>Options</SelectLabel>
+                <SelectItem value={AuthorityEnums.ALL}>All</SelectItem>
+                <SelectItem value={AuthorityEnums.BASIC}>Basic</SelectItem>
+                <SelectItem value={AuthorityEnums.ADVANCE}>Advance</SelectItem>
+                <SelectItem value={AuthorityEnums.PREMIUM}>Premium</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="flex gap-8 items-center flex-wrap h-auto">

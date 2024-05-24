@@ -123,6 +123,7 @@ export default function DeleteSectionsPopUp() {
                     <TableHead>Subject Description</TableHead>
                     <TableHead>Sub-subject Name</TableHead>
                     <TableHead>Sub-subject Description</TableHead>
+                    <TableHead>Authority</TableHead>
                     <TableHead>Delete</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -140,6 +141,7 @@ export default function DeleteSectionsPopUp() {
                         <TableCell>{section.subject_description}</TableCell>
                         <TableCell>{section.subsection_name}</TableCell>
                         <TableCell>{section.subsection_description}</TableCell>
+                        <TableCell>{section.authority}</TableCell>
                         <TableCell>
                           <Button
                             className="bg-red-600 hover:bg-red-800 w-24"

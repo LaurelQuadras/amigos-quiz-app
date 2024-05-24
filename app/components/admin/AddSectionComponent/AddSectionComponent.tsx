@@ -11,13 +11,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AnswerTypeEnums, AuthorityEnums } from "../QuestionForm/QuestionForm";
 
 export interface AddSectionComponentProps {
   onAddNewSection: (
     newSection: string,
     newDescription: string,
     newSubSectionValue: string,
-    newSubSubjectDescriptionValue: string
+    newSubSubjectDescriptionValue: string,
+    newAuthority: AuthorityEnums
   ) => void;
 }
 
@@ -31,14 +42,16 @@ export default function AddSectionComponent({
     newSectionValue: string,
     newDescriptionValue: string,
     newSubSectionValue: string,
-    newSubSubjectDescriptionValue: string
+    newSubSubjectDescriptionValue: string,
+    newAuthority: AuthorityEnums
   ): void => {
     event.preventDefault();
     onAddNewSection(
       newSectionValue,
       newSubSectionValue,
       newDescriptionValue,
-      newSubSubjectDescriptionValue
+      newSubSubjectDescriptionValue,
+      newAuthority
     );
     setOpen(false);
   };
@@ -71,7 +84,8 @@ interface ProfileFormProps {
     newSectionValue: string,
     newDescriptionValue: string,
     newSubSectionValue: string,
-    newSubSubjectDescriptionValue: string
+    newSubSubjectDescriptionValue: string,
+    newAuthority: AuthorityEnums
   ) => void;
 }
 
@@ -82,6 +96,9 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
   const [newSubSubject, setNewSubSubject] = useState<string>("");
   const [newSubSubjectDescription, setNewSubSubjectDescription] =
     useState<string>("");
+  const [newAuthority, setNewAuthority] = useState<AuthorityEnums>(
+    AuthorityEnums.ALL
+  );
 
   const [error, setError] = useState<string>("");
 
@@ -90,7 +107,8 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
     newSectionValue: string,
     newSubSectionValue: string,
     newDescriptionValue: string,
-    newSubSubjectDescriptionValue: string
+    newSubSubjectDescriptionValue: string,
+    newAuthority: AuthorityEnums
   ): void => {
     event.preventDefault();
 
@@ -104,9 +122,15 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
         newSectionValue,
         newDescriptionValue,
         newSubSectionValue,
-        newSubSubjectDescriptionValue
+        newSubSubjectDescriptionValue,
+        newAuthority
       );
     }
+  };
+
+  const onAuthorityChange = (value: AuthorityEnums): void => {
+    let answerType: AuthorityEnums = value;
+    setNewAuthority(answerType);
   };
 
   return (
@@ -118,7 +142,8 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
           newSubject,
           newSubSubject,
           newSubjectDescription,
-          newSubSubjectDescription
+          newSubSubjectDescription,
+          newAuthority
         )
       }
     >
@@ -166,6 +191,26 @@ function ProfileForm({ onFormSubmitButtonClick }: ProfileFormProps) {
         />
         <br />
       </div>
+      <Label htmlFor="authoritydescription" className="text-white">
+        Authority
+      </Label>
+      <div className="w-full flex justify-center">
+        <Select defaultValue={newAuthority} onValueChange={onAuthorityChange}>
+          <SelectTrigger className="md:w-full">
+            <SelectValue placeholder="Select an option" />
+          </SelectTrigger>
+          <SelectContent className="md:w-full">
+            <SelectGroup>
+              <SelectLabel>Options</SelectLabel>
+              <SelectItem value={AuthorityEnums.ALL}>All</SelectItem>
+              <SelectItem value={AuthorityEnums.BASIC}>Basic</SelectItem>
+              <SelectItem value={AuthorityEnums.ADVANCE}>Advance</SelectItem>
+              <SelectItem value={AuthorityEnums.PREMIUM}>Premium</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <br />
       <div className="w-full flex justify-center">
         <Button
           type="submit"

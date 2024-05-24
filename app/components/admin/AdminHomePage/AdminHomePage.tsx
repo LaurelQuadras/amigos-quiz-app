@@ -8,6 +8,7 @@ import EditSectionsPopUp from "../EditSectionsPopUp/EditSectionsPopUp";
 import DeleteSectionsPopUp from "../DeleteSectionsPopUp/DeleteSectionsPopUp";
 import AddSectionComponent from "../AddSectionComponent/AddSectionComponent";
 import Link from "next/link";
+import { AuthorityEnums } from "../QuestionForm/QuestionForm";
 
 export default function AdminHomePage() {
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
@@ -17,9 +18,14 @@ export default function AdminHomePage() {
     newSection: string,
     newDescription: string,
     newSubSection: string,
-    newSubSubjectDescriptionValue: string
+    newSubSubjectDescriptionValue: string,
+    newAuthority: AuthorityEnums
   ): Promise<void> => {
-    const subjectId: any = await postSectionsApi(newSection, newDescription);
+    const subjectId: any = await postSectionsApi(
+      newSection,
+      newDescription,
+      newAuthority
+    );
     if (subjectId.subject_id) {
       await postSubSubjectApi(
         subjectId.subject_id,

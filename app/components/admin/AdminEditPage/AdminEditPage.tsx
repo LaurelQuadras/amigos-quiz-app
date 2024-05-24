@@ -145,6 +145,7 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
       const questionAndAnswerValue: QuestionsAndAnswersType = {
         questionId: question.question_id,
         question: question.question_text,
+        authority: question.authority,
         image_data:
           imagesDataList.length > 0
             ? imagesDataList.map((image: any) => image.image_data)
@@ -199,7 +200,8 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
         editedQuestionAndAnswerValue.questionId,
         subSubject,
         editedQuestionAndAnswerValue.question,
-        editedQuestionAndAnswerValue.answerType
+        editedQuestionAndAnswerValue.answerType,
+        editedQuestionAndAnswerValue.authority
       );
       if (response) {
         alert("Question updated successfully");
@@ -281,7 +283,7 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
           className="bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 mb-[8.8rem] h-fit text-wrap"
           onClick={() => updateQuestion(questionAndAnswerValue)}
         >
-          Update Question, Attachments and Answer Type
+          Update Question, Authority, Attachments and Answer Type
         </Button>
         <Button
           className="bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 mb-4"
@@ -332,7 +334,8 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
     const questionId: any = await postQuestionsApi(
       sectionSelected?.subject_id!,
       selectedQuestionAndAnswer.question,
-      selectedQuestionAndAnswer.answerType
+      selectedQuestionAndAnswer.answerType,
+      selectedQuestionAndAnswer.authority
     );
 
     selectedQuestionAndAnswer.options.forEach(

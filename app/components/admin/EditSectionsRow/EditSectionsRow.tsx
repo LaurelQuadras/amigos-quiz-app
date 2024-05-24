@@ -6,7 +6,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableRow, TableCell } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AuthorityEnums } from "../QuestionForm/QuestionForm";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface EditSectionsRowProps {
   section: GetSectionApiType;
@@ -25,13 +35,19 @@ export default function EditSectionsRow({
   const [subSubjectDescription, setSubSubjectDescription] = useState<string>(
     section.subsection_description
   );
+  const [authority, setAuthority] = useState<AuthorityEnums>(section.authority);
+
+  useEffect(() => {
+    console.log("auu ", section.authority);
+  }, [section]);
 
   const onSaveButtonClick = async () => {
     const subSubjectResponse: any = await putSubSubjectApi(
       section.subject_id,
       section.subsectionID,
       subSubject,
-      subSubjectDescription
+      subSubjectDescription,
+      authority
     );
 
     if (subSubjectResponse.error) {
@@ -55,6 +71,11 @@ export default function EditSectionsRow({
       alert("Subject and SubSubject Updated succesfully");
       await getSectionList();
     }
+  };
+
+  const onAuthorityChange = (value: AuthorityEnums): void => {
+    let answerType: AuthorityEnums = value;
+    setAuthority(answerType);
   };
 
   return (
@@ -92,6 +113,22 @@ export default function EditSectionsRow({
           value={subSubjectDescription}
           onChange={(e: any) => setSubSubjectDescription(e.target.value)}
         />
+      </TableCell>
+      <TableCell className="text-black">
+        <Select defaultValue={authority} onValueChange={onAuthorityChange}>
+          <SelectTrigger className="md:w-full">
+            <SelectValue placeholder="Select an option" />
+          </SelectTrigger>
+          <SelectContent className="md:w-full">
+            <SelectGroup>
+              <SelectLabel>Options</SelectLabel>
+              <SelectItem value={AuthorityEnums.ALL}>All</SelectItem>
+              <SelectItem value={AuthorityEnums.BASIC}>Basic</SelectItem>
+              <SelectItem value={AuthorityEnums.ADVANCE}>Advance</SelectItem>
+              <SelectItem value={AuthorityEnums.PREMIUM}>Premium</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </TableCell>
       <TableCell>
         <Button

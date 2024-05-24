@@ -108,7 +108,8 @@ export default function AdminNewPage() {
           const questionId: any = await postQuestionsApi(
             sectionSelected?.subsectionID!,
             questionAndAnswers.question,
-            questionAndAnswers.answerType
+            questionAndAnswers.answerType,
+            questionAndAnswers.authority
           );
 
           if (questionAndAnswers.image_data) {

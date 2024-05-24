@@ -1,6 +1,9 @@
 "use client";
 
-import { AnswerTypeEnums } from "../components/admin/QuestionForm/QuestionForm";
+import {
+  AnswerTypeEnums,
+  AuthorityEnums,
+} from "../components/admin/QuestionForm/QuestionForm";
 
 export type GetSectionApiType = {
   subject_id: string;
@@ -10,11 +13,13 @@ export type GetSectionApiType = {
   subsection_name: string;
   subsection_description: string;
   user: string;
+  authority: AuthorityEnums;
 };
 
 export type QuestionsAndAnswersType = {
   questionId: string;
   question: string;
+  authority: AuthorityEnums;
   image_data: Blob[] | undefined;
   answerType: AnswerTypeEnums | string;
   options: AnswerType[];
@@ -31,9 +36,8 @@ export type GetQuestionType = {
   subject_id: string;
   question_text: string;
   question_type: string;
-  authority: string;
+  authority: AuthorityEnums;
   level: string;
-  image_data: Blob;
 };
 
 export type GetAnswerType = {
@@ -190,7 +194,8 @@ export const putSubSubjectApi = async (
   subjectId: string,
   subSubjectId: string,
   subsection: string,
-  subSectionDescription: string
+  subSectionDescription: string,
+  authority: AuthorityEnums
 ) => {
   try {
     const response: Response = await fetch(
@@ -201,6 +206,7 @@ export const putSubSubjectApi = async (
           subject_id: subjectId,
           subsection_name: subsection,
           subsection_description: subSectionDescription,
+          authority: authority,
         }),
       }
     );
@@ -214,7 +220,8 @@ export const putQuestionApi = async (
   id: string,
   subjectId: string,
   questionText: string,
-  answerType: string
+  answerType: string,
+  authority: AuthorityEnums
 ) => {
   try {
     const response: Response = await fetch(
@@ -225,7 +232,7 @@ export const putQuestionApi = async (
           subject_id: subjectId,
           question_text: questionText,
           question_Type: answerType,
-          authority: "ALL",
+          authority: authority,
           level: "ALL",
           user: "1",
         }),
@@ -289,7 +296,11 @@ export const deleteSubSubjectsApi = async (id: string) => {
 };
 
 // Post API
-export const postSectionsApi = async (name: string, description: string) => {
+export const postSectionsApi = async (
+  name: string,
+  description: string,
+  authority: AuthorityEnums
+) => {
   try {
     const response: Response = await fetch(
       "https://gamewithcolors.online/exams/subjects",
@@ -298,7 +309,7 @@ export const postSectionsApi = async (name: string, description: string) => {
         body: JSON.stringify({
           subject_name: name,
           subject_description: description,
-          authority: "ALL",
+          authority: authority,
           level: "ALL",
           user: "1",
         }),
@@ -336,7 +347,8 @@ export const postSubSubjectApi = async (
 export const postQuestionsApi = async (
   subjectId: string,
   questionText: string,
-  questionType: string
+  questionType: string,
+  authority: AuthorityEnums
 ) => {
   try {
     const response: Response = await fetch(
@@ -347,7 +359,7 @@ export const postQuestionsApi = async (
           subject_id: subjectId,
           question_text: questionText,
           question_type: questionType,
-          authority: "ALL",
+          authority: authority,
           level: "ALL",
           user: "Nathu Ram",
         }),

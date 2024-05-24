@@ -100,6 +100,7 @@ export default function ViewAllSectionsPopUp({
                     <TableHead>Subject Description</TableHead>
                     <TableHead>Sub-subject Name</TableHead>
                     <TableHead>Sub-subject Description</TableHead>
+                    <TableHead>Authority</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -124,6 +125,7 @@ export default function ViewAllSectionsPopUp({
                         <TableCell>{section.subject_description}</TableCell>
                         <TableCell>{section.subsection_name}</TableCell>
                         <TableCell>{section.subsection_description}</TableCell>
+                        <TableCell>{section.authority}</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
