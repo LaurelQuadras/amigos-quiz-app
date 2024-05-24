@@ -111,6 +111,7 @@ export default function AdminViewPage({ subSubject }: AdminViewPageProps) {
       const questionAndAnswerValue: QuestionsAndAnswersType = {
         questionId: question.question_id,
         question: question.question_text,
+        authority: question.authority,
         image_data:
           imagesDataList.length > 0
             ? imagesDataList.map((image: any) => image.image_data)

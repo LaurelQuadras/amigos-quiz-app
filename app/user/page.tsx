@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import QuizQuestion from "../components/user/QuizQuestion";
 import QuizPagination from "../components/user/QuizPagination";
 import { motion } from "framer-motion";
-import { AnswerTypeEnums } from "../components/admin/QuestionForm/QuestionForm";
+import {
+  AnswerTypeEnums,
+  AuthorityEnums,
+} from "../components/admin/QuestionForm/QuestionForm";
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState<number>(0);
@@ -40,6 +43,7 @@ export default function Home() {
               question: "Prime Minister",
               questionId: "1",
               image_data: undefined,
+              authority: AuthorityEnums.ALL,
               answerType: AnswerTypeEnums.MultipleChoiceAnswers,
               correctOption: ["1", "2"],
               options: [
