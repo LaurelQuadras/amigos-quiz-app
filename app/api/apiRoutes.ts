@@ -52,6 +52,18 @@ export type GetCorrectAnswerType = {
   question_id: string;
 };
 
+export type GetExamsType = {
+  exam_id: string;
+  exam_description: string;
+  subject_id: string;
+  subject_authority: string;
+  question_authority: string;
+  level: string;
+  number_of_questions: string;
+  random: string;
+  max_time: string;
+};
+
 // Get API
 export const getApi = async () => {
   try {
@@ -160,6 +172,28 @@ export const getCorrectOptionWithQuestionIdApi = async (
     return await response.json();
   } catch {
     console.log("Failed api get correct answer");
+    return [];
+  }
+};
+
+export const getExamsListApi = async (
+  userId: string,
+  examId?: string
+): Promise<GetExamsType[]> => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/exams?user_id=" +
+        userId +
+        (examId ? "&id=" + examId : ""),
+      {
+        method: "GET",
+      }
+    );
+    var e = await response.json();
+    console.log(e);
+    return e;
+  } catch {
+    console.log("Failed api get exams");
     return [];
   }
 };
@@ -430,5 +464,40 @@ export const postCorrectOptionApi = async (
     return await response.json();
   } catch {
     console.log("Failed api post correct answer");
+  }
+};
+
+export const postExamsApi = async (
+  userId: string,
+  subSubjectId: number,
+  examDescription: string,
+  questionCount: number,
+  random: boolean,
+  subjectAuthority: AuthorityEnums,
+  questionsAuthority: AuthorityEnums,
+  level: string,
+  maxTime: number
+): Promise<any> => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/exams",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user_id: userId,
+          subject_id: subSubjectId,
+          exam_description: examDescription,
+          questions_count: questionCount,
+          random: random,
+          subject_authority: subjectAuthority,
+          questions_authority: questionsAuthority,
+          level: level,
+          max_time: maxTime,
+        }),
+      }
+    );
+    return await response.json();
+  } catch {
+    console.log("Failed api post exams");
   }
 };
