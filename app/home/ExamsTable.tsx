@@ -12,8 +12,13 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GetExamsType, getExamsListApi } from "../api/apiRoutes";
+import { QuestionMode } from "./ExamsQuestions";
 
-export default function ExamsTable() {
+export interface ExamsTableInterface {
+  mode: QuestionMode;
+}
+
+export default function ExamsTable({ mode }: ExamsTableInterface) {
   const router = useRouter();
 
   const [examsList, setExamsList] = useState<any[]>([]);
@@ -29,7 +34,7 @@ export default function ExamsTable() {
   }, []);
 
   return (
-    <div className="flex m-8 mx-32">
+    <div>
       <Table>
         <TableCaption>
           {examsList.length === undefined
@@ -56,7 +61,9 @@ export default function ExamsTable() {
                 key={section.exam_id}
                 className="text-white hover:bg-slate-800"
                 onClick={() =>
-                  router.push(`/exams/questions/${section.exam_id}`)
+                  mode === QuestionMode.Viewmode
+                    ? router.push(`/exams/questions/${section.exam_id}`)
+                    : router.push(`/exams/editExam/${section.exam_id}`)
                 }
               >
                 <TableCell align="center" className="font-medium">

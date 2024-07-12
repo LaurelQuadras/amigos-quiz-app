@@ -5,6 +5,8 @@ import ExamsTable from "./home/ExamsTable";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { output_script } from "@/app/fonts/fonts";
+import ExamUpdateDialog from "./home/ExamUpdateDialog";
+import { QuestionMode } from "./home/ExamsQuestions";
 
 export default function Home() {
   const router = useRouter();
@@ -45,9 +47,7 @@ export default function Home() {
         >
           Create an Exam
         </Button>
-        <Button className="w-[32rem] h-32 bg-lime-600 hover:bg-lime-900 text-white rounded-xl">
-          Update an Exam
-        </Button>
+        <ExamUpdateDialog />
       </motion.div>
       <motion.div
         initial={{ opacity: 0 }}
@@ -60,7 +60,9 @@ export default function Home() {
         <span className="m-32 text-white">
           List of all available Exams created.
         </span>
-        <ExamsTable />
+        <div className="flex m-8 mx-32">
+          <ExamsTable mode={QuestionMode.Viewmode} />
+        </div>
       </motion.div>
     </main>
   );
