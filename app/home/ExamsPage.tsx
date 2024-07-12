@@ -60,7 +60,6 @@ export default function ExamsPage() {
       subSubjectId,
       examDescription,
       questionCount,
-      random,
       subjectAuthority,
       questionAuthority,
       level,
@@ -68,7 +67,7 @@ export default function ExamsPage() {
     );
 
     if (response) {
-      router.push(`/exams/questions/${subSubjectId}`);
+      router.push(`/exams/createExam/${response.exam_Id}`);
     }
   };
 

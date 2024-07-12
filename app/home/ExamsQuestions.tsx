@@ -1,30 +1,46 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  GetExamsType,
   GetQuestionType,
+  getExamsListApi,
   getQuestionsWithSubjectIdApi,
+  postExamsQuestionsApi,
 } from "../api/apiRoutes";
 import { motion } from "framer-motion";
 import { output_script } from "@/app/fonts/fonts";
 import QuestionImageData from "../components/admin/QuestionImageData/QuestionImageData";
 import { Button } from "@/components/ui/button";
 
-export interface ExamsQuestionsProps {
-  subSubject: string;
+export enum QuestionMode {
+  Viewmode,
+  Createmode,
+  Editmode,
 }
 
-export default function ExamsQuestions({ subSubject }: ExamsQuestionsProps) {
+export interface ExamsQuestionsProps {
+  examId: string;
+  mode: QuestionMode;
+}
+
+export default function ExamsQuestions({ examId, mode }: ExamsQuestionsProps) {
+  const router = useRouter();
+
   const [examsQuestions, setExamsQuestions] = useState<GetQuestionType[]>([]);
   const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
 
-  const welcomeAdminText: string[] =
+  const createExamQuestionsString: string[] =
     "Please choose the required questions".split(" ");
+  const viewExamQuestionsString: string[] = "Here are the questions".split(" ");
 
   const getExamQuestions = async (): Promise<void> => {
+    const examData: GetExamsType[] = await getExamsListApi("1", examId);
+
     const response: GetQuestionType[] = await getQuestionsWithSubjectIdApi(
-      subSubject
+      examData[0].subject_id
     );
     setExamsQuestions(response);
   };
@@ -46,12 +62,23 @@ export default function ExamsQuestions({ subSubject }: ExamsQuestionsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const postExamsQuestions = async (): Promise<void> => {
+    selectedQuestions.forEach(async (selectedQuestion: number) => {
+      await postExamsQuestionsApi(examId, selectedQuestion.toString());
+    });
+
+    router.push("/");
+  };
+
   return (
     <>
       <span
         className={`${output_script.className} mx-4 text-3xl md:text-6xl text-white`}
       >
-        {welcomeAdminText.map((el, i) => (
+        {(mode === QuestionMode.Createmode
+          ? createExamQuestionsString
+          : viewExamQuestionsString
+        ).map((el, i) => (
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -76,30 +103,37 @@ export default function ExamsQuestions({ subSubject }: ExamsQuestionsProps) {
               <div className="w-9/12">
                 <span>{examQuestion.question_text}</span>
               </div>
-              <div className="w-3/12 flex justify-end">
-                <Checkbox
-                  checked={selectedQuestions.includes(
-                    parseInt(examQuestion.question_id)
-                  )}
-                  className="border-white"
-                  onClick={(e: any) =>
-                    updateSelectedQuestionsList(
+              {(mode === QuestionMode.Createmode ||
+                mode === QuestionMode.Editmode) && (
+                <div className="w-3/12 flex justify-end">
+                  <Checkbox
+                    checked={selectedQuestions.includes(
                       parseInt(examQuestion.question_id)
-                    )
-                  }
-                />
-              </div>
+                    )}
+                    className="border-white"
+                    onClick={(e: any) =>
+                      updateSelectedQuestionsList(
+                        parseInt(examQuestion.question_id)
+                      )
+                    }
+                  />
+                </div>
+              )}
             </div>
           ))}
         <div className="flex w-full justify-center">
-          {examsQuestions && examsQuestions.length > 0 && (
-            <Button
-              className="w-96 bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 mb-[8.8rem] h-14 text-wrap"
-              disabled={selectedQuestions.length !== 3}
-            >
-              Save selected questions
-            </Button>
-          )}
+          {(mode === QuestionMode.Createmode ||
+            mode === QuestionMode.Editmode) &&
+            examsQuestions &&
+            examsQuestions.length > 0 && (
+              <Button
+                className="w-96 bg-lime-600 text-black px-4 py-2 rounded-lg hover:bg-lime-900 mb-[8.8rem] h-14 text-wrap"
+                disabled={selectedQuestions.length <= 3}
+                onClick={postExamsQuestions}
+              >
+                Save selected questions
+              </Button>
+            )}
         </div>
       </div>
     </>

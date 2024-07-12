@@ -9,10 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GetExamsType, getExamsListApi } from "../api/apiRoutes";
 
 export default function ExamsTable() {
+  const router = useRouter();
+
   const [examsList, setExamsList] = useState<any[]>([]);
 
   const getExamsList = async (): Promise<void> => {
@@ -52,6 +55,9 @@ export default function ExamsTable() {
               <TableRow
                 key={section.exam_id}
                 className="text-white hover:bg-slate-800"
+                onClick={() =>
+                  router.push(`/exams/questions/${section.exam_id}`)
+                }
               >
                 <TableCell align="center" className="font-medium">
                   {section.exam_id}

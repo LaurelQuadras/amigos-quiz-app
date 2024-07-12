@@ -472,7 +472,6 @@ export const postExamsApi = async (
   subSubjectId: number,
   examDescription: string,
   questionCount: number,
-  random: boolean,
   subjectAuthority: AuthorityEnums,
   questionsAuthority: AuthorityEnums,
   level: string,
@@ -488,7 +487,6 @@ export const postExamsApi = async (
           subject_id: subSubjectId,
           exam_description: examDescription,
           questions_count: questionCount,
-          random: random,
           subject_authority: subjectAuthority,
           questions_authority: questionsAuthority,
           level: level,
@@ -499,5 +497,25 @@ export const postExamsApi = async (
     return await response.json();
   } catch {
     console.log("Failed api post exams");
+  }
+};
+
+export const postExamsQuestionsApi = async (
+  examId: string,
+  questionId: string
+): Promise<any> => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/examQuestions",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          exam_id: examId,
+          question_id: questionId,
+        }),
+      }
+    );
+  } catch {
+    console.log("Failed post examQuestions");
   }
 };
