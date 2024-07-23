@@ -469,7 +469,7 @@ export const postCorrectOptionApi = async (
 
 export const postExamsApi = async (
   userId: string,
-  subSubjectId: number,
+  subSubjectId: string,
   examDescription: string,
   questionCount: number,
   subjectAuthority: AuthorityEnums,

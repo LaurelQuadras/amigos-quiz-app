@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 import { output_script } from "@/app/fonts/fonts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthorityEnums } from "../components/admin/QuestionForm/QuestionForm";
 import {
   Select,
@@ -16,7 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { postExamsApi } from "../api/apiRoutes";
+import {
+  GetSectionApiType,
+  getSectionApi,
+  postExamsApi,
+} from "../api/apiRoutes";
 import { useRouter } from "next/navigation";
 
 export default function ExamsPage() {
@@ -24,7 +28,7 @@ export default function ExamsPage() {
   const welcomeAdminText: string[] = "Please fill the form".split(" ");
 
   const [userId, setUserId] = useState<string>("");
-  const [subSubjectId, setSubSubjectId] = useState<number>(0);
+  const [subSubjectId, setSubSubjectId] = useState<string>("");
   const [examDescription, setExamDescription] = useState<string>("");
   const [questionCount, setQuestionCount] = useState<number>(10);
   const [random, setRandom] = useState<boolean>(true);
@@ -36,16 +40,26 @@ export default function ExamsPage() {
   );
   const [level, setLevel] = useState<string>("All");
   const [maxTime, setMaxtime] = useState<number>(30);
+  const [sectionsList, setSectionsList] = useState<GetSectionApiType[]>([]);
 
   const onRandomRadioButtonUpdate = (value: string) => {
     console.log(random);
     setRandom(Boolean(value));
   };
 
+  const getSectionList = async (): Promise<void> => {
+    const response: GetSectionApiType[] = await getSectionApi();
+    setSectionsList(response);
+  };
+
+  useEffect(() => {
+    getSectionList();
+  }, []);
+
   const onCreateExamButton = async (): Promise<void> => {
     if (
       userId === "" ||
-      subSubjectId === 0 ||
+      subSubjectId === "" ||
       examDescription === "" ||
       questionCount === 0 ||
       level === "" ||
@@ -106,12 +120,26 @@ export default function ExamsPage() {
           <Label htmlFor="section" className="text-white w-[150px]">
             SubjectId:
           </Label>
-          <Input
-            type="number"
-            id="subjectId"
-            value={subSubjectId}
-            onChange={(e: any) => setSubSubjectId(e.target.value)}
-          />
+          {sectionsList && sectionsList.length > 0 && (
+            <Select
+              defaultValue={sectionsList[0].subsectionID}
+              onValueChange={(value: string) => setSubSubjectId(value)}
+            >
+              <SelectTrigger className="md:w-full">
+                <SelectValue placeholder="Select an option" />
+              </SelectTrigger>
+              <SelectContent className="md:w-full">
+                <SelectGroup>
+                  <SelectLabel>Options</SelectLabel>
+                  {sectionsList.map((section: GetSectionApiType) => (
+                    <SelectItem value={section.subsectionID}>
+                      {section.subsectionID}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         </div>
         <div className="flex gap-3 items-center w-[400px]">
           <Label htmlFor="section" className="text-white text-nowrap w-[150px]">
