@@ -101,9 +101,7 @@ export default function ExamsQuestions({ examId, mode }: ExamsQuestionsProps) {
               className="border rounded-lg p-6 flex"
             >
               <div
-                className={
-                  mode !== QuestionMode.Createmode ? "w-full" : "w-9/12"
-                }
+                className={mode === QuestionMode.Viewmode ? "w-full" : "w-9/12"}
               >
                 <span>{examQuestion.question_text}</span>
               </div>
