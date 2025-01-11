@@ -39,11 +39,11 @@ export default function QuizQuestion({
           }}
           className="w-full h-full flex flex-col"
         >
-          <div className="m-16 mt-16 p-8 border-2 rounded-lg flex flex-col gap-8 justify-center">
+          <div className="md:m-16 m-4 mt-16 md:p-8 p-4 border-2 rounded-lg flex flex-col gap-8 justify-center">
             <span className="text-white">
               {questionAndAnswerValue.question}
             </span>
-            <div className="flex">
+            <div className="flex gap-2 flex-wrap">
               {questionAndAnswerValue.image_data !== undefined &&
                 questionAndAnswerValue.image_data.length > 0 &&
                 questionAndAnswerValue.image_data.map(
@@ -61,7 +61,7 @@ export default function QuizQuestion({
                       </div>
                     ) : (
                       <div className="w-auto h-auto" key={index}>
-                        <audio src={`${image}`} controls autoPlay />
+                        <audio src={`${image}`} controls />
                       </div>
                     )
                 )}

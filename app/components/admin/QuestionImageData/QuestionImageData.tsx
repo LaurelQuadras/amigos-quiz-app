@@ -73,7 +73,7 @@ export default function QuestionImageData({
                 </div>
               ) : (
                 <div className="w-auto h-auto" key={index}>
-                  <audio src={`${image}`} controls autoPlay />
+                  <audio src={`${image}`} controls />
                 </div>
               )
             )}
