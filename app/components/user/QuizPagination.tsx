@@ -35,7 +35,7 @@ export default function QuizPagination({
   };
   return (
     <Pagination>
-      <PaginationContent className="cursor-pointer text-white">
+      <PaginationContent className="cursor-pointer text-white flex-wrap">
         <PaginationItem className={visibleQuestion === 0 ? `opacity-25` : ""}>
           <PaginationPrevious
             onClick={() => onPaginationButtonClick(0, onPreviousButtonClick)}

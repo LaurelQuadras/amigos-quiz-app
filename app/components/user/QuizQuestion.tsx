@@ -39,7 +39,7 @@ export default function QuizQuestion({
           }}
           className="w-full h-full flex flex-col"
         >
-          <div className="m-16 mt-0 p-8 border-2 rounded-lg flex flex-col gap-8 justify-center">
+          <div className="m-16 mt-16 p-8 border-2 rounded-lg flex flex-col gap-8 justify-center">
             <span className="text-white">
               {questionAndAnswerValue.question}
             </span>

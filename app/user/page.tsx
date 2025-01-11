@@ -10,8 +10,8 @@ import {
 } from "../components/admin/QuestionForm/QuestionForm";
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState<number>(0);
-  const ArrayList: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [isVisible, setIsVisible] = useState<number>(1);
+  const ArrayList: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
   useEffect(() => {
     setIsVisible(ArrayList[0]);

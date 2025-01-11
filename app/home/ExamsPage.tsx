@@ -104,9 +104,9 @@ export default function ExamsPage() {
           </motion.span>
         ))}
       </span>
-      <div className="flex justify-around gap-x-44 gap-y-8 text-black m-32 mt-16 mb-16 flex-wrap">
-        <div className="flex gap-8 items-center w-[400px]">
-          <Label htmlFor="section" className="text-white w-[150px]">
+      <div className="flex justify-around gap-x-44 gap-y-8 text-black m-4 md:m-32 md:mt-16 mb-16 flex-wrap">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
+          <Label htmlFor="section" className="text-white md:w-[150px]">
             UserId:
           </Label>
           <Input
@@ -116,8 +116,8 @@ export default function ExamsPage() {
             onChange={(e: any) => setUserId(e.target.value)}
           />
         </div>
-        <div className="flex gap-8 items-center w-[400px]">
-          <Label htmlFor="section" className="text-white w-[150px]">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
+          <Label htmlFor="section" className="text-white md:w-[150px]">
             SubjectId:
           </Label>
           {sectionsList && sectionsList.length > 0 && (
@@ -132,7 +132,10 @@ export default function ExamsPage() {
                 <SelectGroup>
                   <SelectLabel>Options</SelectLabel>
                   {sectionsList.map((section: GetSectionApiType) => (
-                    <SelectItem value={section.subsectionID}>
+                    <SelectItem
+                      value={section.subsectionID}
+                      key={section.subsectionID}
+                    >
                       {section.subsectionID}
                     </SelectItem>
                   ))}
@@ -141,8 +144,11 @@ export default function ExamsPage() {
             </Select>
           )}
         </div>
-        <div className="flex gap-3 items-center w-[400px]">
-          <Label htmlFor="section" className="text-white text-nowrap w-[150px]">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
+          <Label
+            htmlFor="section"
+            className="text-white text-nowrap md:w-[150px]"
+          >
             Exam Description:
           </Label>
           <Input
@@ -152,8 +158,11 @@ export default function ExamsPage() {
             onChange={(e: any) => setExamDescription(e.target.value)}
           />
         </div>
-        <div className="flex gap-5 items-center w-[400px]">
-          <Label htmlFor="section" className="text-white text-nowrap w-[150px]">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
+          <Label
+            htmlFor="section"
+            className="text-white text-nowrap md:w-[150px]"
+          >
             Question Count:
           </Label>
           <Input
@@ -163,10 +172,10 @@ export default function ExamsPage() {
             onChange={(e: any) => setQuestionCount(e.target.value)}
           />
         </div>
-        <div className="flex gap-2 items-center w-[400px]">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
           <Label
             htmlFor="subjectAuthoritydescription"
-            className="text-white text-nowrap w-[150px]"
+            className="text-white text-nowrap md:w-[150px]"
           >
             Subject Authority:
           </Label>
@@ -190,10 +199,10 @@ export default function ExamsPage() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex gap-2 items-center w-[400px]">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
           <Label
             htmlFor="questionAuthoritydescription"
-            className="text-white text-nowrap w-[150px]"
+            className="text-white text-nowrap md:w-[150px]"
           >
             Question Authority:
           </Label>
@@ -217,8 +226,8 @@ export default function ExamsPage() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex gap-8 items-center w-[400px]">
-          <Label htmlFor="section" className="text-white w-[150px]">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
+          <Label htmlFor="section" className="text-white md:w-[150px]">
             Level:
           </Label>
           <Input
@@ -228,8 +237,8 @@ export default function ExamsPage() {
             onChange={(e: any) => setLevel(e.target.value)}
           />
         </div>
-        <div className="flex gap-10 items-center w-[400px]">
-          <Label htmlFor="section" className="text-white w-[150px]">
+        <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
+          <Label htmlFor="section" className="text-white md:w-[150px]">
             Max Time:
           </Label>
           <Input
@@ -240,7 +249,7 @@ export default function ExamsPage() {
           />
         </div>
       </div>
-      <div className="w-full flex justify-center gap-16">
+      <div className="w-full flex-col md:flex-row flex justify-center items-center md:gap-16 gap-8">
         <Button
           className="bg-lime-600 hover:bg-lime-900 w-72 text-black"
           onClick={onCreateExamButton}

@@ -2,8 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -14,12 +12,12 @@ export interface ExamUpdateDialogProps {}
 
 export default function ExamUpdateDialog() {
   return (
-    <div>
+    <>
       <Dialog>
-        <DialogTrigger>
-          <div className="w-[32rem] h-32 bg-lime-600 hover:bg-lime-900 text-white rounded-xl flex justify-center items-center">
+        <DialogTrigger className="w-[32rem] flex flex-wrap">
+          <Button className="w-full h-32 bg-lime-600 hover:bg-lime-900 text-white rounded-xl">
             Update an Exam
-          </div>
+          </Button>
         </DialogTrigger>
         <DialogContent className="w-10/12 min-h-[400px] max-w-full bg-slate-900 overflow-y-scroll max-h-8">
           <DialogTitle>
@@ -30,6 +28,6 @@ export default function ExamUpdateDialog() {
           <ExamsTable mode={QuestionMode.Editmode} />
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

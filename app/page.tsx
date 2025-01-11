@@ -39,7 +39,7 @@ export default function Home() {
           duration: 1,
           delay: 1.4,
         }}
-        className="m-44 mt-16 mb-16 flex justify-between"
+        className="m-20 md:m-20 flex justify-center items-center flex-wrap gap-4"
       >
         <Button
           className="w-[32rem] h-32 bg-lime-600 hover:bg-lime-900 text-white rounded-xl"
@@ -57,10 +57,10 @@ export default function Home() {
           delay: 1.4,
         }}
       >
-        <span className="m-32 text-white">
+        <span className="md:m-20 text-white flex justify-center">
           List of all available Exams created.
         </span>
-        <div className="flex m-8 mx-32">
+        <div className="flex m-8 md:mx-20 justify-center overflow-auto">
           <ExamsTable mode={QuestionMode.Viewmode} />
         </div>
       </motion.div>
