@@ -92,7 +92,7 @@ export default function ExamsQuestions({ examId, mode }: ExamsQuestionsProps) {
           </motion.span>
         ))}
       </span>
-      <div className="m-16 mx-32 flex flex-col gap-8 text-white">
+      <div className="md:m-16 m-4 md:mx-32 flex flex-col gap-8 text-white">
         {examsQuestions &&
           examsQuestions.length > 0 &&
           examsQuestions.map((examQuestion: GetQuestionType) => (
@@ -100,7 +100,11 @@ export default function ExamsQuestions({ examId, mode }: ExamsQuestionsProps) {
               key={examQuestion.question_id}
               className="border rounded-lg p-6 flex"
             >
-              <div className="w-9/12">
+              <div
+                className={
+                  mode !== QuestionMode.Createmode ? "w-full" : "w-9/12"
+                }
+              >
                 <span>{examQuestion.question_text}</span>
               </div>
               {(mode === QuestionMode.Createmode ||
