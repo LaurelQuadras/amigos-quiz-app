@@ -31,7 +31,6 @@ export default function ExamsPage() {
   const [subSubjectId, setSubSubjectId] = useState<string>("");
   const [examDescription, setExamDescription] = useState<string>("");
   const [questionCount, setQuestionCount] = useState<number>(10);
-  const [random, setRandom] = useState<boolean>(true);
   const [subjectAuthority, setSubjectAuthority] = useState<AuthorityEnums>(
     AuthorityEnums.ALL
   );
@@ -42,14 +41,10 @@ export default function ExamsPage() {
   const [maxTime, setMaxtime] = useState<number>(30);
   const [sectionsList, setSectionsList] = useState<GetSectionApiType[]>([]);
 
-  const onRandomRadioButtonUpdate = (value: string) => {
-    console.log(random);
-    setRandom(Boolean(value));
-  };
-
   const getSectionList = async (): Promise<void> => {
     const response: GetSectionApiType[] = await getSectionApi();
     setSectionsList(response);
+    setSubSubjectId(response[0].subsectionID);
   };
 
   useEffect(() => {
@@ -80,7 +75,11 @@ export default function ExamsPage() {
       maxTime
     );
 
-    if (response) {
+    if (response.error) {
+      alert(
+        "Exam could not be created since Exam description should be unique"
+      );
+    } else {
       router.push(`/exams/createExam/${response.exam_Id}`);
     }
   };

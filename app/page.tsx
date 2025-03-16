@@ -14,9 +14,9 @@ export default function Home() {
   const welcomeAdminText: string[] = "Welcome to Quiz".split(" ");
 
   return (
-    <main className="h-full w-full">
+    <main className="h-full w-full my-8">
       <span
-        className={`${output_script.className} mx-4 text-3xl md:text-6xl text-white`}
+        className={`${output_script.className} m-4 text-3xl md:text-6xl text-white`}
       >
         {welcomeAdminText.map((el, i) => (
           <motion.span
