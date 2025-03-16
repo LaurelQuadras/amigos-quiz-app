@@ -147,7 +147,7 @@ export default function ExamsPage() {
         <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
           <Label
             htmlFor="section"
-            className="text-white text-nowrap md:w-[150px]"
+            className="text-white text-nowrap md:w-[100px]"
           >
             Exam Description:
           </Label>
@@ -161,7 +161,7 @@ export default function ExamsPage() {
         <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
           <Label
             htmlFor="section"
-            className="text-white text-nowrap md:w-[150px]"
+            className="text-white text-nowrap md:w-[100px]"
           >
             Question Count:
           </Label>
@@ -175,7 +175,7 @@ export default function ExamsPage() {
         <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
           <Label
             htmlFor="subjectAuthoritydescription"
-            className="text-white text-nowrap md:w-[150px]"
+            className="text-white text-nowrap md:w-[100px]"
           >
             Subject Authority:
           </Label>
@@ -202,7 +202,7 @@ export default function ExamsPage() {
         <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
           <Label
             htmlFor="questionAuthoritydescription"
-            className="text-white text-nowrap md:w-[150px]"
+            className="text-white text-nowrap md:w-[100px]"
           >
             Question Authority:
           </Label>

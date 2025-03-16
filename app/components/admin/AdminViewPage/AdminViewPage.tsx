@@ -166,7 +166,7 @@ export default function AdminViewPage({ subSubject }: AdminViewPageProps) {
   };
 
   return (
-    <div className="flex flex-col h-full w-full gap-8 md:gap-16 text-white">
+    <div className="flex flex-col h-full w-full text-white">
       {sectionSelected && (
         <>
           <span
@@ -186,7 +186,7 @@ export default function AdminViewPage({ subSubject }: AdminViewPageProps) {
               </motion.span>
             ))}
           </span>
-          <span className="mx-4 text-xl md:text-4xl">
+          <span className="m-4 text-xl md:text-4xl">
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

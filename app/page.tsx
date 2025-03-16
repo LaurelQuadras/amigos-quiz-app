@@ -42,12 +42,18 @@ export default function Home() {
         className="m-20 md:m-20 flex justify-center items-center flex-wrap gap-4"
       >
         <Button
-          className="w-[32rem] h-32 bg-lime-600 hover:bg-lime-900 text-white rounded-xl"
+          className="w-[32rem] h-32 bg-lime-600 hover:bg-lime-900 text-white rounded-lg"
           onClick={() => router.push(`/exams`)}
         >
           Create an Exam
         </Button>
-        <ExamUpdateDialog />
+        <ExamUpdateDialog
+          height={32}
+          buttonWidth={"[32rem]"}
+          backgroundColor="lime-600"
+          hoverBackgroundColor="lime-900"
+          textColor="white"
+        />
       </motion.div>
       <motion.div
         initial={{ opacity: 0 }}

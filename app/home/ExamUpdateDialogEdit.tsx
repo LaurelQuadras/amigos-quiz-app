@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +7,7 @@ import {
 import ExamsTable from "./ExamsTable";
 import { QuestionMode } from "./ExamsQuestions";
 
-export interface ExamUpdateDialogProps {
+export interface ExamUpdateDialogEditProps {
   height: number;
   buttonWidth: string;
   backgroundColor: string;
@@ -16,13 +15,13 @@ export interface ExamUpdateDialogProps {
   textColor: string;
 }
 
-export default function ExamUpdateDialog({
+export default function ExamUpdateDialogEdit({
   height,
   buttonWidth,
   backgroundColor,
   hoverBackgroundColor,
   textColor,
-}: ExamUpdateDialogProps) {
+}: ExamUpdateDialogEditProps) {
   return (
     <>
       <Dialog>

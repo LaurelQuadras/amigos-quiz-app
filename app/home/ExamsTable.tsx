@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GetExamsType, getExamsListApi } from "../api/apiRoutes";
 import { QuestionMode } from "./ExamsQuestions";
+import { Input } from "@/components/ui/input";
 
 export interface ExamsTableInterface {
   mode: QuestionMode;
@@ -22,6 +23,10 @@ export default function ExamsTable({ mode }: ExamsTableInterface) {
   const router = useRouter();
 
   const [examsList, setExamsList] = useState<any[]>([]);
+
+  const [examDescription, setExamDescription] = useState<string>("");
+  const [maxTime, setMaxTime] = useState<number>(0);
+  const [numOfQuestions, setNumOfQuestions] = useState<number>(0);
 
   const getExamsList = async (): Promise<void> => {
     const examsListValues = await getExamsListApi("1");
@@ -69,13 +74,36 @@ export default function ExamsTable({ mode }: ExamsTableInterface) {
                 {section.exam_id}
               </TableCell>
               <TableCell align="center" className="font-medium">
-                {section.exam_description}
+                <Input
+                  placeholder="Enter the searched text"
+                  value={section.exam_description}
+                  onChange={(e) => {
+                    setExamDescription(e.target.value);
+                  }}
+                  className="w-48 bg-white text-black"
+                />
               </TableCell>
               <TableCell align="center">{section.subject_id}</TableCell>
               <TableCell align="center">{section.level}</TableCell>
-              <TableCell align="center">{section.max_time}</TableCell>
               <TableCell align="center">
-                {section.number_of_questions}
+                <Input
+                  placeholder="Enter the searched text"
+                  value={section.max_time}
+                  onChange={(e) => {
+                    setMaxTime(Number(e.target.value));
+                  }}
+                  className="w-28 bg-white text-black"
+                />
+              </TableCell>
+              <TableCell align="center">
+                <Input
+                  placeholder="Enter the searched text"
+                  value={section.number_of_questions}
+                  onChange={(e) => {
+                    setNumOfQuestions(Number(e.target.value));
+                  }}
+                  className="w-28 bg-white text-black"
+                />
               </TableCell>
               <TableCell align="center">{section.question_authority}</TableCell>
               <TableCell align="center">{section.random}</TableCell>

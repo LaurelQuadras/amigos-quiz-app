@@ -65,7 +65,7 @@ export default function QuestionImageData({
                   <Image
                     src={`${image}`}
                     alt={`Preview`}
-                    className="rounded-md h-64 object-contain"
+                    className="rounded-md h-fit object-contain"
                     width={250}
                     height={256}
                     unoptimized
