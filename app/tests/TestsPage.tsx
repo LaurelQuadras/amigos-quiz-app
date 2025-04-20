@@ -66,7 +66,13 @@ export default function TestsPage() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">
-                  {examIdChosen ?? "Choose an Exam"}
+                  {examIdChosen
+                    ? examIdChosen +
+                      " " +
+                      examDataAvailable?.filter(
+                        (exam: GetExamsType) => exam.exam_id === examIdChosen
+                      )[0].exam_description
+                    : "Choose an Exam"}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
