@@ -24,18 +24,15 @@ export default function TestsPage() {
   const router = useRouter();
 
   const [examIdChosen, setExamIdChosen] = useState<string>();
-  const [examIdsAvailable, setExamIdsAvailable] = useState<string[]>();
+  const [examDataAvailable, setExamDataAvailable] = useState<GetExamsType[]>();
 
-  const getExamIds = async (): Promise<void> => {
+  const getExamData = async (): Promise<void> => {
     const examData: GetExamsType[] = await getExamsListApi("1");
-    const examIds: string[] = examData.map(
-      (exam: GetExamsType) => exam.exam_id
-    );
-    setExamIdsAvailable(examIds);
+    setExamDataAvailable(examData);
   };
 
   useEffect(() => {
-    getExamIds();
+    getExamData();
   }, []);
 
   return (
@@ -68,7 +65,7 @@ export default function TestsPage() {
           <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline">Open</Button>
+                <Button variant="outline">Choose an Exam</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>Exam Ids available</DropdownMenuLabel>
@@ -77,10 +74,13 @@ export default function TestsPage() {
                   value={examIdChosen}
                   onValueChange={setExamIdChosen}
                 >
-                  {examIdsAvailable &&
-                    examIdsAvailable.map((examId: string) => (
-                      <DropdownMenuRadioItem key={examId} value={examId}>
-                        {examId}
+                  {examDataAvailable &&
+                    examDataAvailable.map((examData: GetExamsType) => (
+                      <DropdownMenuRadioItem
+                        key={examData.exam_id}
+                        value={examData.exam_id}
+                      >
+                        {examData.exam_id + " " + examData.exam_description}
                       </DropdownMenuRadioItem>
                     ))}
                 </DropdownMenuRadioGroup>
