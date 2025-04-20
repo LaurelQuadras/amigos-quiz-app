@@ -65,7 +65,9 @@ export default function TestsPage() {
           <div className="flex gap-2 md:gap-8 flex-col md:flex-row items-center md:w-[400px] w-[200px]">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline">Choose an Exam</Button>
+                <Button variant="outline">
+                  {examIdChosen ?? "Choose an Exam"}
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>Exam Ids available</DropdownMenuLabel>
