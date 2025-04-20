@@ -38,9 +38,12 @@ export default function ExamsQuestions({ examId, mode }: ExamsQuestionsProps) {
 
   const getExamQuestions = async (): Promise<void> => {
     const examData: GetExamsType[] = await getExamsListApi("1", examId);
+    const currentExamData: GetExamsType = examData.filter(
+      (exam: GetExamsType) => exam.exam_id === examId
+    )[0];
 
     const response: GetQuestionType[] = await getQuestionsWithSubjectIdApi(
-      examData[0].subject_id
+      currentExamData.subject_id
     );
     setExamsQuestions(response);
   };

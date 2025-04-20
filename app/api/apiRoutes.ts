@@ -519,3 +519,28 @@ export const postExamsQuestionsApi = async (
     console.log("Failed post examQuestions");
   }
 };
+
+export const postExamTestsApi = async (
+  examId: string,
+  questionId: string,
+  answerId: string
+): Promise<any> => {
+  try {
+    const response: Response = await fetch(
+      "https://gamewithcolors.online/exams/examresults",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          exam_id: examId,
+          user_id: "1",
+          question_id: questionId,
+          answer_id: answerId,
+          time_taken: 15,
+          exam_date_time: new Date().toUTCString(),
+        }),
+      }
+    );
+  } catch {
+    console.log("Failed post examQuestions");
+  }
+};

@@ -23,7 +23,6 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import QuestionForm from "../QuestionForm/QuestionForm";
-import questionsAndAnswersMockValues from "../../../json/questionsAndAnswersMock.json";
 
 export interface AdminEditPageProps {
   subSubject: string;
@@ -38,10 +37,6 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
 
   const welcomeAdminText: string[] = "Welcome to Admin Panel".split(" ");
   const fillInformationText: string = "Please fill the following information.";
-
-  const onNextButtonClick = (): void => {
-    setNoOfQuestions((noOfQuestions) => noOfQuestions + 1);
-  };
 
   const onPreviousButtonClick = (questionId: string): void => {
     if (
@@ -59,8 +54,6 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
     }
   };
 
-  const MotionButton = motion(Button);
-
   const getSubjectWithId = async (): Promise<void> => {
     const sectionList: GetSectionApiType[] = await getSectionApi();
     setSectionSelected(
@@ -75,8 +68,6 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
       subSubject
     );
 
-    console.log("QQ ", questions);
-
     if (questions.length === undefined) {
       setNoQuestionsPresent(true);
       return;
@@ -88,8 +79,6 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
         return index === self.findIndex((item) => item.question_text === key);
       }
     );
-
-    console.log("AA ", uniqueQuestions);
 
     const questionAndAnswerList: QuestionsAndAnswersType[] =
       await getQuestionAndAnswerList(uniqueQuestions);
@@ -486,24 +475,6 @@ export default function AdminEditPage({ subSubject }: AdminEditPageProps) {
             </>
           )}
         </div>
-        {!noQuestionsPresent && (
-          <div className="flex justify-end gap-8">
-            <MotionButton
-              onClick={onNextButtonClick}
-              disabled={noOfQuestions === 10}
-              whileTap={{ scale: 0.8 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                duration: 1,
-                delay: 1.4,
-              }}
-              className="bg-white text-black px-4 py-2 rounded-lg hover:bg-gray-300"
-            >
-              Next
-            </MotionButton>
-          </div>
-        )}
       </div>
     </div>
   );
